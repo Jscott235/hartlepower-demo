@@ -10,20 +10,28 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
   // Inject HTML
   document.body.insertAdjacentHTML('beforeend', `
-    <button id="bugBtn" onclick="openBugReport()">
-      <svg width="14" height="14" fill="none" viewBox="0 0 256 256" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M128,136v48" fill="none"/>
-        <circle cx="128" cy="104" r="8" fill="currentColor"/>
-        <path d="M232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Z" fill="none"/>
-      </svg>
-      Report bug
-    </button>
+<div id="feedbackMenu" style="position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+      <div id="feedbackOptions" style="display:none;flex-direction:column;gap:8px;align-items:flex-end;">
+        <button id="bugBtn" onclick="openReport('bug')" style="background:#E05252;">
+          <svg width="14" height="14" fill="none" viewBox="0 0 256 256" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"><path d="M128,136v48" fill="none"/><circle cx="128" cy="104" r="8" fill="currentColor"/><path d="M232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Z" fill="none"/></svg>
+          Report bug
+        </button>
+        <button id="ideaBtn" onclick="openReport('idea')" style="background:#1A9B8C;color:#fff;border:none;border-radius:12px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(26,155,140,0.4);">
+          <svg width="14" height="14" fill="none" viewBox="0 0 256 256" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"><circle cx="128" cy="120" r="72" fill="none"/><path d="M96,232h64" fill="none"/><path d="M112,232v-48h32v48" fill="none"/></svg>
+          Suggest idea
+        </button>
+      </div>
+      <button id="feedbackToggle" onclick="toggleFeedback()" style="background:#1C1C1C;color:#fff;border:none;border-radius:12px;padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+        <svg width="14" height="14" fill="none" viewBox="0 0 256 256" stroke="currentColor" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"><line x1="40" y1="128" x2="216" y2="128"/><line x1="40" y1="64" x2="216" y2="64"/><line x1="40" y1="192" x2="216" y2="192"/></svg>
+        Feedback
+      </button>
+    </div>
 
     <div id="bugOverlay" onclick="if(event.target===this)closeBugReport()">
       <div id="bugModal">
         <div id="bugForm">
-          <h3>Report a bug</h3>
-          <p>Tell Jaydon what broke. Josh will fix it.</p>
+          <h3 id="modalTitle">Report a bug</h3>
+          <p id="modalSubtitle">Tell Jaydon what broke. Josh will fix it.</p>
 
           <div class="bug-field">
             <label>Page / area</label>
@@ -57,8 +65,8 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
         <div id="bugSuccess">
           <div style="font-size:40px;margin-bottom:12px;">✓</div>
-          <h3>Bug logged</h3>
-          <p>Josh will pick it up and fix it.<br>Keep testing.</p>
+          <h3 id="successTitle">Bug logged</h3>
+          <p id="successMsg">Josh will pick it up and fix it.<br>Keep testing.</p>
           <button onclick="closeBugReport()" style="margin-top:16px;padding:10px 24px;background:#1A9B8C;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;">Got it</button>
         </div>
       </div>
@@ -67,14 +75,40 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
   let currentSeverity = 'medium';
 
-  window.openBugReport = function () {
+  let currentMode = 'bug';
+
+  window.toggleFeedback = function() {
+    const opts = document.getElementById('feedbackOptions');
+    opts.style.display = opts.style.display === 'none' ? 'flex' : 'none';
+  };
+
+  window.openReport = function(mode) {
+    currentMode = mode;
+    document.getElementById('feedbackOptions').style.display = 'none';
     document.getElementById('bugOverlay').classList.add('open');
     document.getElementById('bugForm').style.display = 'block';
     document.getElementById('bugSuccess').style.display = 'none';
     document.getElementById('bug-page').value = document.title.replace(' — HartlePower', '').replace('HartlePower', 'Homepage');
     document.getElementById('bug-desc').value = '';
     document.getElementById('bug-steps').value = '';
+    if (mode === 'idea') {
+      document.getElementById('modalTitle').textContent = 'Suggest an idea';
+      document.getElementById('modalSubtitle').textContent = 'Feature ideas, improvements, anything. Josh will review it.';
+      document.getElementById('bug-page').placeholder = 'e.g. Tenant portal';
+      document.getElementById('bug-desc').placeholder = 'Describe your idea...';
+      document.getElementById('bug-steps').closest('.bug-field').style.display = 'none';
+      document.querySelectorAll('.sev-btn').forEach(b => b.closest('.bug-field') && (b.closest('.bug-field').style.display = 'none'));
+    } else {
+      document.getElementById('modalTitle').textContent = 'Report a bug';
+      document.getElementById('modalSubtitle').textContent = 'Tell Jaydon what broke. Josh will fix it.';
+      document.getElementById('bug-page').placeholder = 'e.g. Tenant portal → Maintenance';
+      document.getElementById('bug-desc').placeholder = 'Describe what went wrong...';
+      document.getElementById('bug-steps').closest('.bug-field').style.display = 'block';
+      document.querySelectorAll('.sev-btn').forEach(b => b.closest && b.closest('.bug-field') && (b.closest('.bug-field').style.display = 'block'));
+    }
   };
+
+  window.openBugReport = function() { openReport('bug'); };
 
   window.closeBugReport = function () {
     document.getElementById('bugOverlay').classList.remove('open');
@@ -100,9 +134,9 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
       },
       body: JSON.stringify({
         page,
-        description: desc,
-        steps: document.getElementById('bug-steps').value.trim() || null,
-        severity: currentSeverity,
+        description: (currentMode === 'idea' ? '[IDEA] ' : '') + desc,
+        steps: currentMode === 'bug' ? (document.getElementById('bug-steps').value.trim() || null) : null,
+        severity: currentMode === 'idea' ? 'idea' : currentSeverity,
         url: window.location.href,
         status: 'open'
       })
@@ -110,5 +144,12 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 
     document.getElementById('bugForm').style.display = 'none';
     document.getElementById('bugSuccess').style.display = 'block';
+    if (currentMode === 'idea') {
+      document.getElementById('successTitle').textContent = 'Idea logged';
+      document.getElementById('successMsg').innerHTML = 'Josh will review it.<br>Good thinking.';
+    } else {
+      document.getElementById('successTitle').textContent = 'Bug logged';
+      document.getElementById('successMsg').innerHTML = 'Josh will pick it up and fix it.<br>Keep testing.';
+    }
   };
 })();
