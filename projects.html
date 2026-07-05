@@ -122,12 +122,12 @@
     <li><a href="virtual-office.html">Virtual Office</a></li>
     <li><a href="projects.html" class="active">Our Projects</a></li>
     <li><a href="contact.html?from=projects">Contact</a></li>
-    <li class="login-dropdown">
-    <a class="btn nav-cta" style="cursor:pointer;">Login ▾</a>
+    <li class="login-dropdown" id="loginDropdown">
+    <button class="login-dropdown-btn" onclick="document.getElementById('loginDropdown').classList.toggle('open')">Login ▾</button>
     <div class="login-dropdown-menu">
       <a href="tenant.html">Tenant Portal</a>
       <a href="virtual-tenant.html">Virtual Office Portal</a>
-      <a href="admin.html" class="admin-link">Staff Dashboard</a>
+      <a href="admin.html" class="staff-link">Staff Dashboard</a>
     </div>
   </li>
   </ul>
@@ -364,6 +364,14 @@
     <span style="color:rgba(255,255,255,0.3);font-size:11px;">Demo by <a href="https://launchpadme.co.uk" style="color:var(--teal);">Launchpad Digital Solutions</a></span>
   </div>
 </footer>
+
+
+<script>
+  document.addEventListener('click', function(e) {
+    const dd = document.getElementById('loginDropdown');
+    if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+  });
+</script>
 
 </body>
 </html>

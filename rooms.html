@@ -248,12 +248,12 @@
     <li><a href="community.html">Our Community</a></li>
     <li><a href="projects.html">Our Projects</a></li>
     <li><a href="contact.html?from=rooms">Contact</a></li>
-    <li class="login-dropdown">
-    <a class="btn nav-cta" style="cursor:pointer;">Login ▾</a>
+    <li class="login-dropdown" id="loginDropdown">
+    <button class="login-dropdown-btn" onclick="document.getElementById('loginDropdown').classList.toggle('open')">Login ▾</button>
     <div class="login-dropdown-menu">
       <a href="tenant.html">Tenant Portal</a>
       <a href="virtual-tenant.html">Virtual Office Portal</a>
-      <a href="admin.html" class="admin-link">Staff Dashboard</a>
+      <a href="admin.html" class="staff-link">Staff Dashboard</a>
     </div>
   </li>
   </ul>
@@ -677,6 +677,14 @@
   // Initial render
   renderRooms(HP.rooms);
   document.getElementById('resultsCount').textContent = HP.rooms.length + ' rooms available';
+</script>
+
+
+<script>
+  document.addEventListener('click', function(e) {
+    const dd = document.getElementById('loginDropdown');
+    if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+  });
 </script>
 
 </body>
