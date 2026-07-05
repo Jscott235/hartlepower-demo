@@ -5,7 +5,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
   // Inject CSS
   const link = document.createElement('link');
   link.rel = 'stylesheet';
-  link.href = '/hartlepower-demo/css/bug-report.css';
+  link.href = 'css/bug-report.css';
   document.head.appendChild(link);
 
   // Inject HTML
