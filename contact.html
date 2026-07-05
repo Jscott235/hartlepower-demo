@@ -162,7 +162,7 @@
     <li><a href="projects.html">Our Projects</a></li>
     <li><a href="contact.html" class="active">Contact</a></li>
     <li class="login-dropdown" id="loginDropdown">
-    <button class="login-dropdown-btn" onclick="document.getElementById('loginDropdown').classList.toggle('open')">Login ▾</button>
+    <button class="login-dropdown-btn" onclick="event.stopPropagation();document.getElementById('loginDropdown').classList.toggle('open')">Login ▾</button>
     <div class="login-dropdown-menu">
       <a href="tenant.html">Tenant Portal</a>
       <a href="virtual-tenant.html">Virtual Office Portal</a>
