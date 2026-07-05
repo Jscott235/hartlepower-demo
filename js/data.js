@@ -39,19 +39,6 @@ const HP = {
       photo: "https://images.unsplash.com/photo-1600508774634-4e11d34730e2?w=740&q=80",
       description: "Intimate meeting room on the ground floor, wheelchair accessible, ideal for small team meetings and client meetings."
     },
-    {
-      id: 4,
-      name: "Hub Hot Desk Suite",
-      building: "Business Hub",
-      size: 35,
-      capacity: 8,
-      rate: 5,
-      code: null,
-      status: "vacant",
-      amenities: ["WiFi", "Printing", "Kitchen access", "Locker"],
-      photo: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=740&q=80",
-      description: "Flexible hot desking space with 8 individual workstations, perfect for freelancers and remote workers."
-    }
   ],
 
   offices: [
