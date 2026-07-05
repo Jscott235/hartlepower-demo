@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offices to Rent — HartlePower</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .page-hero { background: linear-gradient(135deg, #0D2B25 0%, #1A3832 100%); padding: 70px 40px; color: var(--white); }
+    .page-hero h1 { color: var(--white); margin-bottom: 12px; }
+    .page-hero p { color: rgba(255,255,255,0.7); font-size: 17px; max-width: 520px; }
+
+    .benefits-strip {
+      background: var(--teal);
+      padding: 20px 40px;
+    }
+    .benefits-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .benefit-item { color: var(--white); font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+
+    /* Form section */
+    .form-section {
+      background: var(--light);
+      padding: 60px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-box {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 700px;
+      margin: 0 auto;
+      box-shadow: 0 4px 24px rgba(26,155,140,0.08);
+    }
+
+    .form-box h2 { margin-bottom: 8px; }
+    .form-box > p { color: var(--mid); margin-bottom: 32px; font-size: 15px; }
+
+    .grid-3-form { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+    /* Results section */
+    .results-section { padding: 60px 40px; }
+
+    .match-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .match-header h2 { margin-bottom: 8px; }
+    .match-header p { color: var(--mid); font-size: 16px; }
+
+    .office-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .office-card:hover { box-shadow: 0 12px 40px rgba(26,155,140,0.14); transform: translateY(-4px); }
+
+    .office-card.selected { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(26,155,140,0.15); }
+
+    .office-card .select-indicator {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+      z-index: 2;
+    }
+
+    .office-card.selected .select-indicator { background: var(--teal); border-color: var(--teal); color: var(--white); }
+
+    .office-card img { width: 100%; height: 220px; object-fit: cover; }
+
+    .office-card-body { padding: 24px; }
+    .office-card-body h3 { margin-bottom: 6px; }
+
+    .office-price {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--teal);
+      margin: 12px 0 4px;
+    }
+
+    .office-price span { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; color: var(--mid); }
+
+    /* Confirm interest panel */
+    .confirm-interest {
+      background: var(--dark);
+      border-radius: 20px;
+      padding: 32px;
+      color: var(--white);
+      margin-top: 40px;
+      display: none;
+    }
+
+    .confirm-interest.visible { display: block; }
+    .confirm-interest h3 { color: var(--white); margin-bottom: 8px; }
+    .confirm-interest p { color: rgba(255,255,255,0.7); margin-bottom: 20px; font-size: 15px; }
+
+    .selected-rooms-list {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .selected-room-tag {
+      background: rgba(26,155,140,0.3);
+      border: 1px solid rgba(26,155,140,0.5);
+      color: #7BE8DA;
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Success */
+    .success-banner {
+      background: #E8F8EF;
+      border: 1px solid #B2E4C8;
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      display: none;
+    }
+
+    .success-banner.visible { display: block; }
+    .success-banner h2 { color: #1E6E3C; margin-bottom: 12px; }
+    .success-banner p { color: #2D8A54; font-size: 16px; }
+  </style>
+</head>
+<body>
+
+<div class="demo-banner">
+  ⚡ DEMO — Built by Launchpad Digital Solutions for HartlePower CIC — For demonstration purposes only
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="https://static.wixstatic.com/media/4c82ce_98dcc161f99241cdb58a193f59f7f739~mv2.png/v1/crop/x_220,y_297,w_501,h_169/fill/w_255,h_86,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Untitled%20design%20(27).png" alt="HartlePower">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="rooms.html">Rooms for Hire</a></li>
+    <li><a href="offices.html" class="active">Offices to Rent</a></li>
+    <li><a href="virtual-office.html">Virtual Office</a></li>
+    <li><a href="projects.html">Our Projects</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="tenant.html" class="nav-cta">Tenant Login</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="page-hero">
+  <div class="container">
+    <div class="section-label" style="color:var(--teal);">Offices to rent</div>
+    <h1>Your own space<br>at Greenbank</h1>
+    <p>Private offices across two buildings. All-inclusive rates, flexible terms, and a community of like-minded businesses around you.</p>
+  </div>
+</section>
+
+<!-- Benefits -->
+<div class="benefits-strip">
+  <div class="benefits-inner">
+    <div class="benefit-item">✓ 24-hour access</div>
+    <div class="benefit-item">✓ Broadband included</div>
+    <div class="benefit-item">✓ Utilities included</div>
+    <div class="benefit-item">✓ Free car parking</div>
+    <div class="benefit-item">✓ Meeting room access</div>
+    <div class="benefit-item">✓ Social media promotion</div>
+    <div class="benefit-item">✓ Business support</div>
+  </div>
+</div>
+
+<!-- Interest form -->
+<section class="form-section">
+  <div class="form-box">
+    <h2>Find your office</h2>
+    <p>Tell us about your business and we'll show you the available offices that match your needs.</p>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Your name</label>
+        <input type="text" id="f-name" placeholder="Jane Smith">
+      </div>
+      <div class="form-group">
+        <label>Business name</label>
+        <input type="text" id="f-biz" placeholder="Smith & Co Ltd">
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="f-email" placeholder="jane@company.co.uk">
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" id="f-phone" placeholder="07700 000000">
+      </div>
+    </div>
+
+    <div class="grid-3-form">
+      <div class="form-group">
+        <label>Business type</label>
+        <select id="f-type">
+          <option>Select...</option>
+          <option>Professional Services</option>
+          <option>Technology</option>
+          <option>Healthcare</option>
+          <option>Creative</option>
+          <option>Retail / Trade</option>
+          <option>Charity / CIC</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Team size</label>
+        <select id="f-headcount">
+          <option>1 person</option>
+          <option>2–3 people</option>
+          <option>4–6 people</option>
+          <option>7+ people</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Monthly budget</label>
+        <select id="f-budget">
+          <option>Under £200</option>
+          <option>£200–£300</option>
+          <option>£300–£400</option>
+          <option>£400+</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Preferred move-in</label>
+      <select id="f-movein">
+        <option>As soon as possible</option>
+        <option>Within 1 month</option>
+        <option>1–3 months</option>
+        <option>3+ months</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Anything else you need?</label>
+      <textarea id="f-notes" placeholder="Wheelchair access, ground floor, specific equipment..."></textarea>
+    </div>
+
+    <button class="btn btn-primary btn-full btn-lg" onclick="findOffices()">Show matching offices →</button>
+  </div>
+</section>
+
+<!-- Results -->
+<section class="results-section" id="resultsSection" style="display:none;">
+  <div class="container">
+    <div class="match-header">
+      <div class="section-label">Matched for you</div>
+      <h2 id="matchTitle">Offices matching your requirements</h2>
+      <p id="matchSubtitle">Based on your team size and budget. Select the offices you're interested in.</p>
+    </div>
+
+    <div class="grid-3" id="officesGrid"></div>
+
+    <div style="text-align:center;margin-top:24px;">
+      <button class="btn btn-outline" onclick="showAll()">Show all available offices</button>
+    </div>
+
+    <div class="confirm-interest" id="confirmPanel">
+      <h3>🏢 Ready to arrange viewings?</h3>
+      <p>You've selected <span id="selectedCount">0</span> office(s). We'll get back to you within one working day to arrange viewings.</p>
+      <div class="selected-rooms-list" id="selectedList"></div>
+      <button class="btn btn-gold btn-lg" onclick="submitInterest()">Submit interest & book viewings →</button>
+    </div>
+
+    <div class="success-banner" id="successBanner">
+      <div style="font-size:48px;margin-bottom:16px;">🎉</div>
+      <h2>Interest registered!</h2>
+      <p>Thanks <strong id="s-name"></strong> — we'll be in touch within one working day to arrange viewings of your selected offices.</p>
+      <br>
+      <p style="font-size:14px;">A confirmation has been sent to <strong id="s-email"></strong></p>
+    </div>
+  </div>
+</section>
+
+<script src="js/data.js"></script>
+<script>
+  let selectedOffices = [];
+
+  function findOffices() {
+    const name = document.getElementById('f-name').value;
+    const email = document.getElementById('f-email').value;
+    if (!name || !email) { alert('Please enter your name and email'); return; }
+
+    const budget = document.getElementById('f-budget').value;
+    const headcount = document.getElementById('f-headcount').value;
+
+    let maxBudget = 9999;
+    if (budget === 'Under £200') maxBudget = 200;
+    else if (budget === '£200–£300') maxBudget = 300;
+    else if (budget === '£300–£400') maxBudget = 400;
+
+    let maxCap = 99;
+    if (headcount === '1 person') maxCap = 2;
+    else if (headcount === '2–3 people') maxCap = 4;
+    else if (headcount === '4–6 people') maxCap = 7;
+
+    const matched = HP.offices.filter(o => o.status === 'vacant' && o.price <= maxBudget);
+    renderOffices(matched.length > 0 ? matched : HP.offices.filter(o => o.status === 'vacant'));
+
+    const bizName = document.getElementById('f-biz').value || 'your business';
+    document.getElementById('matchTitle').textContent = `${matched.length} office${matched.length !== 1 ? 's' : ''} matched for ${bizName}`;
+    document.getElementById('matchSubtitle').textContent = matched.length > 0
+      ? 'Select the ones you\'d like to view — we\'ll arrange everything.'
+      : 'No exact matches — showing all available offices. Contact us to discuss your requirements.';
+
+    document.getElementById('resultsSection').style.display = 'block';
+    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function renderOffices(offices) {
+    document.getElementById('officesGrid').innerHTML = offices.map(o => `
+      <div class="office-card ${selectedOffices.includes(o.id) ? 'selected' : ''}" id="office-${o.id}">
+        <div class="select-indicator" onclick="toggleSelect(${o.id})">
+          ${selectedOffices.includes(o.id) ? '✓' : ''}
+        </div>
+        <img src="${o.photo}" alt="${o.name}" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80'">
+        <div class="office-card-body">
+          <span class="tag tag-teal">${o.building}</span>
+          <h3 style="margin-top:8px;">${o.name}</h3>
+          <div class="room-meta">
+            <span>👥 Up to ${o.capacity} people</span>
+            <span>📐 ${o.size}m²</span>
+          </div>
+          <div class="amenities">
+            ${o.amenities.slice(0,3).map(a => `<span class="amenity">${a}</span>`).join('')}
+            ${o.amenities.length > 3 ? `<span class="amenity">+${o.amenities.length-3} more</span>` : ''}
+          </div>
+          <p style="font-size:13px;color:var(--mid);margin:10px 0;">${o.description}</p>
+          <div class="office-price">£${o.price}<span>/month</span></div>
+          <p style="font-size:12px;color:var(--mid);">All inclusive — broadband, utilities, parking</p>
+          <br>
+          <button class="btn btn-outline btn-full" onclick="toggleSelect(${o.id})">
+            ${selectedOffices.includes(o.id) ? '✓ Selected — click to deselect' : 'I\'m interested in this →'}
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function showAll() {
+    renderOffices(HP.offices.filter(o => o.status === 'vacant'));
+    document.getElementById('matchTitle').textContent = 'All available offices';
+  }
+
+  function toggleSelect(id) {
+    if (selectedOffices.includes(id)) {
+      selectedOffices = selectedOffices.filter(i => i !== id);
+    } else {
+      selectedOffices.push(id);
+    }
+    const offices = HP.offices.filter(o => o.status === 'vacant');
+    renderOffices(offices);
+    updateConfirmPanel();
+  }
+
+  function updateConfirmPanel() {
+    const panel = document.getElementById('confirmPanel');
+    if (selectedOffices.length > 0) {
+      panel.classList.add('visible');
+      document.getElementById('selectedCount').textContent = selectedOffices.length;
+      const selected = HP.offices.filter(o => selectedOffices.includes(o.id));
+      document.getElementById('selectedList').innerHTML = selected.map(o =>
+        `<span class="selected-room-tag">🏢 ${o.name} — £${o.price}/mo</span>`
+      ).join('');
+    } else {
+      panel.classList.remove('visible');
+    }
+  }
+
+  function submitInterest() {
+    const name = document.getElementById('f-name').value;
+    const email = document.getElementById('f-email').value;
+    document.getElementById('s-name').textContent = name;
+    document.getElementById('s-email').textContent = email;
+    document.getElementById('confirmPanel').style.display = 'none';
+    document.querySelector('.grid-3').style.display = 'none';
+    document.querySelector('[onclick="showAll()"]').style.display = 'none';
+    document.getElementById('successBanner').classList.add('visible');
+    document.getElementById('successBanner').scrollIntoView({ behavior: 'smooth' });
+  }
+</script>
+
+</body>
+</html>

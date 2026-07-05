@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rooms for Hire — HartlePower</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .page-hero {
+      background: linear-gradient(135deg, var(--dark) 0%, #1A3832 100%);
+      padding: 80px 40px;
+      color: var(--white);
+    }
+    .page-hero .container { display: flex; align-items: center; justify-content: space-between; gap: 40px; }
+    .page-hero h1 { color: var(--white); margin-bottom: 12px; }
+    .page-hero p { color: rgba(255,255,255,0.7); font-size: 18px; max-width: 480px; }
+
+    /* Wizard */
+    .wizard-box {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 32px;
+      min-width: 340px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+
+    .wizard-box h3 { margin-bottom: 20px; color: var(--dark); }
+
+    .wizard-step { display: none; }
+    .wizard-step.active { display: block; }
+
+    .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 12px 0; }
+
+    .option-btn {
+      padding: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: var(--white);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--dark);
+      text-align: center;
+      transition: all 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .option-btn:hover { border-color: var(--teal); color: var(--teal); }
+    .option-btn.selected { background: var(--teal); color: var(--white); border-color: var(--teal); }
+
+    .wizard-nav { display: flex; gap: 10px; margin-top: 20px; }
+    .wizard-nav .btn { flex: 1; justify-content: center; }
+
+    /* Availability today strip */
+    .avail-strip {
+      background: var(--teal-light);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 40px;
+    }
+
+    .avail-strip-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .avail-strip p { font-size: 14px; color: var(--teal-dark); font-weight: 500; }
+
+    /* Date picker row */
+    .date-row {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .date-row label { font-size: 14px; font-weight: 600; color: var(--mid); margin: 0; }
+    .date-row input[type=date] { width: auto; padding: 8px 14px; font-size: 14px; }
+
+    .date-row .filter-chips { display: flex; gap: 8px; margin-left: auto; }
+
+    .chip {
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: 'Inter', sans-serif;
+      color: var(--mid);
+    }
+
+    .chip:hover, .chip.active { background: var(--teal); color: var(--white); border-color: var(--teal); }
+
+    /* Results */
+    .results-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 0;
+      min-height: 60vh;
+    }
+
+    .results-sidebar {
+      background: var(--light);
+      border-right: 1px solid var(--border);
+      padding: 24px;
+    }
+
+    .results-sidebar h4 { margin-bottom: 16px; font-size: 14px; }
+
+    .filter-group { margin-bottom: 20px; }
+    .filter-group label { font-size: 12px; font-weight: 700; color: var(--mid); letter-spacing: 0.5px; margin-bottom: 8px; }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--dark);
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+
+    .checkbox-item input { width: auto; }
+
+    .results-main { padding: 24px 32px; }
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .rooms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    /* Booking modal */
+    .booking-room-header {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .booking-room-header img {
+      width: 80px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .booking-room-header h3 { font-size: 18px; margin-bottom: 4px; }
+    .booking-room-header p { font-size: 13px; color: var(--mid); }
+
+    .time-slots h4 { font-size: 14px; margin-bottom: 10px; }
+
+    .confirm-box {
+      background: var(--teal-light);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .confirm-box .confirm-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .confirm-box .confirm-row:last-child { margin-bottom: 0; font-weight: 700; color: var(--teal-dark); font-size: 16px; }
+
+    /* Success state */
+    .success-screen {
+      text-align: center;
+      padding: 20px 0;
+      display: none;
+    }
+
+    .success-screen .tick {
+      width: 64px;
+      height: 64px;
+      background: #E8F8EF;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin: 0 auto 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="demo-banner">
+  ⚡ DEMO — Built by Launchpad Digital Solutions for HartlePower CIC — For demonstration purposes only
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="https://static.wixstatic.com/media/4c82ce_98dcc161f99241cdb58a193f59f7f739~mv2.png/v1/crop/x_220,y_297,w_501,h_169/fill/w_255,h_86,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Untitled%20design%20(27).png" alt="HartlePower">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="rooms.html" class="active">Rooms for Hire</a></li>
+    <li><a href="offices.html">Offices to Rent</a></li>
+    <li><a href="virtual-office.html">Virtual Office</a></li>
+    <li><a href="projects.html">Our Projects</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="tenant.html" class="nav-cta">Tenant Login</a></li>
+  </ul>
+</nav>
+
+<!-- Page hero with wizard -->
+<section class="page-hero">
+  <div class="container">
+    <div>
+      <div class="section-label" style="color:var(--teal);">Rooms for hire</div>
+      <h1>Find the perfect<br>room for your day</h1>
+      <p>From intimate meetings to full-day training. Book online, pay instantly, get confirmed in seconds.</p>
+      <br>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;">
+        <div style="color:rgba(255,255,255,0.7);font-size:14px;">✓ Instant online booking</div>
+        <div style="color:rgba(255,255,255,0.7);font-size:14px;">✓ Free WiFi included</div>
+        <div style="color:rgba(255,255,255,0.7);font-size:14px;">✓ Free car parking</div>
+      </div>
+    </div>
+
+    <!-- Room Finder Wizard -->
+    <div class="wizard-box">
+      <h3>🔍 Find my room</h3>
+
+      <!-- Step 1: People -->
+      <div class="wizard-step active" id="step1">
+        <p style="font-size:13px;color:var(--mid);margin-bottom:14px;">How many people?</p>
+        <div class="option-grid">
+          <button class="option-btn" onclick="selectOption(this,'people','1-3')">1–3 people</button>
+          <button class="option-btn" onclick="selectOption(this,'people','4-8')">4–8 people</button>
+          <button class="option-btn" onclick="selectOption(this,'people','9-15')">9–15 people</button>
+          <button class="option-btn" onclick="selectOption(this,'people','16+')">16+ people</button>
+        </div>
+        <div class="wizard-nav">
+          <button class="btn btn-primary" onclick="nextStep(2)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Needs -->
+      <div class="wizard-step" id="step2">
+        <p style="font-size:13px;color:var(--mid);margin-bottom:14px;">What do you need?</p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <label class="checkbox-item"><input type="checkbox" id="need-projector"> Projector</label>
+          <label class="checkbox-item"><input type="checkbox" id="need-whiteboard"> Whiteboard</label>
+          <label class="checkbox-item"><input type="checkbox" id="need-accessible"> Wheelchair accessible</label>
+          <label class="checkbox-item"><input type="checkbox" id="need-kitchen"> Kitchen access</label>
+        </div>
+        <div class="wizard-nav">
+          <button class="btn btn-outline btn-sm" onclick="nextStep(1)">← Back</button>
+          <button class="btn btn-primary" onclick="nextStep(3)">Next →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Duration -->
+      <div class="wizard-step" id="step3">
+        <p style="font-size:13px;color:var(--mid);margin-bottom:14px;">How long do you need it?</p>
+        <div class="option-grid">
+          <button class="option-btn" onclick="selectOption(this,'duration','hourly')">Hourly</button>
+          <button class="option-btn" onclick="selectOption(this,'duration','half-day')">Half day</button>
+          <button class="option-btn" onclick="selectOption(this,'duration','full-day')">Full day</button>
+          <button class="option-btn" onclick="selectOption(this,'duration','multi-day')">Multi-day</button>
+        </div>
+        <div class="wizard-nav">
+          <button class="btn btn-outline btn-sm" onclick="nextStep(2)">← Back</button>
+          <button class="btn btn-gold" onclick="showResults()">Show rooms →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Availability today -->
+<div class="avail-strip">
+  <div class="avail-strip-inner">
+    <p>📅 Showing availability for <strong id="todayDate"></strong></p>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <span style="font-size:13px;color:var(--teal-dark);">
+        <span style="display:inline-block;width:10px;height:10px;background:var(--success);border-radius:50%;margin-right:4px;"></span>Available
+      </span>
+      <span style="font-size:13px;color:var(--mid);">
+        <span style="display:inline-block;width:10px;height:10px;background:#DDD;border-radius:50%;margin-right:4px;"></span>Booked
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- Date + filters -->
+<div class="date-row">
+  <label>Date:</label>
+  <input type="date" id="bookingDate" onchange="updateDate()">
+  <div class="filter-chips">
+    <button class="chip active" onclick="filterBuilding(this,'all')">All buildings</button>
+    <button class="chip" onclick="filterBuilding(this,'Greenbank')">Greenbank</button>
+    <button class="chip" onclick="filterBuilding(this,'Business Hub')">Business Hub</button>
+  </div>
+</div>
+
+<!-- Results -->
+<div class="results-layout">
+  <div class="results-sidebar">
+    <h4>Filter rooms</h4>
+
+    <div class="filter-group">
+      <label>Capacity</label>
+      <label class="checkbox-item"><input type="checkbox" onchange="applyFilters()"> Up to 6 people</label>
+      <label class="checkbox-item"><input type="checkbox" onchange="applyFilters()"> Up to 12 people</label>
+      <label class="checkbox-item"><input type="checkbox" onchange="applyFilters()"> 12+ people</label>
+    </div>
+
+    <div class="filter-group">
+      <label>Amenities</label>
+      <label class="checkbox-item"><input type="checkbox" onchange="applyFilters()"> Projector</label>
+      <label class="checkbox-item"><input type="checkbox" onchange="applyFilters()"> Whiteboard</label>
+      <label class="checkbox-item"><input type="checkbox" onchange="applyFilters()"> Wheelchair accessible</label>
+      <label class="checkbox-item"><input type="checkbox" onchange="applyFilters()"> Kitchen access</label>
+    </div>
+
+    <div class="filter-group">
+      <label>Max hourly rate</label>
+      <input type="range" min="5" max="25" value="25" step="1" oninput="this.nextElementSibling.textContent='Up to £'+this.value+'/hr'" style="width:100%;margin-bottom:4px;">
+      <small style="color:var(--mid);font-size:13px;">Up to £25/hr</small>
+    </div>
+  </div>
+
+  <div class="results-main">
+    <div class="results-header">
+      <div>
+        <h3 id="resultsTitle">All rooms</h3>
+        <p style="font-size:14px;color:var(--mid);" id="resultsCount">4 rooms available</p>
+      </div>
+      <select style="width:auto;padding:8px 14px;font-size:14px;">
+        <option>Sort: Price (low to high)</option>
+        <option>Sort: Capacity (high to low)</option>
+        <option>Sort: Building</option>
+      </select>
+    </div>
+
+    <div class="rooms-grid" id="roomsGrid">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- Booking modal -->
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal">
+    <div id="bookingContent">
+      <!-- Step 1: Time selection -->
+      <div id="bookStep1">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <h3 id="modalRoomName">Book a room</h3>
+          <button onclick="closeModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--mid);">✕</button>
+        </div>
+
+        <div class="booking-room-header">
+          <img id="modalRoomImg" src="" alt="">
+          <div>
+            <h3 id="modalRoomName2"></h3>
+            <p id="modalRoomBuilding"></p>
+            <div class="room-price" id="modalRoomRate" style="font-size:18px;"></div>
+          </div>
+        </div>
+
+        <div class="steps">
+          <div class="step active">1 — Time</div>
+          <div class="step">2 — Details</div>
+          <div class="step">3 — Payment</div>
+        </div>
+
+        <div class="time-slots">
+          <h4>Available slots — <span id="modalDate"></span></h4>
+          <div class="slot-grid" id="slotGrid"></div>
+        </div>
+
+        <button class="btn btn-primary btn-full" style="margin-top:16px;" onclick="goToDetails()">Continue →</button>
+      </div>
+
+      <!-- Step 2: Details -->
+      <div id="bookStep2" style="display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <h3>Your details</h3>
+          <button onclick="closeModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--mid);">✕</button>
+        </div>
+
+        <div class="steps">
+          <div class="step done">1 — Time ✓</div>
+          <div class="step active">2 — Details</div>
+          <div class="step">3 — Payment</div>
+        </div>
+
+        <div class="confirm-box">
+          <div class="confirm-row"><span id="c-room">Room</span><span id="c-time">Time</span></div>
+          <div class="confirm-row"><span>Date</span><span id="c-date"></span></div>
+        </div>
+
+        <div class="form-group">
+          <label>Full name</label>
+          <input type="text" placeholder="Jane Smith" id="f-name">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="jane@company.co.uk" id="f-email">
+        </div>
+        <div class="form-group">
+          <label>Organisation / Company</label>
+          <input type="text" placeholder="Smith & Co Ltd" id="f-org">
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="tel" placeholder="07700 000000" id="f-phone">
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:16px;">
+          <button class="btn btn-outline" onclick="goToStep1()">← Back</button>
+          <button class="btn btn-primary" style="flex:1;" onclick="goToPayment()">Continue to payment →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Payment -->
+      <div id="bookStep3" style="display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <h3>Payment</h3>
+          <button onclick="closeModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--mid);">✕</button>
+        </div>
+
+        <div class="steps">
+          <div class="step done">1 — Time ✓</div>
+          <div class="step done">2 — Details ✓</div>
+          <div class="step active">3 — Payment</div>
+        </div>
+
+        <div class="confirm-box">
+          <div class="confirm-row"><span id="p-room">Room</span><span id="p-time">Time</span></div>
+          <div class="confirm-row"><span>Date</span><span id="p-date"></span></div>
+          <div class="confirm-row"><span><strong>Total</strong></span><span id="p-total"><strong>£20.00</strong></span></div>
+        </div>
+
+        <div class="alert alert-info">🔒 Payment handled securely by Stripe. Card details never touch our servers.</div>
+
+        <div class="form-group">
+          <label>Card number</label>
+          <input type="text" placeholder="4242 4242 4242 4242" value="4242 4242 4242 4242">
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Expiry</label>
+            <input type="text" placeholder="MM/YY" value="12/27">
+          </div>
+          <div class="form-group">
+            <label>CVC</label>
+            <input type="text" placeholder="123" value="123">
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:16px;">
+          <button class="btn btn-outline" onclick="goToDetails()">← Back</button>
+          <button class="btn btn-primary" style="flex:1;" onclick="confirmBooking()">Pay & confirm →</button>
+        </div>
+      </div>
+
+      <!-- Success -->
+      <div class="success-screen" id="bookSuccess">
+        <div class="tick">✅</div>
+        <h3>Booking confirmed!</h3>
+        <p style="color:var(--mid);margin:10px 0 20px;font-size:15px;">A confirmation has been sent to <strong id="s-email"></strong></p>
+        <div class="confirm-box">
+          <div class="confirm-row"><span id="s-room"></span><span id="s-time"></span></div>
+          <div class="confirm-row"><span>Date</span><span id="s-date"></span></div>
+          <div class="confirm-row"><span><strong>Paid</strong></span><span id="s-total"><strong style="color:var(--teal);">£20.00</strong></span></div>
+        </div>
+        <p style="font-size:13px;color:var(--mid);">You'll receive a calendar invite and building access information by email.</p>
+        <br>
+        <button class="btn btn-primary btn-full" onclick="closeModal()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script>
+  let selectedRoom = null;
+  let selectedSlot = null;
+  let wizardData = { people: null, duration: null };
+
+  // Set today's date
+  const today = new Date();
+  const dateStr = today.toISOString().split('T')[0];
+  document.getElementById('bookingDate').value = dateStr;
+  document.getElementById('todayDate').textContent = today.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long' });
+  document.getElementById('modalDate').textContent = today.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+
+  function updateDate() {
+    const d = new Date(document.getElementById('bookingDate').value);
+    document.getElementById('todayDate').textContent = d.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long' });
+  }
+
+  function selectOption(el, type, value) {
+    el.closest('.option-grid').querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    wizardData[type] = value;
+  }
+
+  function nextStep(n) {
+    document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
+    document.getElementById('step' + n).classList.add('active');
+  }
+
+  function showResults() {
+    document.getElementById('resultsTitle').textContent = wizardData.people
+      ? `Rooms for ${wizardData.people} people`
+      : 'All rooms';
+    renderRooms(HP.rooms);
+    document.querySelector('.results-layout').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function filterBuilding(el, building) {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    const rooms = building === 'all' ? HP.rooms : HP.rooms.filter(r => r.building === building);
+    renderRooms(rooms);
+    document.getElementById('resultsCount').textContent = rooms.length + ' rooms available';
+  }
+
+  function applyFilters() { renderRooms(HP.rooms); }
+
+  function renderRooms(rooms) {
+    const grid = document.getElementById('roomsGrid');
+    grid.innerHTML = rooms.map(r => `
+      <div class="room-card">
+        <img src="${r.photo}" alt="${r.name}" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80'">
+        <div class="room-card-body">
+          <span class="tag tag-teal" style="margin-bottom:8px;">${r.building}</span>
+          <h3>${r.name}</h3>
+          <div class="room-meta">
+            <span>👥 Up to ${r.capacity}</span>
+            <span>📐 ${r.size}m²</span>
+          </div>
+          <div class="amenities">
+            ${r.amenities.map(a => `<span class="amenity">${a}</span>`).join('')}
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px;">
+            <div class="room-price">£${r.rate}<span>/hr</span></div>
+            <button class="btn btn-primary btn-sm" onclick="openBooking(${r.id})">Book now</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function openBooking(id) {
+    selectedRoom = HP.rooms.find(r => r.id === id);
+    document.getElementById('modalRoomName').textContent = selectedRoom.name;
+    document.getElementById('modalRoomName2').textContent = selectedRoom.name;
+    document.getElementById('modalRoomBuilding').textContent = selectedRoom.building;
+    document.getElementById('modalRoomRate').textContent = '£' + selectedRoom.rate + '/hr';
+    document.getElementById('modalRoomImg').src = selectedRoom.photo;
+    document.getElementById('modalDate').textContent = new Date(document.getElementById('bookingDate').value).toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+
+    const slots = ['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00'];
+    const booked = ['10:00','11:00'];
+    document.getElementById('slotGrid').innerHTML = slots.map(s => `
+      <div class="slot ${booked.includes(s) ? 'unavailable' : ''}" onclick="${booked.includes(s) ? '' : `selectSlot(this,'${s}')`}">${s}</div>
+    `).join('');
+
+    ['bookStep1','bookStep2','bookStep3','bookSuccess'].forEach(id => document.getElementById(id).style.display = 'none');
+    document.getElementById('bookStep1').style.display = 'block';
+    document.getElementById('bookingModal').classList.add('open');
+  }
+
+  function selectSlot(el, time) {
+    document.querySelectorAll('.slot').forEach(s => s.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedSlot = time;
+  }
+
+  function goToDetails() {
+    if (!selectedSlot) { alert('Please select a time slot'); return; }
+    document.getElementById('c-room').textContent = selectedRoom.name;
+    document.getElementById('c-time').textContent = selectedSlot + '–' + (parseInt(selectedSlot)+1).toString().padStart(2,'0') + ':00';
+    document.getElementById('c-date').textContent = new Date(document.getElementById('bookingDate').value).toLocaleDateString('en-GB');
+    document.getElementById('bookStep1').style.display = 'none';
+    document.getElementById('bookStep2').style.display = 'block';
+  }
+
+  function goToStep1() {
+    document.getElementById('bookStep2').style.display = 'none';
+    document.getElementById('bookStep1').style.display = 'block';
+  }
+
+  function goToPayment() {
+    const name = document.getElementById('f-name').value;
+    const email = document.getElementById('f-email').value;
+    if (!name || !email) { alert('Please fill in your name and email'); return; }
+    document.getElementById('p-room').textContent = selectedRoom.name;
+    document.getElementById('p-time').textContent = selectedSlot + '–' + (parseInt(selectedSlot)+1).toString().padStart(2,'0') + ':00';
+    document.getElementById('p-date').textContent = new Date(document.getElementById('bookingDate').value).toLocaleDateString('en-GB');
+    document.getElementById('p-total').innerHTML = '<strong>£' + selectedRoom.rate + '.00</strong>';
+    document.getElementById('bookStep2').style.display = 'none';
+    document.getElementById('bookStep3').style.display = 'block';
+  }
+
+  function confirmBooking() {
+    document.getElementById('s-email').textContent = document.getElementById('f-email').value;
+    document.getElementById('s-room').textContent = selectedRoom.name;
+    document.getElementById('s-time').textContent = selectedSlot + '–' + (parseInt(selectedSlot)+1).toString().padStart(2,'0') + ':00';
+    document.getElementById('s-date').textContent = new Date(document.getElementById('bookingDate').value).toLocaleDateString('en-GB');
+    document.getElementById('s-total').innerHTML = '<strong style="color:var(--teal);">£' + selectedRoom.rate + '.00</strong>';
+    document.getElementById('bookStep3').style.display = 'none';
+    document.getElementById('bookSuccess').style.display = 'block';
+  }
+
+  function closeModal() {
+    document.getElementById('bookingModal').classList.remove('open');
+    selectedSlot = null;
+  }
+
+  document.getElementById('bookingModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // Initial render
+  renderRooms(HP.rooms);
+  document.getElementById('resultsCount').textContent = HP.rooms.length + ' rooms available';
+</script>
+
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — HartlePower</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { background: #F0FAF9; }
+
+    .stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 28px; }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+    }
+
+    .stat-card .label { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--mid); margin-bottom: 8px; }
+    .stat-card .value { font-family: 'Syne', sans-serif; font-size: 36px; font-weight: 800; color: var(--dark); line-height: 1; margin-bottom: 4px; }
+    .stat-card .sub { font-size: 13px; color: var(--mid); }
+    .stat-card .value.teal { color: var(--teal); }
+    .stat-card .value.gold { color: var(--gold); }
+    .stat-card .value.red { color: var(--danger); }
+
+    .grid-dash { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .grid-dash-3 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+
+    .dash-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .dash-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dash-card-header h4 { font-size: 15px; }
+    .dash-card-header a { font-size: 13px; color: var(--teal); text-decoration: none; font-weight: 500; }
+
+    /* Room inventory */
+    .room-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .room-row:last-child { border-bottom: none; }
+
+    .room-status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dot-vacant { background: var(--success); }
+    .dot-tenanted { background: var(--teal); }
+    .dot-viewing { background: var(--gold); }
+
+    .room-row-info { flex: 1; }
+    .room-row-info strong { font-size: 14px; font-weight: 600; }
+    .room-row-info span { font-size: 12px; color: var(--mid); display: block; }
+
+    .room-code {
+      background: var(--light);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--dark);
+      font-family: monospace;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .room-code:hover { background: var(--teal); color: var(--white); border-color: var(--teal); }
+    .room-code.revealed { background: var(--teal-light); border-color: var(--teal); color: var(--teal-dark); }
+
+    /* Prospect card */
+    .prospect-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      background: var(--white);
+    }
+
+    .prospect-card:last-child { margin-bottom: 0; }
+
+    .prospect-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+    .prospect-header h4 { font-size: 14px; margin-bottom: 2px; }
+    .prospect-header p { font-size: 12px; color: var(--mid); }
+    .prospect-matches { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+    .prospect-matches span { background: var(--teal-light); color: var(--teal-dark); padding: 2px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; }
+    .prospect-actions { display: flex; gap: 8px; margin-top: 10px; }
+
+    /* Notice form */
+    .notice-type-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .notice-type-btn { padding: 8px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--white); cursor: pointer; font-size: 12px; font-weight: 600; text-align: center; transition: all 0.15s; font-family: 'Inter', sans-serif; color: var(--mid); }
+    .notice-type-btn.active { background: var(--teal); color: var(--white); border-color: var(--teal); }
+
+    /* Maintenance */
+    .maint-row { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .maint-row:last-child { border-bottom: none; }
+    .priority-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+    .p-high { background: var(--danger); }
+    .p-medium { background: var(--gold); }
+    .p-low { background: #A0AEC0; }
+    .maint-info { flex: 1; }
+    .maint-info strong { font-size: 14px; font-weight: 600; }
+    .maint-info p { font-size: 13px; color: var(--mid); margin: 2px 0; }
+    .maint-info span { font-size: 11px; color: var(--mid); }
+  </style>
+</head>
+<body>
+
+<div class="demo-banner">
+  ⚡ DEMO — Admin Dashboard — Built by Launchpad Digital Solutions for HartlePower CIC
+</div>
+
+<div class="app-layout">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <img src="https://static.wixstatic.com/media/4c82ce_98dcc161f99241cdb58a193f59f7f739~mv2.png/v1/crop/x_220,y_297,w_501,h_169/fill/w_255,h_86,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Untitled%20design%20(27).png" alt="HartlePower">
+      <span class="demo-tag">ADMIN DASHBOARD</span>
+    </div>
+
+    <div class="sidebar-section-label">Overview</div>
+    <a href="#" class="active"><span class="sidebar-icon">📊</span>Dashboard</a>
+    <a href="#"><span class="sidebar-icon">🏢</span>Room Inventory</a>
+    <a href="#"><span class="sidebar-icon">📅</span>Bookings</a>
+
+    <div class="sidebar-section-label">Tenants</div>
+    <a href="#"><span class="sidebar-icon">🧑‍💼</span>Office Tenants</a>
+    <a href="#"><span class="sidebar-icon">📬</span>Virtual Tenants</a>
+    <a href="#"><span class="sidebar-icon">🔑</span>Room Codes</a>
+
+    <div class="sidebar-section-label">Enquiries</div>
+    <a href="#"><span class="sidebar-icon">📥</span>Prospects <span class="notif-dot"></span></a>
+    <a href="#"><span class="sidebar-icon">👁️</span>Viewings</a>
+
+    <div class="sidebar-section-label">Operations</div>
+    <a href="#"><span class="sidebar-icon">🔧</span>Maintenance <span class="notif-dot"></span></a>
+    <a href="#"><span class="sidebar-icon">📢</span>Notices</a>
+    <a href="#"><span class="sidebar-icon">💬</span>Community Board</a>
+
+    <div class="sidebar-section-label" style="margin-top:auto;"></div>
+    <a href="index.html" style="margin-top:20px;"><span class="sidebar-icon">🌐</span>View website</a>
+    <a href="#"><span class="sidebar-icon">⚙️</span>Settings</a>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-content">
+    <div class="page-header">
+      <div>
+        <h1>Good morning 👋</h1>
+        <p>Sunday 5 July 2025 — Greenbank & Business Hub</p>
+      </div>
+      <button class="btn btn-primary" onclick="document.getElementById('noticeModal').classList.add('open')">📢 Send notice</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="label">Occupied offices</div>
+        <div class="value teal">3<span style="font-size:20px;color:var(--mid);">/8</span></div>
+        <div class="sub">3 vacant • 2 viewing booked</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Monthly revenue</div>
+        <div class="value teal">£1,765</div>
+        <div class="sub">Office rent collected</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">New prospects</div>
+        <div class="value gold">2</div>
+        <div class="sub">Awaiting response</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Maintenance open</div>
+        <div class="value red">2</div>
+        <div class="sub">1 in progress</div>
+      </div>
+    </div>
+
+    <!-- Main grid -->
+    <div class="grid-dash-3" style="margin-bottom:20px;">
+
+      <!-- Room inventory -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <h4>🏢 Room inventory — both buildings</h4>
+          <a href="#">Manage rooms →</a>
+        </div>
+
+        <div id="roomInventory"></div>
+      </div>
+
+      <!-- Prospects -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <h4>📥 New prospects</h4>
+          <a href="#">View all →</a>
+        </div>
+        <div id="prospectsPanel"></div>
+      </div>
+    </div>
+
+    <div class="grid-dash">
+      <!-- Today's bookings -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <h4>📅 Today's room bookings</h4>
+          <a href="#">Full calendar →</a>
+        </div>
+        <div id="bookingsPanel"></div>
+      </div>
+
+      <!-- Maintenance -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <h4>🔧 Open maintenance</h4>
+          <a href="#">All requests →</a>
+        </div>
+        <div id="maintenancePanel"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Notice modal -->
+<div class="modal-overlay" id="noticeModal">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <h3>📢 Send a notice</h3>
+      <button onclick="document.getElementById('noticeModal').classList.remove('open')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--mid);">✕</button>
+    </div>
+
+    <div class="form-group">
+      <label>Send to</label>
+      <div class="notice-type-grid">
+        <button class="notice-type-btn active" onclick="selectNoticeType(this)">🏢 All tenants</button>
+        <button class="notice-type-btn" onclick="selectNoticeType(this)">🟢 Greenbank only</button>
+        <button class="notice-type-btn" onclick="selectNoticeType(this)">🔵 Hub only</button>
+        <button class="notice-type-btn" onclick="selectNoticeType(this)">📬 Virtual tenants</button>
+        <button class="notice-type-btn" onclick="selectNoticeType(this)">📋 Specific room</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Notice title</label>
+      <input type="text" placeholder="e.g. Fire alarm test today at 12:00" id="notice-title">
+    </div>
+
+    <div class="form-group">
+      <label>Message</label>
+      <textarea placeholder="Notice details..." id="notice-body" style="min-height:120px;"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Schedule (optional)</label>
+      <input type="datetime-local" id="notice-schedule">
+    </div>
+
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-outline" onclick="document.getElementById('noticeModal').classList.remove('open')">Cancel</button>
+      <button class="btn btn-primary" style="flex:1;" onclick="sendNotice()">Send notice now →</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script>
+  function renderInventory() {
+    const allRooms = [...HP.offices];
+    document.getElementById('roomInventory').innerHTML = allRooms.map(o => {
+      const isVacant = o.status === 'vacant';
+      const isTenanted = o.status === 'tenanted';
+      return `
+        <div class="room-row">
+          <div class="room-status-dot ${isVacant ? 'dot-vacant' : 'dot-tenanted'}"></div>
+          <div class="room-row-info">
+            <strong>${o.name} — ${o.building}</strong>
+            <span>${isTenanted ? '👤 ' + o.tenant + ' · since ' + o.tenantSince : '✅ Vacant · £' + o.price + '/mo · ' + o.size + 'm²'}</span>
+          </div>
+          ${isVacant
+            ? `<div class="room-code" onclick="revealCode(this,'${o.code}')" title="Click to reveal code">••••</div>`
+            : `<span class="tag tag-teal" style="font-size:11px;">Tenanted</span>`
+          }
+        </div>
+      `;
+    }).join('');
+  }
+
+  function revealCode(el, code) {
+    if (el.textContent === '••••') {
+      el.textContent = code;
+      el.classList.add('revealed');
+      setTimeout(() => { el.textContent = '••••'; el.classList.remove('revealed'); }, 5000);
+    }
+  }
+
+  function renderProspects() {
+    document.getElementById('prospectsPanel').innerHTML = HP.prospects.map(p => `
+      <div class="prospect-card">
+        <div class="prospect-header">
+          <div>
+            <h4>${p.name}</h4>
+            <p>${p.business} · ${p.businessType}</p>
+          </div>
+          <span class="tag ${p.status === 'new' ? 'tag-gold' : 'tag-teal'}">${p.status === 'new' ? '🆕 New' : '📅 Viewing booked'}</span>
+        </div>
+        <div style="font-size:13px;color:var(--mid);">
+          ${p.headcount} people · Budget: ${p.budget === '200-300' ? '£200–300' : p.budget}/mo · Move in: ${p.moveIn}
+        </div>
+        <div class="prospect-matches">
+          ${p.interested.map(r => `<span>🏢 ${r}</span>`).join('')}
+        </div>
+        ${p.status === 'viewing-booked' ? `<div class="alert alert-success" style="margin:0;">📅 ${p.viewingDate}</div>` : ''}
+        <div class="prospect-actions">
+          <button class="btn btn-outline btn-sm">📞 Call</button>
+          <button class="btn btn-primary btn-sm">📅 Book viewing</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderBookings() {
+    document.getElementById('bookingsPanel').innerHTML = HP.bookings.length > 0
+      ? HP.bookings.map(b => `
+          <div class="notif-item">
+            <div class="notif-icon">🏛️</div>
+            <div class="notif-content">
+              <p><strong>${b.room}</strong> — ${b.booker}</p>
+              <span>${b.time} · ${b.paid ? '✅ Paid' : '⏳ Awaiting payment'}</span>
+            </div>
+          </div>
+        `).join('')
+      : '<p style="font-size:14px;color:var(--mid);padding:20px 0;text-align:center;">No bookings today</p>';
+  }
+
+  function renderMaintenance() {
+    document.getElementById('maintenancePanel').innerHTML = HP.maintenance.map(m => `
+      <div class="maint-row">
+        <div class="priority-dot p-${m.priority}"></div>
+        <div class="maint-info">
+          <strong>${m.issue}</strong>
+          <p>${m.room} · ${m.building} · ${m.tenant}</p>
+          <span>${m.submitted} · <span class="tag tag-${m.status === 'open' ? 'gold' : 'teal'}" style="padding:1px 8px;font-size:11px;">${m.status}</span></span>
+        </div>
+        <button class="btn btn-outline btn-sm">Update</button>
+      </div>
+    `).join('');
+  }
+
+  function selectNoticeType(el) {
+    document.querySelectorAll('.notice-type-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function sendNotice() {
+    const title = document.getElementById('notice-title').value;
+    if (!title) { alert('Please enter a notice title'); return; }
+    document.getElementById('noticeModal').classList.remove('open');
+    alert('✅ Notice sent to all tenants!');
+  }
+
+  renderInventory();
+  renderProspects();
+  renderBookings();
+  renderMaintenance();
+</script>
+
+</body>
+</html>
