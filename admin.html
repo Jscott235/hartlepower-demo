@@ -636,6 +636,82 @@
     alert(visitTime ? 'Visit proposed — tenant will be notified.' : 'Maintenance updated.');
   }
 
+  // ── Live bookings ─────────────────────────────────────────
+  let liveBookings = [];
+  async function loadLiveBookings() {
+    liveBookings = await HP_BOOKINGS.fetchAll();
+    renderLiveBookings();
+    HP_BOOKINGS.subscribe(rows => {
+      rows.forEach(r => { const i = liveBookings.findIndex(b => b.id === r.id); if (i>=0) liveBookings[i]=r; else liveBookings.unshift(r); });
+      renderLiveBookings();
+      flashNotif('New booking received!');
+    });
+  }
+
+  function renderLiveBookings() {
+    const html = liveBookings.map(b => `
+      <div class="booking-row">
+        <div class="room-name">${b.room}</div>
+        <span style="color:var(--mid);font-size:13px;">${b.booker_name}${b.booker_org ? ' · ' + b.booker_org : ''}</span>
+        <span style="color:var(--mid);font-size:13px;">${b.time_slot} · ${new Date(b.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>
+        <span class="tag ${b.paid ? 'tag-green' : 'tag-gold'}" style="font-size:11px;">${b.paid ? 'Paid' : 'Unpaid'}</span>
+        <button class="btn btn-outline btn-sm" onclick="alert('${b.booker_name}\\n${b.booker_email}\\n${b.time_slot}')">View</button>
+      </div>`).join('') || '<p style="padding:16px;color:var(--mid);font-size:14px;">No bookings yet</p>';
+    ['dashBookings','bookingsList'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
+  }
+
+  // ── Live prospects ────────────────────────────────────────
+  let liveProspects = [];
+  async function loadLiveProspects() {
+    liveProspects = await HP_PROSPECTS.fetchAll();
+    renderLiveProspects();
+    HP_PROSPECTS.subscribe(rows => {
+      rows.forEach(r => { const i = liveProspects.findIndex(p => p.id === r.id); if (i>=0) liveProspects[i]=r; else liveProspects.unshift(r); });
+      renderLiveProspects();
+      flashNotif('New prospect enquiry!');
+    });
+  }
+
+  function renderLiveProspects() {
+    const html = liveProspects.map(p => `
+      <div class="prospect-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <div>
+            <strong style="font-size:14px;">${p.name} — ${p.business}</strong>
+            <p style="font-size:12px;color:var(--mid);margin:2px 0;">${p.business_type || ''} · ${p.headcount || ''} · Budget: ${p.budget || ''} · Move in: ${p.move_in || ''}</p>
+            ${p.phone ? `<p style="font-size:12px;color:var(--mid);">${p.phone} · ${p.email}</p>` : `<p style="font-size:12px;color:var(--mid);">${p.email}</p>`}
+          </div>
+          <span class="tag ${p.status === 'new' ? 'tag-gold' : 'tag-teal'}">${p.status === 'new' ? 'New' : 'In progress'}</span>
+        </div>
+        ${p.interested_rooms && p.interested_rooms.length ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">' + p.interested_rooms.map(r => `<span class="tag tag-teal" style="font-size:11px;">${r}</span>`).join('') + '</div>' : ''}
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-outline btn-sm" onclick="alert('${p.name}\\n${p.email}${p.phone ? '\\n' + p.phone : ''}')">Contact</button>
+          <button class="btn btn-primary btn-sm" onclick="openViewingModal('${p.id}')">Book viewing</button>
+          <button class="btn btn-sm" style="background:#FDEAEA;color:var(--danger);" onclick="alert('Marked as dead lead.')">Dead lead</button>
+        </div>
+      </div>`).join('') || '<p style="color:var(--mid);font-size:14px;padding:10px 0;">No prospects yet</p>';
+    ['dashProspects','prospectsList'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
+  }
+
+  // ── Flash notification ────────────────────────────────────
+  function flashNotif(msg) {
+    let el = document.getElementById('liveFlash');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'liveFlash';
+      el.style.cssText = 'position:fixed;top:80px;right:20px;background:var(--teal);color:white;padding:12px 20px;border-radius:12px;font-weight:600;font-size:14px;z-index:9998;box-shadow:0 4px 20px rgba(0,0,0,0.2);';
+      document.body.appendChild(el);
+    }
+    el.textContent = '● ' + msg;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 4000);
+  }
+
+  // ── Staggered init ────────────────────────────────────────
+  setTimeout(loadLiveMaintenance, 200);
+  setTimeout(loadLiveBookings, 600);
+  setTimeout(loadLiveProspects, 1000);
+
 </script>
 <script src="js/bug-report.js"></script>
 </body>
