@@ -1,5 +1,7 @@
-const SUPABASE_URL = 'https://qgjdaologsmrviaikzej.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnamRhb2xvZ3NtcnZpYWlremVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTQxMzQsImV4cCI6MjA5NzM5MDEzNH0.gOya9F8I45uRFOLH6uFLFADSPda1YUDOjJkrnP2lCyw';
+// Uses SUPABASE_URL and SUPABASE_KEY from supabase-maintenance.js if loaded,
+// otherwise defines its own
+const _BUG_URL = (typeof SUPABASE_URL !== 'undefined') ? SUPABASE_URL : 'https://qgjdaologsmrviaikzej.supabase.co';
+const _BUG_KEY = (typeof SUPABASE_KEY !== 'undefined') ? SUPABASE_KEY : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnamRhb2xvZ3NtcnZpYWlremVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTQxMzQsImV4cCI6MjA5NzM5MDEzNH0.gOya9F8I45uRFOLH6uFLFADSPda1YUDOjJkrnP2lCyw';
 
 (function () {
   // Inject CSS
@@ -125,11 +127,11 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
     const desc = document.getElementById('bug-desc').value.trim();
     if (!page || !desc) { alert('Please fill in page and description'); return; }
 
-    await fetch(`${SUPABASE_URL}/rest/v1/hp_bugs`, {
+    await fetch(`${_BUG_URL}/rest/v1/hp_bugs`, {
       method: 'POST',
       headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'apikey': _BUG_KEY,
+        'Authorization': `Bearer ${_BUG_KEY}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
