@@ -237,7 +237,7 @@
 
     <!-- Room Finder Wizard -->
     <div class="wizard-box">
-      <h3>🔍 Find my room</h3>
+      <h3> Find my room</h3>
 
       <!-- Step 1: People -->
       <div class="wizard-step active" id="step1">
@@ -289,7 +289,7 @@
 <!-- Availability today -->
 <div class="avail-strip">
   <div class="avail-strip-inner">
-    <p>📅 Showing availability for <strong id="todayDate"></strong></p>
+    <p> Showing availability for <strong id="todayDate"></strong></p>
     <div style="display:flex;gap:8px;align-items:center;">
       <span style="font-size:13px;color:var(--teal-dark);">
         <span style="display:inline-block;width:10px;height:10px;background:var(--success);border-radius:50%;margin-right:4px;"></span>Available
@@ -452,7 +452,7 @@
           <div class="confirm-row"><span><strong>Total</strong></span><span id="p-total"><strong>£20.00</strong></span></div>
         </div>
 
-        <div class="alert alert-info">🔒 Payment handled securely by Stripe. Card details never touch our servers.</div>
+        <div class="alert alert-info"> Payment handled securely by Stripe. Card details never touch our servers.</div>
 
         <div class="form-group">
           <label>Card number</label>
@@ -477,7 +477,7 @@
 
       <!-- Success -->
       <div class="success-screen" id="bookSuccess">
-        <div class="tick">✅</div>
+        <div class="tick"></div>
         <h3>Booking confirmed!</h3>
         <p style="color:var(--mid);margin:10px 0 20px;font-size:15px;">A confirmation has been sent to <strong id="s-email"></strong></p>
         <div class="confirm-box">
@@ -549,8 +549,8 @@
           <span class="tag tag-teal" style="margin-bottom:8px;">${r.building}</span>
           <h3>${r.name}</h3>
           <div class="room-meta">
-            <span>👥 Up to ${r.capacity}</span>
-            <span>📐 ${r.size}m²</span>
+            <span> Up to ${r.capacity}</span>
+            <span> ${r.size}m²</span>
           </div>
           <div class="amenities">
             ${r.amenities.map(a => `<span class="amenity">${a}</span>`).join('')}

@@ -65,19 +65,19 @@
     </div>
 
     <div class="sidebar-section-label">My Account</div>
-    <a href="#" class="active"><span class="sidebar-icon">🏠</span>Dashboard</a>
-    <a href="#"><span class="sidebar-icon">📬</span>Mail log</a>
-    <a href="#"><span class="sidebar-icon">💳</span>Billing</a>
-    <a href="#"><span class="sidebar-icon">📄</span>Documents</a>
+    <a href="#" class="active">Dashboard</a>
+    <a href="#">Mail log</a>
+    <a href="#">Billing</a>
+    <a href="#">Documents</a>
 
     <div class="sidebar-section-label">Community</div>
-    <a href="#"><span class="sidebar-icon">📢</span>Notices</a>
-    <a href="#"><span class="sidebar-icon">💬</span>Community board</a>
+    <a href="#">Notices</a>
+    <a href="#">Community board</a>
 
     <div class="sidebar-section-label">Support</div>
-    <a href="#"><span class="sidebar-icon">📮</span>Message HartlePower</a>
-    <a href="virtual-office.html"><span class="sidebar-icon">⚙️</span>Manage subscription</a>
-    <a href="index.html"><span class="sidebar-icon">🌐</span>Back to website</a>
+    <a href="#">Message HartlePower</a>
+    <a href="virtual-office.html">Manage subscription</a>
+    <a href="index.html">Back to website</a>
   </div>
 
   <div class="main-content">
@@ -112,20 +112,20 @@
         <div style="font-size:13px;opacity:0.7;margin-top:4px;">Friday 9am–3pm</div>
       </div>
       <div style="margin-left:auto;">
-        <button class="btn" style="background:rgba(255,255,255,0.15);color:#fff;border:1.5px solid rgba(255,255,255,0.3);">📋 Copy address</button>
+        <button class="btn" style="background:rgba(255,255,255,0.15);color:#fff;border:1.5px solid rgba(255,255,255,0.3);"> Copy address</button>
       </div>
     </div>
 
     <!-- Alert -->
     <div class="alert alert-warning" style="cursor:pointer;" onclick="this.style.display='none'">
-      📬 <strong>You have 1 item waiting for collection</strong> — received 3 July from HMRC. Office hours: Mon–Thu 9am–5pm. <u>Dismiss</u>
+       <strong>You have 1 item waiting for collection</strong> — received 3 July from HMRC. Office hours: Mon–Thu 9am–5pm. <u>Dismiss</u>
     </div>
 
     <div class="grid-vt">
       <!-- Mail log -->
       <div class="portal-card">
         <div class="portal-card-header">
-          <h4>📬 Mail log</h4>
+          <h4> Mail log</h4>
           <span class="tag tag-gold">1 uncollected</span>
         </div>
 
@@ -136,7 +136,7 @@
         <!-- Billing -->
         <div class="portal-card" style="margin-bottom:20px;">
           <div class="portal-card-header">
-            <h4>💳 Billing</h4>
+            <h4> Billing</h4>
           </div>
           <div style="display:flex;justify-content:space-between;font-size:14px;padding:8px 0;border-bottom:1px solid var(--border);">
             <span>July 2025</span><span class="tag tag-green">✓ Paid</span>
@@ -154,17 +154,17 @@
         <!-- Notices -->
         <div class="portal-card">
           <div class="portal-card-header">
-            <h4>📢 Notices</h4>
+            <h4> Notices</h4>
           </div>
           <div class="notif-item">
-            <div class="notif-icon">📢</div>
+            <div class="notif-icon"></div>
             <div class="notif-content">
               <p><strong>Collection hours — Thursday</strong></p>
               <span>Please collect before 2pm this Thursday. 2 July</span>
             </div>
           </div>
           <div class="notif-item" style="opacity:0.6;">
-            <div class="notif-icon">📢</div>
+            <div class="notif-icon"></div>
             <div class="notif-content">
               <p>Bank holiday closure — 26 May</p>
               <span>Office closed. 20 May</span>
@@ -176,7 +176,7 @@
 
     <!-- Community board -->
     <div style="margin-top:20px;">
-      <h3 style="margin-bottom:16px;">💬 Community board</h3>
+      <h3 style="margin-bottom:16px;"> Community board</h3>
       <div id="communityFeed"></div>
     </div>
   </div>
@@ -187,7 +187,7 @@
   function renderMail() {
     document.getElementById('mailLog').innerHTML = HP.virtualTenants[0].mail.map(m => `
       <div class="mail-item ${m.collected ? 'collected' : ''}">
-        <div class="mail-icon">${m.collected ? '📭' : '📬'}</div>
+        <div class="mail-icon">${m.collected ? '' : ''}</div>
         <div class="mail-info">
           <strong>${m.from}</strong>
           <span>${m.description} · Received ${m.received}</span>
@@ -214,7 +214,7 @@
         <div class="post-body">${p.body}</div>
         <div class="post-actions">
           <button>👍 ${p.likes}</button>
-          <button>💬 ${p.replies} replies</button>
+          <button> ${p.replies} replies</button>
         </div>
       </div>
     `).join('');

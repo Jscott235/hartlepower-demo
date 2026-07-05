@@ -290,14 +290,14 @@
     </div>
 
     <div class="confirm-interest" id="confirmPanel">
-      <h3>🏢 Ready to arrange viewings?</h3>
+      <h3> Ready to arrange viewings?</h3>
       <p>You've selected <span id="selectedCount">0</span> office(s). We'll get back to you within one working day to arrange viewings.</p>
       <div class="selected-rooms-list" id="selectedList"></div>
       <button class="btn btn-gold btn-lg" onclick="submitInterest()">Submit interest & book viewings →</button>
     </div>
 
     <div class="success-banner" id="successBanner">
-      <div style="font-size:48px;margin-bottom:16px;">🎉</div>
+      <div style="font-size:48px;margin-bottom:16px;"></div>
       <h2>Interest registered!</h2>
       <p>Thanks <strong id="s-name"></strong> — we'll be in touch within one working day to arrange viewings of your selected offices.</p>
       <br>
@@ -352,8 +352,8 @@
           <span class="tag tag-teal">${o.building}</span>
           <h3 style="margin-top:8px;">${o.name}</h3>
           <div class="room-meta">
-            <span>👥 Up to ${o.capacity} people</span>
-            <span>📐 ${o.size}m²</span>
+            <span> Up to ${o.capacity} people</span>
+            <span> ${o.size}m²</span>
           </div>
           <div class="amenities">
             ${o.amenities.slice(0,3).map(a => `<span class="amenity">${a}</span>`).join('')}
@@ -394,7 +394,7 @@
       document.getElementById('selectedCount').textContent = selectedOffices.length;
       const selected = HP.offices.filter(o => selectedOffices.includes(o.id));
       document.getElementById('selectedList').innerHTML = selected.map(o =>
-        `<span class="selected-room-tag">🏢 ${o.name} — £${o.price}/mo</span>`
+        `<span class="selected-room-tag"> ${o.name} — £${o.price}/mo</span>`
       ).join('');
     } else {
       panel.classList.remove('visible');

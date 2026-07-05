@@ -136,20 +136,20 @@
     </div>
 
     <div class="sidebar-section-label">My Space</div>
-    <a href="#" class="active"><span class="sidebar-icon">🏠</span>Dashboard</a>
-    <a href="#"><span class="sidebar-icon">📄</span>Documents</a>
-    <a href="#"><span class="sidebar-icon">💳</span>Payments</a>
-    <a href="#"><span class="sidebar-icon">📅</span>Book a room</a>
+    <a href="#" class="active">Dashboard</a>
+    <a href="#">Documents</a>
+    <a href="#">Payments</a>
+    <a href="#">Book a room</a>
 
     <div class="sidebar-section-label">Building</div>
-    <a href="#"><span class="sidebar-icon">🔧</span>Maintenance</a>
-    <a href="#"><span class="sidebar-icon">📢</span>Notices <span class="notif-dot"></span></a>
-    <a href="#"><span class="sidebar-icon">💬</span>Community board</a>
+    <a href="#">Maintenance</a>
+    <a href="#">Notices <span class="notif-dot"></span></a>
+    <a href="#">Community board</a>
 
     <div class="sidebar-section-label">Account</div>
-    <a href="#"><span class="sidebar-icon">📮</span>Message HartlePower</a>
-    <a href="#"><span class="sidebar-icon">🚪</span>Notice to vacate</a>
-    <a href="index.html"><span class="sidebar-icon">🌐</span>View website</a>
+    <a href="#">Message HartlePower</a>
+    <a href="#">Notice to vacate</a>
+    <a href="index.html">View website</a>
   </div>
 
   <div class="main-content">
@@ -194,14 +194,14 @@
 
     <!-- Notices -->
     <div class="alert alert-warning" style="cursor:pointer;" onclick="this.style.display='none'">
-      📢 <strong>Fire alarm test:</strong> Scheduled for this Friday 11 July at 12:00 noon. Do not evacuate — this is a test. <u>Dismiss</u>
+       <strong>Fire alarm test:</strong> Scheduled for this Friday 11 July at 12:00 noon. Do not evacuate — this is a test. <u>Dismiss</u>
     </div>
 
     <div class="grid-portal" style="margin-bottom:20px;">
       <!-- Payment history -->
       <div class="portal-card">
         <div class="portal-card-header">
-          <h4>💳 Payment history</h4>
+          <h4> Payment history</h4>
           <span class="tag tag-green">Up to date</span>
         </div>
         <div class="payment-row">
@@ -233,7 +233,7 @@
           <a href="#" style="font-size:13px;color:var(--teal);text-decoration:none;">Upload →</a>
         </div>
         <div class="notif-item">
-          <div class="notif-icon">📋</div>
+          <div class="notif-icon"></div>
           <div class="notif-content">
             <p><strong>Tenancy agreement</strong></p>
             <span>Signed 28 Feb 2025 · PDF</span>
@@ -241,7 +241,7 @@
           <button class="btn btn-outline btn-sm">↓</button>
         </div>
         <div class="notif-item">
-          <div class="notif-icon">📋</div>
+          <div class="notif-icon"></div>
           <div class="notif-content">
             <p><strong>Welcome pack</strong></p>
             <span>Issued 1 Mar 2025 · PDF</span>
@@ -249,7 +249,7 @@
           <button class="btn btn-outline btn-sm">↓</button>
         </div>
         <div class="notif-item">
-          <div class="notif-icon">📋</div>
+          <div class="notif-icon"></div>
           <div class="notif-content">
             <p><strong>Building access guide</strong></p>
             <span>Issued 1 Mar 2025 · PDF</span>
@@ -262,7 +262,7 @@
     <!-- Maintenance -->
     <div class="portal-card" style="margin-bottom:20px;">
       <div class="portal-card-header">
-        <h4>🔧 Maintenance requests</h4>
+        <h4> Maintenance requests</h4>
         <button class="btn btn-outline btn-sm" onclick="document.getElementById('maintForm').classList.toggle('visible')">+ New request</button>
       </div>
 
@@ -301,7 +301,7 @@
 
     <!-- Community board -->
     <div class="community-wrap">
-      <h3 style="margin-bottom:16px;">💬 Community board</h3>
+      <h3 style="margin-bottom:16px;"> Community board</h3>
 
       <div class="post-input-box">
         <div class="post-avatar">SM</div>
@@ -334,7 +334,7 @@
         <div class="post-body">${p.body}</div>
         <div class="post-actions">
           <button>👍 ${p.likes}</button>
-          <button>💬 ${p.replies} replies</button>
+          <button> ${p.replies} replies</button>
           <button>↗️ Share</button>
         </div>
       </div>
@@ -360,7 +360,7 @@
 
   function submitMaint() {
     document.getElementById('maintForm').classList.remove('visible');
-    alert('✅ Maintenance request submitted. The HartlePower team will be in touch shortly.');
+    alert(' Maintenance request submitted. The HartlePower team will be in touch shortly.');
   }
 
   renderFeed();

@@ -140,37 +140,37 @@
     </div>
 
     <div class="sidebar-section-label">Overview</div>
-    <a href="#" class="active"><span class="sidebar-icon">📊</span>Dashboard</a>
-    <a href="#"><span class="sidebar-icon">🏢</span>Room Inventory</a>
-    <a href="#"><span class="sidebar-icon">📅</span>Bookings</a>
+    <a href="#" class="active">Dashboard</a>
+    <a href="#">Room Inventory</a>
+    <a href="#">Bookings</a>
 
     <div class="sidebar-section-label">Tenants</div>
-    <a href="#"><span class="sidebar-icon">🧑‍💼</span>Office Tenants</a>
-    <a href="#"><span class="sidebar-icon">📬</span>Virtual Tenants</a>
-    <a href="#"><span class="sidebar-icon">🔑</span>Room Codes</a>
+    <a href="#">Office Tenants</a>
+    <a href="#">Virtual Tenants</a>
+    <a href="#">Room Codes</a>
 
     <div class="sidebar-section-label">Enquiries</div>
-    <a href="#"><span class="sidebar-icon">📥</span>Prospects <span class="notif-dot"></span></a>
-    <a href="#"><span class="sidebar-icon">👁️</span>Viewings</a>
+    <a href="#">Prospects <span class="notif-dot"></span></a>
+    <a href="#">Viewings</a>
 
     <div class="sidebar-section-label">Operations</div>
-    <a href="#"><span class="sidebar-icon">🔧</span>Maintenance <span class="notif-dot"></span></a>
-    <a href="#"><span class="sidebar-icon">📢</span>Notices</a>
-    <a href="#"><span class="sidebar-icon">💬</span>Community Board</a>
+    <a href="#">Maintenance <span class="notif-dot"></span></a>
+    <a href="#">Notices</a>
+    <a href="#">Community Board</a>
 
     <div class="sidebar-section-label" style="margin-top:auto;"></div>
-    <a href="index.html" style="margin-top:20px;"><span class="sidebar-icon">🌐</span>View website</a>
-    <a href="#"><span class="sidebar-icon">⚙️</span>Settings</a>
+    <a href="index.html" style="margin-top:20px;">View website</a>
+    <a href="#">Settings</a>
   </div>
 
   <!-- Main content -->
   <div class="main-content">
     <div class="page-header">
       <div>
-        <h1>Good morning 👋</h1>
+        <h1>Good morning </h1>
         <p>Sunday 5 July 2025 — Greenbank & Business Hub</p>
       </div>
-      <button class="btn btn-primary" onclick="document.getElementById('noticeModal').classList.add('open')">📢 Send notice</button>
+      <button class="btn btn-primary" onclick="document.getElementById('noticeModal').classList.add('open')"> Send notice</button>
     </div>
 
     <!-- Stats -->
@@ -203,7 +203,7 @@
       <!-- Room inventory -->
       <div class="dash-card">
         <div class="dash-card-header">
-          <h4>🏢 Room inventory — both buildings</h4>
+          <h4> Room inventory — both buildings</h4>
           <a href="#">Manage rooms →</a>
         </div>
 
@@ -213,7 +213,7 @@
       <!-- Prospects -->
       <div class="dash-card">
         <div class="dash-card-header">
-          <h4>📥 New prospects</h4>
+          <h4> New prospects</h4>
           <a href="#">View all →</a>
         </div>
         <div id="prospectsPanel"></div>
@@ -224,7 +224,7 @@
       <!-- Today's bookings -->
       <div class="dash-card">
         <div class="dash-card-header">
-          <h4>📅 Today's room bookings</h4>
+          <h4> Today's room bookings</h4>
           <a href="#">Full calendar →</a>
         </div>
         <div id="bookingsPanel"></div>
@@ -233,7 +233,7 @@
       <!-- Maintenance -->
       <div class="dash-card">
         <div class="dash-card-header">
-          <h4>🔧 Open maintenance</h4>
+          <h4> Open maintenance</h4>
           <a href="#">All requests →</a>
         </div>
         <div id="maintenancePanel"></div>
@@ -247,18 +247,18 @@
 <div class="modal-overlay" id="noticeModal">
   <div class="modal">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <h3>📢 Send a notice</h3>
+      <h3> Send a notice</h3>
       <button onclick="document.getElementById('noticeModal').classList.remove('open')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--mid);">✕</button>
     </div>
 
     <div class="form-group">
       <label>Send to</label>
       <div class="notice-type-grid">
-        <button class="notice-type-btn active" onclick="selectNoticeType(this)">🏢 All tenants</button>
+        <button class="notice-type-btn active" onclick="selectNoticeType(this)"> All tenants</button>
         <button class="notice-type-btn" onclick="selectNoticeType(this)">🟢 Greenbank only</button>
         <button class="notice-type-btn" onclick="selectNoticeType(this)">🔵 Hub only</button>
-        <button class="notice-type-btn" onclick="selectNoticeType(this)">📬 Virtual tenants</button>
-        <button class="notice-type-btn" onclick="selectNoticeType(this)">📋 Specific room</button>
+        <button class="notice-type-btn" onclick="selectNoticeType(this)"> Virtual tenants</button>
+        <button class="notice-type-btn" onclick="selectNoticeType(this)"> Specific room</button>
       </div>
     </div>
 
@@ -296,7 +296,7 @@
           <div class="room-status-dot ${isVacant ? 'dot-vacant' : 'dot-tenanted'}"></div>
           <div class="room-row-info">
             <strong>${o.name} — ${o.building}</strong>
-            <span>${isTenanted ? '👤 ' + o.tenant + ' · since ' + o.tenantSince : '✅ Vacant · £' + o.price + '/mo · ' + o.size + 'm²'}</span>
+            <span>${isTenanted ? '👤 ' + o.tenant + ' · since ' + o.tenantSince : ' Vacant · £' + o.price + '/mo · ' + o.size + 'm²'}</span>
           </div>
           ${isVacant
             ? `<div class="room-code" onclick="revealCode(this,'${o.code}')" title="Click to reveal code">••••</div>`
@@ -323,18 +323,18 @@
             <h4>${p.name}</h4>
             <p>${p.business} · ${p.businessType}</p>
           </div>
-          <span class="tag ${p.status === 'new' ? 'tag-gold' : 'tag-teal'}">${p.status === 'new' ? '🆕 New' : '📅 Viewing booked'}</span>
+          <span class="tag ${p.status === 'new' ? 'tag-gold' : 'tag-teal'}">${p.status === 'new' ? ' New' : ' Viewing booked'}</span>
         </div>
         <div style="font-size:13px;color:var(--mid);">
           ${p.headcount} people · Budget: ${p.budget === '200-300' ? '£200–300' : p.budget}/mo · Move in: ${p.moveIn}
         </div>
         <div class="prospect-matches">
-          ${p.interested.map(r => `<span>🏢 ${r}</span>`).join('')}
+          ${p.interested.map(r => `<span> ${r}</span>`).join('')}
         </div>
-        ${p.status === 'viewing-booked' ? `<div class="alert alert-success" style="margin:0;">📅 ${p.viewingDate}</div>` : ''}
+        ${p.status === 'viewing-booked' ? `<div class="alert alert-success" style="margin:0;"> ${p.viewingDate}</div>` : ''}
         <div class="prospect-actions">
-          <button class="btn btn-outline btn-sm">📞 Call</button>
-          <button class="btn btn-primary btn-sm">📅 Book viewing</button>
+          <button class="btn btn-outline btn-sm"> Call</button>
+          <button class="btn btn-primary btn-sm"> Book viewing</button>
         </div>
       </div>
     `).join('');
@@ -344,10 +344,10 @@
     document.getElementById('bookingsPanel').innerHTML = HP.bookings.length > 0
       ? HP.bookings.map(b => `
           <div class="notif-item">
-            <div class="notif-icon">🏛️</div>
+            <div class="notif-icon"></div>
             <div class="notif-content">
               <p><strong>${b.room}</strong> — ${b.booker}</p>
-              <span>${b.time} · ${b.paid ? '✅ Paid' : '⏳ Awaiting payment'}</span>
+              <span>${b.time} · ${b.paid ? ' Paid' : '⏳ Awaiting payment'}</span>
             </div>
           </div>
         `).join('')
@@ -377,7 +377,7 @@
     const title = document.getElementById('notice-title').value;
     if (!title) { alert('Please enter a notice title'); return; }
     document.getElementById('noticeModal').classList.remove('open');
-    alert('✅ Notice sent to all tenants!');
+    alert(' Notice sent to all tenants!');
   }
 
   renderInventory();
