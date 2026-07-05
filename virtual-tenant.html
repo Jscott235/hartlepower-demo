@@ -7,96 +7,49 @@
   <link rel="stylesheet" href="css/style.css">
   <style>
     body { background: #F0FAF9; }
-
-    .address-card {
-      background: var(--teal);
-      border-radius: 16px;
-      padding: 28px 32px;
-      color: var(--white);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 32px;
-    }
-    .address-card .addr-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; opacity: 0.7; text-transform: uppercase; margin-bottom: 6px; }
-    .address-card .addr-val { font-size: 16px; font-weight: 600; line-height: 1.7; }
-    .address-card .divider { width: 1px; height: 60px; background: rgba(255,255,255,0.2); }
-
-    .sub-status { display: flex; align-items: center; gap: 8px; }
-    .sub-status .dot { width: 10px; height: 10px; border-radius: 50%; background: #2ECC71; }
-
-    .mail-item {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 10px;
-      background: var(--white);
-      transition: all 0.15s;
-    }
-    .mail-item:hover { border-color: var(--teal); }
+    .portal-section { display: none; }
+    .portal-section.active { display: block; }
+    .address-card { background: var(--teal); border-radius: 16px; padding: 28px 32px; color: var(--white); margin-bottom: 20px; display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+    .addr-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; opacity: 0.7; text-transform: uppercase; margin-bottom: 6px; }
+    .addr-val { font-size: 15px; font-weight: 600; line-height: 1.7; }
+    .divider { width: 1px; height: 60px; background: rgba(255,255,255,0.2); }
+    .portal-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 20px; }
+    .portal-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .portal-card-header h4 { font-size: 15px; }
+    .mail-item { display: flex; align-items: center; gap: 16px; padding: 14px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; background: var(--white); transition: all 0.15s; }
+    .mail-item:last-child { margin-bottom: 0; }
     .mail-item.collected { opacity: 0.55; }
-
-    .mail-icon { width: 42px; height: 42px; background: var(--teal-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .mail-icon { width: 42px; height: 42px; background: var(--teal-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 18px; }
     .mail-info { flex: 1; }
     .mail-info strong { font-size: 14px; font-weight: 600; display: block; margin-bottom: 2px; }
     .mail-info span { font-size: 12px; color: var(--mid); }
-
+    .payment-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .payment-row:last-child { border-bottom: none; }
+    .notice-item { padding: 16px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; }
+    .notice-item.unread { border-color: var(--teal); background: var(--teal-light); }
+    .notice-item h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .notice-item p { font-size: 13px; color: var(--mid); line-height: 1.6; }
+    .notice-item .notice-meta { font-size: 11px; color: var(--mid); margin-top: 8px; }
+    .msg-thread { display: flex; flex-direction: column; gap: 16px; margin-bottom: 20px; max-height: 360px; overflow-y: auto; }
+    .msg-bubble { max-width: 70%; padding: 12px 16px; border-radius: 14px; font-size: 14px; line-height: 1.6; }
+    .msg-bubble.sent { background: var(--teal); color: var(--white); align-self: flex-end; border-bottom-right-radius: 4px; }
+    .msg-bubble.recv { background: var(--white); border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 4px; }
+    .msg-time { font-size: 11px; opacity: 0.6; margin-top: 4px; }
+    .post-input-box { background: var(--white); border: 1.5px solid var(--border); border-radius: 14px; padding: 16px; margin-bottom: 16px; display: flex; gap: 12px; align-items: flex-start; }
+    .post-input-box textarea { flex: 1; border: none; padding: 0; font-size: 14px; resize: none; min-height: 60px; background: transparent; font-family: 'Inter', sans-serif; }
+    .post-input-box textarea:focus { outline: none; box-shadow: none; }
+    .doc-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .doc-row:last-child { border-bottom: none; }
+    .doc-icon { width: 40px; height: 40px; background: var(--teal-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .doc-info { flex: 1; }
+    .doc-info strong { font-size: 14px; font-weight: 600; display: block; }
+    .doc-info span { font-size: 12px; color: var(--mid); }
     .grid-vt { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
-
-    .portal-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
-    .portal-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
-    .portal-card-header h4 { font-size: 15px; }
-  
-    .login-dropdown { position: relative; display: inline-block; }
-    .login-dropdown-btn {
-      background: var(--teal);
-      color: var(--white);
-      border: none;
-      padding: 10px 18px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: 'Inter', sans-serif;
-    }
-    .login-dropdown-menu {
-      display: none;
-      position: absolute;
-      top: calc(100% + 8px);
-      right: 0;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      min-width: 200px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-      z-index: 1000;
-    }
-    .login-dropdown.open .login-dropdown-menu { display: block; }
-    .login-dropdown-menu a {
-      display: block;
-      padding: 12px 18px;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--dark);
-      text-decoration: none;
-      border-bottom: 1px solid var(--border);
-      transition: background 0.15s;
-    }
-    .login-dropdown-menu a:last-child { border-bottom: none; }
-    .login-dropdown-menu a:hover { background: var(--teal-light); color: var(--teal-dark); }
-    .login-dropdown-menu .staff-link { color: var(--mid); font-size: 13px; }
-
   </style>
 </head>
 <body>
 
-<div class="demo-banner">
-  ⚡ DEMO — Virtual Tenant Portal — Carr Financial Consulting — HartlePower
-</div>
+<div class="demo-banner">DEMO — Virtual Tenant Portal — Carr Financial Consulting — HartlePower</div>
 
 <div class="app-layout">
   <div class="sidebar">
@@ -104,141 +57,219 @@
       <img src="https://static.wixstatic.com/media/4c82ce_98dcc161f99241cdb58a193f59f7f739~mv2.png/v1/crop/x_220,y_297,w_501,h_169/fill/w_255,h_86,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Untitled%20design%20(27).png" alt="HartlePower">
       <span class="demo-tag">VIRTUAL OFFICE</span>
     </div>
-
     <div class="sidebar-section-label">My Account</div>
-    <a href="#" class="active">Dashboard</a>
-    <a href="#">Mail log</a>
-    <a href="#">Billing</a>
-    <a href="#">Documents</a>
-
-    <div class="sidebar-section-label">Community</div>
-    <a href="#">Notices</a>
-    <a href="#">Community board</a>
-
+    <a href="#" class="active" onclick="showSection('dashboard',this)">Dashboard</a>
+    <a href="#" onclick="showSection('mail',this)">Mail log <span class="notif-dot"></span></a>
+    <a href="#" onclick="showSection('billing',this)">Billing</a>
+    <a href="#" onclick="showSection('documents',this)">Documents</a>
+    <div class="sidebar-section-label">Building</div>
+    <a href="#" onclick="showSection('notices',this)">Notices <span class="notif-dot"></span></a>
+    <a href="#" onclick="showSection('community',this)">Community board</a>
     <div class="sidebar-section-label">Support</div>
-    <a href="#">Message HartlePower</a>
+    <a href="#" onclick="showSection('message',this)">Message HartlePower</a>
     <a href="virtual-office.html">Manage subscription</a>
     <a href="index.html">Back to website</a>
   </div>
 
   <div class="main-content">
-    <div class="page-header">
-      <div>
-        <h1>Carr Financial Consulting</h1>
-        <p>David Carr · Virtual Office Member since February 2025</p>
-      </div>
-      <span class="tag tag-green" style="font-size:13px;padding:8px 16px;">● Active subscription</span>
-    </div>
 
-    <!-- Address card -->
-    <div class="address-card">
-      <div>
-        <div class="addr-label">Your business address</div>
-        <div class="addr-val">
-          Carr Financial Consulting<br>
-          Greenbank, Stranton<br>
-          Hartlepool, TS24 7QS
+    <!-- DASHBOARD -->
+    <div class="portal-section active" id="sec-dashboard">
+      <div class="page-header">
+        <div><h1>Good morning, David</h1><p>Sunday 5 July 2025 — Virtual Office Member</p></div>
+        <span class="tag tag-green" style="font-size:13px;padding:8px 16px;">Active subscription</span>
+      </div>
+
+      <div class="address-card">
+        <div>
+          <div class="addr-label">Your business address</div>
+          <div class="addr-val">Carr Financial Consulting<br>Greenbank, Stranton<br>Hartlepool, TS24 7QS</div>
+        </div>
+        <div class="divider"></div>
+        <div>
+          <div class="addr-label">Subscription</div>
+          <div class="addr-val">£20 + VAT / month</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:6px;"><div style="width:8px;height:8px;border-radius:50%;background:#2ECC71;"></div><span style="font-size:13px;opacity:0.8;">Next payment: 1 August 2025</span></div>
+        </div>
+        <div class="divider"></div>
+        <div>
+          <div class="addr-label">Collection hours</div>
+          <div class="addr-val">Mon–Thu 9am–5pm</div>
+          <div style="font-size:13px;opacity:0.7;margin-top:4px;">Friday 9am–3pm</div>
+        </div>
+        <div style="margin-left:auto;">
+          <button class="btn" style="background:rgba(255,255,255,0.15);color:#fff;border:1.5px solid rgba(255,255,255,0.3);" onclick="navigator.clipboard.writeText('Carr Financial Consulting, Greenbank, Stranton, Hartlepool, TS24 7QS').then(()=>alert('Address copied to clipboard'))">Copy address</button>
         </div>
       </div>
-      <div class="divider"></div>
-      <div>
-        <div class="addr-label">Subscription</div>
-        <div class="addr-val">£20 + VAT / month</div>
-        <div class="sub-status" style="margin-top:6px;"><div class="dot"></div><span style="font-size:13px;opacity:0.8;">Next payment: 1 August 2025</span></div>
-      </div>
-      <div class="divider"></div>
-      <div>
-        <div class="addr-label">Collection hours</div>
-        <div class="addr-val">Mon–Thu 9am–5pm</div>
-        <div style="font-size:13px;opacity:0.7;margin-top:4px;">Friday 9am–3pm</div>
-      </div>
-      <div style="margin-left:auto;">
-        <button class="btn" style="background:rgba(255,255,255,0.15);color:#fff;border:1.5px solid rgba(255,255,255,0.3);"> Copy address</button>
-      </div>
-    </div>
 
-    <!-- Alert -->
-    <div class="alert alert-warning" style="cursor:pointer;" onclick="this.style.display='none'">
-       <strong>You have 1 item waiting for collection</strong> — received 3 July from HMRC. Office hours: Mon–Thu 9am–5pm. <u>Dismiss</u>
-    </div>
-
-    <div class="grid-vt">
-      <!-- Mail log -->
-      <div class="portal-card">
-        <div class="portal-card-header">
-          <h4> Mail log</h4>
-          <span class="tag tag-gold">1 uncollected</span>
-        </div>
-
-        <div id="mailLog"></div>
+      <div class="alert alert-warning" onclick="this.style.display='none'" style="cursor:pointer;">
+        You have <strong>1 item waiting for collection</strong> — received 3 July from HMRC. Collect Mon–Thu before 5pm.
       </div>
 
-      <div>
-        <!-- Billing -->
-        <div class="portal-card" style="margin-bottom:20px;">
-          <div class="portal-card-header">
-            <h4> Billing</h4>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-size:14px;padding:8px 0;border-bottom:1px solid var(--border);">
-            <span>July 2025</span><span class="tag tag-green">✓ Paid</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-size:14px;padding:8px 0;border-bottom:1px solid var(--border);">
-            <span>June 2025</span><span class="tag tag-green">✓ Paid</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;font-size:14px;padding:8px 0;">
-            <span>May 2025</span><span class="tag tag-green">✓ Paid</span>
-          </div>
-          <br>
-          <button class="btn btn-outline btn-full btn-sm">Manage direct debit →</button>
-        </div>
-
-        <!-- Notices -->
+      <div class="grid-vt">
         <div class="portal-card">
-          <div class="portal-card-header">
-            <h4> Notices</h4>
+          <div class="portal-card-header"><h4>Recent mail</h4><a href="#" onclick="showSection('mail',null)" style="font-size:13px;color:var(--teal);text-decoration:none;">Full mail log</a></div>
+          <div id="dashMail"></div>
+        </div>
+        <div>
+          <div class="portal-card">
+            <div class="portal-card-header"><h4>Billing</h4></div>
+            <div class="payment-row"><span>July 2025</span><span class="tag tag-green">Paid</span></div>
+            <div class="payment-row"><span>June 2025</span><span class="tag tag-green">Paid</span></div>
+            <div class="payment-row"><span>May 2025</span><span class="tag tag-green">Paid</span></div>
+            <br>
+            <button class="btn btn-outline btn-full btn-sm" onclick="showSection('billing',null)">Full history</button>
           </div>
-          <div class="notif-item">
-            <div class="notif-icon"></div>
-            <div class="notif-content">
-              <p><strong>Collection hours — Thursday</strong></p>
-              <span>Please collect before 2pm this Thursday. 2 July</span>
-            </div>
-          </div>
-          <div class="notif-item" style="opacity:0.6;">
-            <div class="notif-icon"></div>
-            <div class="notif-content">
-              <p>Bank holiday closure — 26 May</p>
-              <span>Office closed. 20 May</span>
+          <div class="portal-card">
+            <div class="portal-card-header"><h4>Latest notice</h4></div>
+            <div class="notice-item unread" style="margin:0;">
+              <h4>Collection hours — Thursday</h4>
+              <p>Please collect before 2pm this Thursday.</p>
+              <div class="notice-meta">2 July 2025</div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Community board -->
-    <div style="margin-top:20px;">
-      <h3 style="margin-bottom:16px;"> Community board</h3>
+    <!-- MAIL LOG -->
+    <div class="portal-section" id="sec-mail">
+      <div class="page-header"><div><h1>Mail log</h1><p>All post received on your behalf</p></div></div>
+      <div class="alert alert-warning">1 item awaiting collection — please collect during office hours.</div>
+      <div class="portal-card">
+        <div class="portal-card-header"><h4>All mail</h4><span class="tag tag-gold">1 uncollected</span></div>
+        <div id="fullMailLog"></div>
+      </div>
+    </div>
+
+    <!-- BILLING -->
+    <div class="portal-section" id="sec-billing">
+      <div class="page-header"><div><h1>Billing</h1><p>Subscription payments and history</p></div></div>
+      <div class="alert alert-success">Account up to date. Next payment of £24.00 (inc. VAT) due 1 August 2025.</div>
+      <div class="portal-card">
+        <div class="portal-card-header"><h4>Payment history</h4></div>
+        <div class="payment-row"><span>July 2025</span><span>1 Jul 2025</span><span style="font-weight:600;">£24.00</span><span class="tag tag-green">Paid</span></div>
+        <div class="payment-row"><span>June 2025</span><span>1 Jun 2025</span><span style="font-weight:600;">£24.00</span><span class="tag tag-green">Paid</span></div>
+        <div class="payment-row"><span>May 2025</span><span>1 May 2025</span><span style="font-weight:600;">£24.00</span><span class="tag tag-green">Paid</span></div>
+        <div class="payment-row"><span>April 2025</span><span>1 Apr 2025</span><span style="font-weight:600;">£24.00</span><span class="tag tag-green">Paid</span></div>
+        <div class="payment-row"><span>March 2025</span><span>1 Mar 2025</span><span style="font-weight:600;">£24.00</span><span class="tag tag-green">Paid</span></div>
+        <div class="payment-row"><span>February 2025</span><span>1 Feb 2025</span><span style="font-weight:600;">£24.00</span><span class="tag tag-green">Paid</span></div>
+      </div>
+      <div class="portal-card">
+        <div class="portal-card-header"><h4>Direct debit</h4></div>
+        <p style="font-size:14px;color:var(--mid);margin-bottom:16px;">£24.00 collected on the 1st of each month via GoCardless. To update bank details contact HartlePower.</p>
+        <button class="btn btn-outline btn-sm">Manage direct debit</button>
+      </div>
+    </div>
+
+    <!-- DOCUMENTS -->
+    <div class="portal-section" id="sec-documents">
+      <div class="page-header"><div><h1>Documents</h1><p>Your agreements and correspondence</p></div></div>
+      <div class="portal-card">
+        <div class="doc-row">
+          <div class="doc-icon"><svg width="20" height="20" fill="none" viewBox="0 0 256 256" stroke="#1A9B8C" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M200,224H56a8,8,0,0,1-8-8V40a8,8,0,0,1,8-8h96l56,56V216A8,8,0,0,1,200,224Z" fill="none"/><polyline points="152,32 152,88 208,88" fill="none"/></svg></div>
+          <div class="doc-info"><strong>Virtual office agreement</strong><span>Signed 1 February 2025 · PDF</span></div>
+          <button class="btn btn-outline btn-sm">Download</button>
+        </div>
+        <div class="doc-row">
+          <div class="doc-icon"><svg width="20" height="20" fill="none" viewBox="0 0 256 256" stroke="#1A9B8C" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M200,224H56a8,8,0,0,1-8-8V40a8,8,0,0,1,8-8h96l56,56V216A8,8,0,0,1,200,224Z" fill="none"/><polyline points="152,32 152,88 208,88" fill="none"/></svg></div>
+          <div class="doc-info"><strong>Welcome letter</strong><span>Issued 1 February 2025 · PDF</span></div>
+          <button class="btn btn-outline btn-sm">Download</button>
+        </div>
+        <div class="doc-row">
+          <div class="doc-icon"><svg width="20" height="20" fill="none" viewBox="0 0 256 256" stroke="#1A9B8C" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M200,224H56a8,8,0,0,1-8-8V40a8,8,0,0,1,8-8h96l56,56V216A8,8,0,0,1,200,224Z" fill="none"/><polyline points="152,32 152,88 208,88" fill="none"/></svg></div>
+          <div class="doc-info"><strong>Collection guide</strong><span>Issued 1 February 2025 · PDF</span></div>
+          <button class="btn btn-outline btn-sm">Download</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTICES -->
+    <div class="portal-section" id="sec-notices">
+      <div class="page-header"><div><h1>Notices</h1><p>Updates from HartlePower relevant to virtual office members</p></div></div>
+      <div class="notice-item unread">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;"><h4>Collection hours — Thursday 3 July</h4><span class="tag tag-gold">Unread</span></div>
+        <p>Please collect any post before 2pm this Thursday. Normal hours resume Friday 9am–3pm.</p>
+        <div class="notice-meta">From HartlePower team · 2 July 2025 · Virtual tenants</div>
+      </div>
+      <div class="notice-item">
+        <h4>Bank holiday closure — 26 May</h4>
+        <p>The office will be closed on Monday 26 May for the bank holiday. Post collected after this date will be available from Tuesday 27 May.</p>
+        <div class="notice-meta">From HartlePower team · 20 May 2025 · Virtual tenants</div>
+      </div>
+      <div class="notice-item">
+        <h4>New collection process from 1 March</h4>
+        <p>From 1 March, all post collection requires photo ID on the first visit. This is a one-time requirement for security purposes.</p>
+        <div class="notice-meta">From HartlePower team · 20 February 2025 · Virtual tenants</div>
+      </div>
+    </div>
+
+    <!-- COMMUNITY -->
+    <div class="portal-section" id="sec-community">
+      <div class="page-header"><div><h1>Community board</h1><p>Connect with other HartlePower businesses</p></div></div>
+      <div class="post-input-box">
+        <div class="post-avatar" style="background:var(--teal);">DC</div>
+        <div style="flex:1;">
+          <textarea placeholder="Share something with the community..." id="newPost"></textarea>
+          <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+            <button class="btn btn-primary btn-sm" onclick="addPost()">Post</button>
+          </div>
+        </div>
+      </div>
       <div id="communityFeed"></div>
     </div>
+
+    <!-- MESSAGE -->
+    <div class="portal-section" id="sec-message">
+      <div class="page-header"><div><h1>Message HartlePower</h1><p>Direct line to the team</p></div></div>
+      <div class="portal-card">
+        <div class="msg-thread" id="msgThread">
+          <div class="msg-bubble recv">Hi David, welcome to HartlePower Virtual Office! Your address is active. Let us know if you have any questions.<div class="msg-time">HartlePower team · 1 Feb 2025</div></div>
+          <div class="msg-bubble sent">Thanks — quick question, can I use the address on my Companies House registration?<div class="msg-time">You · 3 Feb 2025</div></div>
+          <div class="msg-bubble recv">For Companies House registration, that requires additional ID verification. Please pop in or give us a call on 01429 555600 and we can get that sorted for you.<div class="msg-time">HartlePower team · 3 Feb 2025</div></div>
+        </div>
+        <div style="display:flex;gap:10px;padding-top:16px;border-top:1px solid var(--border);">
+          <input type="text" id="msgInput" placeholder="Type a message...">
+          <button class="btn btn-primary" onclick="sendMsg()">Send</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
 <script src="js/data.js"></script>
 <script>
+  function showSection(id, el) {
+    document.querySelectorAll('.portal-section').forEach(s => s.classList.remove('active'));
+    document.getElementById('sec-' + id).classList.add('active');
+    document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+    if (el) el.classList.add('active');
+  }
+
   function renderMail() {
-    document.getElementById('mailLog').innerHTML = HP.virtualTenants[0].mail.map(m => `
+    const mail = HP.virtualTenants[0].mail;
+    const dashHtml = mail.slice(0,2).map(m => `
       <div class="mail-item ${m.collected ? 'collected' : ''}">
-        <div class="mail-icon">${m.collected ? '' : ''}</div>
-        <div class="mail-info">
-          <strong>${m.from}</strong>
-          <span>${m.description} · Received ${m.received}</span>
-        </div>
-        ${m.collected
-          ? '<span class="tag tag-grey">Collected</span>'
-          : '<span class="tag tag-gold">Awaiting collection</span>'
-        }
-      </div>
-    `).join('');
+        <div class="mail-icon">${m.collected ? '📭' : '📬'}</div>
+        <div class="mail-info"><strong>${m.from}</strong><span>${m.description} · Received ${m.received}</span></div>
+        ${m.collected ? '<span class="tag tag-grey">Collected</span>' : '<span class="tag tag-gold">Awaiting collection</span>'}
+      </div>`).join('');
+    document.getElementById('dashMail').innerHTML = dashHtml;
+
+    const fullHtml = mail.map(m => `
+      <div class="mail-item ${m.collected ? 'collected' : ''}">
+        <div class="mail-icon">${m.collected ? '📭' : '📬'}</div>
+        <div class="mail-info"><strong>${m.from}</strong><span>${m.description} · Received ${m.received}</span></div>
+        ${m.collected ? '<span class="tag tag-grey">Collected</span>' : '<span class="tag tag-gold">Awaiting collection</span>'}
+        ${!m.collected ? `<button class="btn btn-outline btn-sm" onclick="markCollected(${m.id})">Mark collected</button>` : ''}
+      </div>`).join('');
+    document.getElementById('fullMailLog').innerHTML = fullHtml;
+  }
+
+  function markCollected(id) {
+    const item = HP.virtualTenants[0].mail.find(m => m.id === id);
+    if (item) { item.collected = true; renderMail(); }
   }
 
   function renderFeed() {
@@ -246,24 +277,36 @@
       <div class="community-post">
         <div class="post-header">
           <div class="post-avatar" style="background:${p.color}">${p.initials}</div>
-          <div class="post-meta">
-            <h4>${p.author}</h4>
-            <span>${p.time}</span>
-          </div>
-          ${p.pinned ? '<div class="pinned-badge">📌 Pinned</div>' : ''}
+          <div class="post-meta"><h4>${p.author}</h4><span>${p.time}</span></div>
+          ${p.pinned ? '<div class="pinned-badge">Pinned</div>' : ''}
         </div>
         <div class="post-body">${p.body}</div>
         <div class="post-actions">
           <button>👍 ${p.likes}</button>
-          <button> ${p.replies} replies</button>
+          <button>Reply · ${p.replies}</button>
         </div>
-      </div>
-    `).join('');
+      </div>`).join('');
+  }
+
+  function addPost() {
+    const text = document.getElementById('newPost').value;
+    if (!text.trim()) return;
+    HP.communityPosts.unshift({ author:'Carr Financial', initials:'DC', color:'#1A9B8C', time:'Just now', body:text, likes:0, replies:0, pinned:false });
+    document.getElementById('newPost').value = '';
+    renderFeed();
+  }
+
+  function sendMsg() {
+    const text = document.getElementById('msgInput').value;
+    if (!text.trim()) return;
+    const thread = document.getElementById('msgThread');
+    thread.innerHTML += `<div class="msg-bubble sent">${text}<div class="msg-time">You · Just now</div></div>`;
+    document.getElementById('msgInput').value = '';
+    thread.scrollTop = thread.scrollHeight;
   }
 
   renderMail();
   renderFeed();
 </script>
-
 </body>
 </html>
