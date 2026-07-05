@@ -297,10 +297,13 @@
 <script src="js/supabase-maintenance.js"></script>
 <script>
   function showSection(id, el) {
-    document.querySelectorAll('.portal-section').forEach(s => s.classList.remove('active'));
-    document.getElementById('sec-' + id).classList.add('active');
-    document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
-    if (el) el.classList.add('active');
+    try {
+      document.querySelectorAll('.portal-section').forEach(s => s.classList.remove('active'));
+      const sec = document.getElementById('sec-' + id);
+      if (sec) sec.classList.add('active');
+      document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+      if (el) el.classList.add('active');
+    } catch(e) { console.error('showSection error:', e); }
   }
 
   function openModal(id) { document.getElementById(id).classList.add('open'); }
@@ -549,15 +552,15 @@
   let liveRequests = [];
 
   async function loadLiveMaintenance() {
+    if (window._maintSub) { window._maintSub(); window._maintSub = null; }
     liveRequests = await HP_DB.fetchAll();
     renderLiveMaint();
-    HP_DB.subscribe(updated => {
+    window._maintSub = HP_DB.subscribe(updated => {
       updated.forEach(u => {
         const idx = liveRequests.findIndex(r => r.id === u.id);
         if (idx >= 0) liveRequests[idx] = u; else liveRequests.unshift(u);
       });
       renderLiveMaint();
-      // Flash live indicator
       const el = document.getElementById('maintLive');
       if (el) { el.style.background = '#2ECC71'; setTimeout(() => el.style.background = '', 1000); }
     });
@@ -639,9 +642,10 @@
   // ── Live bookings ─────────────────────────────────────────
   let liveBookings = [];
   async function loadLiveBookings() {
+    if (window._bookingSub) { window._bookingSub(); window._bookingSub = null; }
     liveBookings = await HP_BOOKINGS.fetchAll();
     renderLiveBookings();
-    HP_BOOKINGS.subscribe(rows => {
+    window._bookingSub = HP_BOOKINGS.subscribe(rows => {
       rows.forEach(r => { const i = liveBookings.findIndex(b => b.id === r.id); if (i>=0) liveBookings[i]=r; else liveBookings.unshift(r); });
       renderLiveBookings();
       flashNotif('New booking received!');
@@ -663,9 +667,10 @@
   // ── Live prospects ────────────────────────────────────────
   let liveProspects = [];
   async function loadLiveProspects() {
+    if (window._prospectSub) { window._prospectSub(); window._prospectSub = null; }
     liveProspects = await HP_PROSPECTS.fetchAll();
     renderLiveProspects();
-    HP_PROSPECTS.subscribe(rows => {
+    window._prospectSub = HP_PROSPECTS.subscribe(rows => {
       rows.forEach(r => { const i = liveProspects.findIndex(p => p.id === r.id); if (i>=0) liveProspects[i]=r; else liveProspects.unshift(r); });
       renderLiveProspects();
       flashNotif('New prospect enquiry!');
