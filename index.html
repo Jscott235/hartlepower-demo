@@ -236,6 +236,37 @@
 
     .contact-item strong { font-weight: 600; }
     .contact-item .ci-icon { font-size: 20px; opacity: 0.7; }
+  
+    /* Login dropdown */
+    .login-dropdown { position: relative; }
+    .login-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      min-width: 180px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+      z-index: 1000;
+    }
+    .login-dropdown:hover .login-dropdown-menu { display: block; }
+    .login-dropdown-menu a {
+      display: block;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--dark);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: all 0.15s;
+    }
+    .login-dropdown-menu a:last-child { border-bottom: none; }
+    .login-dropdown-menu a:hover { background: var(--teal-light); color: var(--teal-dark); }
+    .login-dropdown-menu .admin-link { color: var(--mid); font-size: 13px; }
+
   </style>
 </head>
 <body>
@@ -256,7 +287,14 @@
     <li><a href="community.html">Our Community</a></li>
     <li><a href="projects.html">Our Projects</a></li>
     <li><a href="contact.html?from=rooms">Contact</a></li>
-    <li><a href="tenant.html" class="nav-cta">Tenant Login</a></li>
+    <li class="login-dropdown">
+    <a class="btn nav-cta" style="cursor:pointer;">Login ▾</a>
+    <div class="login-dropdown-menu">
+      <a href="tenant.html">Tenant Portal</a>
+      <a href="virtual-tenant.html">Virtual Office Portal</a>
+      <a href="admin.html" class="admin-link">Staff Dashboard</a>
+    </div>
+  </li>
   </ul>
 </nav>
 
