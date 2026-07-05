@@ -208,6 +208,7 @@
       <div class="alert alert-warning" style="cursor:pointer;" onclick="this.style.display='none'">
         Fire alarm test this Friday 11 July at 12:00 noon. Do not evacuate — this is a test.
       </div>
+      <div id="visitNotification" style="display:none;" class="alert alert-info" style="cursor:pointer;"></div>
 
       <div class="grid-2-portal">
         <div class="portal-card">
@@ -295,42 +296,42 @@
     <!-- MAINTENANCE -->
     <div class="portal-section" id="sec-maintenance">
       <div class="page-header">
-        <div><h1>Maintenance</h1><p>Report issues and track their resolution</p></div>
-        <button class="btn btn-primary" onclick="document.getElementById('maintForm').style.display='block'">New request</button>
+        <div><h1>Maintenance</h1><p>Live — updates in real time</p></div>
+        <button class="btn btn-primary" onclick="document.getElementById('tenantMaintForm').style.display='block'">New request</button>
       </div>
 
-      <div class="portal-card" id="maintForm" style="display:none;margin-bottom:20px;">
-        <div class="portal-card-header"><h4>Submit a request</h4><button onclick="this.closest('#maintForm').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--mid);">✕</button></div>
+      <div class="portal-card" id="tenantMaintForm" style="display:none;margin-bottom:20px;">
+        <div class="portal-card-header"><h4>Submit a request</h4><button onclick="document.getElementById('tenantMaintForm').style.display='none'" style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--mid);">✕</button></div>
         <div class="form-group"><label>Issue summary</label><input type="text" id="maint-title" placeholder="e.g. Radiator not working"></div>
-        <div class="form-group"><label>Description</label><textarea placeholder="Describe the issue in detail..."></textarea></div>
+        <div class="form-group"><label>Description</label><textarea id="maint-desc" placeholder="Describe the issue in detail..."></textarea></div>
         <div class="form-group"><label>Location</label>
-          <select><option>My office (Room 7)</option><option>Corridor / common area</option><option>Car park</option><option>Kitchen</option><option>Toilets</option><option>Other</option></select>
+          <select id="maint-loc"><option>My office (Room 7)</option><option>Corridor / common area</option><option>Car park</option><option>Kitchen</option><option>Toilets</option><option>Other</option></select>
         </div>
-        <button class="btn btn-primary" onclick="submitMaint()">Submit request</button>
+        <button class="btn btn-primary" onclick="submitTenantMaint()">Submit request</button>
       </div>
 
       <div class="portal-card">
-        <div class="portal-card-header"><h4>Open requests</h4></div>
-        <div class="maint-row">
-          <div class="priority-dot p-medium"></div>
-          <div class="maint-info">
-            <strong>Radiator making noise</strong>
-            <p>Room 7 · Submitted 3 July 2025</p>
-            <p><span class="tag tag-teal" style="padding:2px 8px;font-size:11px;">In progress</span></p>
-          </div>
-        </div>
+        <div class="portal-card-header"><h4>My requests</h4><span class="tag tag-teal" id="tenantMaintLive">Live</span></div>
+        <div id="tenantMaintList"><div style="padding:20px;text-align:center;color:var(--mid);font-size:14px;">Loading...</div></div>
       </div>
+    </div>
 
-      <div class="portal-card">
-        <div class="portal-card-header"><h4>Resolved</h4></div>
-        <div class="maint-row">
-          <div class="priority-dot p-low"></div>
-          <div class="maint-info">
-            <strong>Ceiling light flickering</strong>
-            <p>Room 7 · Submitted 12 June · Resolved 14 June 2025</p>
-            <p><span class="tag tag-green" style="padding:2px 8px;font-size:11px;">Resolved</span></p>
-          </div>
+    <!-- VISIT RESPONSE MODAL -->
+    <div class="modal-overlay" id="visitModal">
+      <div class="modal">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <h3>Visit proposed</h3>
+          <button onclick="document.getElementById('visitModal').classList.remove('open')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--mid);">✕</button>
         </div>
+        <div id="visitModalContent"></div>
+        <div id="rescheduleForm" style="display:none;">
+          <div class="form-group" style="margin-top:12px;"><label>Propose alternative time</label><input type="datetime-local" id="alt-datetime"></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:16px;">
+          <button class="btn btn-outline" onclick="document.getElementById('rescheduleForm').style.display='block';this.style.display='none'">Request reschedule</button>
+          <button class="btn btn-primary" style="flex:1;" onclick="respondToVisit('accepted')">Accept visit</button>
+        </div>
+        <button class="btn btn-outline btn-full" id="confirmRescheduleBtn" style="display:none;margin-top:8px;" onclick="respondToVisit('reschedule_requested')">Confirm reschedule request</button>
       </div>
     </div>
 
@@ -445,6 +446,7 @@
 </div>
 
 <script src="js/data.js"></script>
+<script src="js/supabase-maintenance.js"></script>
 <script>
   function showSection(id, el) {
     document.querySelectorAll('.portal-section').forEach(s => s.classList.remove('active'));
@@ -498,10 +500,6 @@
       </div>
     `).join('');
   }
-
-  function submitMaint() {
-    const title = document.getElementById('maint-title').value;
-    if (!title) { alert('Please enter an issue summary'); return; }
     document.getElementById('maintForm').style.display = 'none';
     alert('Maintenance request submitted. The team will be in touch shortly.');
   }

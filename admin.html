@@ -189,21 +189,10 @@
 
     <!-- MAINTENANCE -->
     <div class="portal-section" id="sec-maintenance">
-      <div class="page-header"><div><h1>Maintenance</h1><p>All requests from tenants</p></div></div>
+      <div class="page-header"><div><h1>Maintenance</h1><p>Live — updates in real time</p></div><span class="tag tag-teal" id="maintLive">Live</span></div>
       <div class="portal-card">
-        <div class="portal-card-header"><h4>Open</h4></div>
-        <div id="maintOpenList"></div>
-      </div>
-      <div class="portal-card" style="margin-top:20px;">
-        <div class="portal-card-header"><h4>Resolved</h4></div>
-        <div class="maint-row">
-          <div class="priority-dot p-low"></div>
-          <div class="maint-info">
-            <strong>Ceiling light flickering — Room 7</strong>
-            <p>Mitchell Creative · Submitted 12 Jun · Resolved 14 Jun 2025</p>
-          </div>
-          <span class="tag tag-green">Resolved</span>
-        </div>
+        <div class="portal-card-header"><h4>Open requests</h4><span id="maintCount" class="tag tag-gold">Loading...</span></div>
+        <div id="maintOpenList"><div style="padding:20px;text-align:center;color:var(--mid);font-size:14px;">Loading...</div></div>
       </div>
     </div>
 
@@ -305,6 +294,7 @@
 </div>
 
 <script src="js/data.js"></script>
+<script src="js/supabase-maintenance.js"></script>
 <script>
   function showSection(id, el) {
     document.querySelectorAll('.portal-section').forEach(s => s.classList.remove('active'));
@@ -353,13 +343,7 @@
     el.textContent = code;
     el.classList.add('revealed');
     setTimeout(() => { el.textContent = '••••'; el.classList.remove('revealed'); }, 5000);
-  }
-
-  function openMaintModal(id) {
-    const m = HP.maintenance.find(x => x.id === id);
-    document.getElementById('maintModalContent').innerHTML = `
-      <div style="background:var(--light);border-radius:10px;padding:14px;margin-bottom:16px;">
-        <strong style="font-size:14px;">${m.issue}</strong>
+  }</strong>
         <p style="font-size:13px;color:var(--mid);margin:4px 0 0;">${m.room} · ${m.building} · ${m.tenant}</p>
         <p style="font-size:13px;color:var(--mid);">${m.description}</p>
       </div>`;
@@ -508,18 +492,8 @@
         </div>
       </div>`).join('');
 
-    // Maintenance full
-    document.getElementById('maintOpenList').innerHTML = HP.maintenance.map(m => `
-      <div class="maint-row">
-        <div class="priority-dot p-${m.priority}"></div>
-        <div class="maint-info">
-          <strong>${m.issue}</strong>
-          <p>${m.room} · ${m.building} · ${m.tenant}</p>
-          <p style="font-size:13px;color:var(--dark);">${m.description}</p>
-          <span style="font-size:11px;color:var(--mid);">Submitted ${m.submitted} · <span class="tag tag-${m.status === 'open' ? 'gold' : 'teal'}" style="font-size:11px;">${m.status}</span></span>
-        </div>
-        <button class="btn btn-primary btn-sm" onclick="openMaintModal(${m.id})">Update</button>
-      </div>`).join('');
+    // Maintenance — loaded from Supabase
+    loadLiveMaintenance();
 
     // Community feed
     document.getElementById('adminCommunityFeed').innerHTML = HP.communityPosts.map(p => `
@@ -538,6 +512,98 @@
   }
 
   renderAll();
+
+  // ── Live maintenance ──────────────────────────────────────
+  let liveRequests = [];
+
+  async function loadLiveMaintenance() {
+    liveRequests = await HP_DB.fetchAll();
+    renderLiveMaint();
+    HP_DB.subscribe(updated => {
+      updated.forEach(u => {
+        const idx = liveRequests.findIndex(r => r.id === u.id);
+        if (idx >= 0) liveRequests[idx] = u; else liveRequests.unshift(u);
+      });
+      renderLiveMaint();
+      // Flash live indicator
+      const el = document.getElementById('maintLive');
+      if (el) { el.style.background = '#2ECC71'; setTimeout(() => el.style.background = '', 1000); }
+    });
+  }
+
+  function renderLiveMaint() {
+    const open = liveRequests.filter(r => r.status !== 'resolved');
+    const countEl = document.getElementById('maintCount');
+    if (countEl) countEl.textContent = open.length + ' open';
+    const dashEl = document.getElementById('dashMaintenance');
+    const listEl = document.getElementById('maintOpenList');
+    const html = liveRequests.map(m => `
+      <div class="maint-row" id="mrow-${m.id}">
+        <div class="priority-dot p-${m.priority}"></div>
+        <div class="maint-info">
+          <strong>${m.issue}</strong>
+          <p>${m.room} · ${m.building} · ${m.tenant} (${m.business})</p>
+          ${m.description ? `<p style="font-size:13px;color:var(--dark);">${m.description}</p>` : ''}
+          <div style="margin-top:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            ${statusBadge(m.status)}
+            ${m.proposed_time ? `<span style="font-size:12px;color:var(--mid);">Visit: ${formatTime(m.proposed_time)}</span>` : ''}
+            ${m.tenant_response ? `<span style="font-size:12px;color:var(--teal);font-weight:600;">Tenant: ${m.tenant_response === 'accepted' ? 'Accepted visit' : 'Requested reschedule'}</span>` : ''}
+            ${m.admin_notes ? `<span style="font-size:12px;color:var(--mid);">Note: ${m.admin_notes}</span>` : ''}
+          </div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openAdminMaintModal('${m.id}')">
+          ${m.status === 'awaiting_confirmation' ? 'View response' : m.status === 'reschedule_requested' ? 'Reschedule' : 'Schedule visit'}
+        </button>
+      </div>`).join('') || '<p style="padding:16px;color:var(--mid);font-size:14px;">No open requests</p>';
+    if (dashEl) dashEl.innerHTML = html;
+    if (listEl) listEl.innerHTML = html;
+  }
+
+  async function openAdminMaintModal(id) {
+    const m = liveRequests.find(r => r.id === id);
+    document.getElementById('maintModalContent').innerHTML = `
+      <div style="background:var(--light);border-radius:10px;padding:14px;margin-bottom:16px;">
+        <strong style="font-size:14px;">${m.issue}</strong>
+        <p style="font-size:13px;color:var(--mid);margin:4px 0;">${m.room} · ${m.building} · ${m.tenant}</p>
+        ${m.description ? `<p style="font-size:13px;color:var(--mid);">${m.description}</p>` : ''}
+        <div style="margin-top:8px;">${statusBadge(m.status)}</div>
+        ${m.proposed_time ? `<p style="font-size:13px;margin-top:6px;"><strong>Proposed visit:</strong> ${formatTime(m.proposed_time)}</p>` : ''}
+        ${m.tenant_response === 'reschedule_requested' ? '<div class="alert alert-warning" style="margin-top:8px;">Tenant has requested a reschedule.</div>' : ''}
+        ${m.tenant_response === 'accepted' ? '<div class="alert alert-success" style="margin-top:8px;">Tenant confirmed the visit time.</div>' : ''}
+      </div>
+      <div class="form-group">
+        <label>Propose visit date & time</label>
+        <input type="datetime-local" id="visit-datetime" value="${m.proposed_time ? m.proposed_time.slice(0,16) : ''}">
+      </div>`;
+    document.getElementById('maint-status').value =
+      m.status === 'open' ? 'Open' :
+      m.status === 'awaiting_confirmation' ? 'In progress' :
+      m.status === 'confirmed' ? 'In progress' : 'Open';
+    document.getElementById('maint-notes').value = m.admin_notes || '';
+    // Store id for save
+    document.getElementById('maintModal').dataset.maintId = id;
+    openModal('maintModal');
+  }
+
+  async function saveMaint() {
+    const id = document.getElementById('maintModal').dataset.maintId;
+    const visitTime = document.getElementById('visit-datetime') ? document.getElementById('visit-datetime').value : null;
+    const notes = document.getElementById('maint-notes').value;
+    const update = {
+      status: visitTime ? 'awaiting_confirmation' : 'in-progress',
+      proposed_time: visitTime ? new Date(visitTime).toISOString() : null,
+      proposed_by: 'admin',
+      tenant_response: null,
+      admin_notes: notes
+    };
+    await HP_DB.update(id, update);
+    const idx = liveRequests.findIndex(r => r.id === id);
+    if (idx >= 0) liveRequests[idx] = { ...liveRequests[idx], ...update };
+    renderLiveMaint();
+    closeModal('maintModal');
+    alert(visitTime ? 'Visit proposed — tenant will be notified.' : 'Maintenance updated.');
+  }
+
 </script>
 </body>
 </html>
