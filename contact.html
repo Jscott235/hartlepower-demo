@@ -280,6 +280,29 @@
 </footer>
 
 <script>
+  // Auto-fill from URL params
+  const params = new URLSearchParams(window.location.search);
+  const from = params.get('from');
+  const prefills = {
+    rooms:   { subject: 'Room hire',       message: "Hi, I'd like to enquire about hiring a room at Greenbank. " },
+    office:  { subject: 'Office enquiry',  message: "Hi, I'm interested in renting an office at HartlePower. " },
+    virtual: { subject: 'Virtual office',  message: "Hi, I'd like to find out more about the virtual office service. " },
+    projects:{ subject: 'General enquiry', message: "Hi, I came across your community projects and wanted to get in touch. " },
+    ev:      { subject: 'General enquiry', message: "Hi, I'm interested in the EV charging facilities at Greenbank. " },
+  };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    if (from && prefills[from]) {
+      const { subject, message } = prefills[from];
+      document.querySelectorAll('.subject-btn').forEach(b => {
+        if (b.textContent.trim() === subject) b.classList.add('active');
+      });
+      document.getElementById('f-message').value = message;
+      document.getElementById('f-message').focus();
+      document.getElementById('f-message').setSelectionRange(message.length, message.length);
+    }
+  });
+
   function selectSubject(el) {
     document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
     el.classList.add('active');
