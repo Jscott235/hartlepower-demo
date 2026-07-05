@@ -338,7 +338,8 @@
     <!-- NOTICES -->
     <div class="portal-section" id="sec-notices">
       <div class="page-header"><div><h1>Notices</h1><p>Updates from the HartlePower team</p></div></div>
-      <div class="notice-item unread">
+      <div id="noticesSection"></div>
+      <!-- static fallback -->      <div class="notice-item unread">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
           <h4>Fire alarm test — Friday 11 July</h4>
           <span class="tag tag-gold">Unread</span>
@@ -526,6 +527,51 @@
 
   renderFeed();
   renderRooms();
+
+  // ── Live notices ──────────────────────────────────────────
+  let liveNotices_tenant = [];
+  async function loadLiveNotices() {
+    liveNotices_tenant = await HP_NOTICES.fetchAll();
+    renderNotices();
+    HP_NOTICES.subscribe(rows => {
+      rows.forEach(r => liveNotices_tenant.unshift(r));
+      renderNotices();
+      showNoticeBanner(rows[0]);
+    });
+  }
+
+  function renderNotices() {
+    const el = document.getElementById('noticesSection');
+    if (!el) return;
+    const targets = ['all', 'greenbank', 'all'];
+    const relevant = liveNotices_tenant.filter(n => targets.includes(n.target));
+    el.innerHTML = relevant.map((n, i) => `
+      <div class="notice-item ${i===0 ? 'unread' : ''}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <h4>${n.title}</h4>
+          ${i===0 ? '<span class="tag tag-gold">New</span>' : ''}
+        </div>
+        <p>${n.body}</p>
+        <div class="notice-meta">From HartlePower · ${new Date(n.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'long'})}</div>
+      </div>`).join('') || '<p style="color:var(--mid);font-size:14px;padding:10px 0;">No notices</p>';
+  }
+
+  function showNoticeBanner(n) {
+    let el = document.getElementById('liveNoticeBanner');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'liveNoticeBanner';
+      el.style.cssText = 'position:fixed;top:80px;right:20px;background:var(--teal);color:white;padding:14px 20px;border-radius:12px;font-size:14px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.2);max-width:320px;cursor:pointer;';
+      el.onclick = () => el.style.display='none';
+      document.body.appendChild(el);
+    }
+    el.innerHTML = '<strong style="display:block;margin-bottom:4px;">New notice from HartlePower</strong>' + n.title;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 6000);
+  }
+
+  loadLiveNotices();
+
 </script>
 </body>
 </html>

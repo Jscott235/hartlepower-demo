@@ -533,6 +533,7 @@
 </div>
 
 <script src="js/data.js"></script>
+<script src="js/supabase-maintenance.js"></script>
 <script>
   let selectedRoom = null;
   let selectedSlot = null;
@@ -655,11 +656,30 @@
     document.getElementById('bookStep3').style.display = 'block';
   }
 
-  function confirmBooking() {
-    document.getElementById('s-email').textContent = document.getElementById('f-email').value;
+  async function confirmBooking() {
+    const email = document.getElementById('f-email').value;
+    const name = document.getElementById('f-name').value;
+    const org = document.getElementById('f-org').value;
+    const dateVal = document.getElementById('bookingDate').value;
+    const timeStr = selectedSlot + '–' + (parseInt(selectedSlot)+1).toString().padStart(2,'0') + ':00';
+
+    // Write to Supabase
+    await HP_BOOKINGS.insert({
+      room: selectedRoom.name,
+      building: selectedRoom.building,
+      booker_name: name,
+      booker_email: email,
+      booker_org: org,
+      date: dateVal,
+      time_slot: timeStr,
+      paid: true,
+      status: 'confirmed'
+    });
+
+    document.getElementById('s-email').textContent = email;
     document.getElementById('s-room').textContent = selectedRoom.name;
-    document.getElementById('s-time').textContent = selectedSlot + '–' + (parseInt(selectedSlot)+1).toString().padStart(2,'0') + ':00';
-    document.getElementById('s-date').textContent = new Date(document.getElementById('bookingDate').value).toLocaleDateString('en-GB');
+    document.getElementById('s-time').textContent = timeStr;
+    document.getElementById('s-date').textContent = new Date(dateVal).toLocaleDateString('en-GB');
     document.getElementById('s-total').innerHTML = '<strong style="color:var(--teal);">£' + selectedRoom.rate + '.00</strong>';
     document.getElementById('bookStep3').style.display = 'none';
     document.getElementById('bookSuccess').style.display = 'block';

@@ -346,6 +346,7 @@
 </section>
 
 <script src="js/data.js"></script>
+<script src="js/supabase-maintenance.js"></script>
 <script>
   let selectedOffices = [];
 
@@ -440,9 +441,30 @@
     }
   }
 
-  function submitInterest() {
+  async function submitInterest() {
     const name = document.getElementById('f-name').value;
     const email = document.getElementById('f-email').value;
+    const biz = document.getElementById('f-biz').value;
+    const phone = document.getElementById('f-phone').value;
+    const bizType = document.getElementById('f-type').value;
+    const headcount = document.getElementById('f-headcount').value;
+    const budget = document.getElementById('f-budget').value;
+    const moveIn = document.getElementById('f-movein').value;
+
+    const selected = HP.offices.filter(o => selectedOffices.includes(o.id)).map(o => o.name);
+
+    await HP_PROSPECTS.insert({
+      name, email,
+      business: biz,
+      phone,
+      business_type: bizType,
+      headcount,
+      budget,
+      move_in: moveIn,
+      interested_rooms: selected,
+      status: 'new'
+    });
+
     document.getElementById('s-name').textContent = name;
     document.getElementById('s-email').textContent = email;
     document.getElementById('confirmPanel').style.display = 'none';

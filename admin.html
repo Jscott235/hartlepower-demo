@@ -95,7 +95,7 @@
     <div class="portal-section active" id="sec-dashboard">
       <div class="page-header">
         <div><h1>Good morning</h1><p>Sunday 5 July 2025 — Greenbank & Business Hub</p></div>
-        <button class="btn btn-primary" onclick="showSection('notices',null)">Send notice</button>
+        <div style="display:flex;gap:10px;"><button class="btn btn-primary" onclick="showSection('notices',null)">Send notice</button><button class="btn" style="background:#FDEAEA;color:var(--danger);border:1.5px solid #F5BABA;" onclick="DEMO_RESET()">Reset demo</button></div>
       </div>
       <div class="stat-row">
         <div class="stat-card"><div class="label">Occupied offices</div><div class="value teal">3<span style="font-size:18px;color:var(--mid);">/8</span></div><div class="sub">3 vacant · 2 viewing booked</div></div>
@@ -311,18 +311,33 @@
     el.classList.add('active');
   }
 
-  function sendNotice() {
+  async function sendNotice() {
     const title = document.getElementById('notice-title').value;
+    const body = document.getElementById('notice-body').value;
     if (!title) { alert('Please enter a title'); return; }
+    const target = document.querySelector('.notice-type-btn.active').textContent.toLowerCase().includes('all') ? 'all'
+      : document.querySelector('.notice-type-btn.active').textContent.toLowerCase().includes('greenbank') ? 'greenbank'
+      : document.querySelector('.notice-type-btn.active').textContent.toLowerCase().includes('hub') ? 'hub'
+      : document.querySelector('.notice-type-btn.active').textContent.toLowerCase().includes('virtual') ? 'virtual' : 'all';
+    await HP_NOTICES.insert({ title, body: body || '(No message body)', target });
     document.getElementById('notice-title').value = '';
     document.getElementById('notice-body').value = '';
     document.getElementById('noticeSuccess').style.display = 'flex';
     setTimeout(() => document.getElementById('noticeSuccess').style.display = 'none', 3000);
   }
 
-  function saveBooking() {
+  async function saveBooking() {
+    const room = document.querySelector('#newBookingModal select').value;
+    const name = document.querySelector('#newBookingModal input[type=text]').value;
+    const email = document.querySelector('#newBookingModal input[type=email]').value;
+    const date = document.querySelector('#newBookingModal input[type=date]').value;
+    const slot = document.querySelectorAll('#newBookingModal select')[1].value;
+    if (!name || !date) { alert('Please fill in name and date'); return; }
+    await HP_BOOKINGS.insert({ room, building: room.includes('Greenbank') ? 'Greenbank' : 'Business Hub', booker_name: name, booker_email: email || '', booker_org: '', date, time_slot: slot, paid: false, status: 'confirmed' });
     closeModal('newBookingModal');
-    alert('Booking saved. Confirmation email sent.');
+    liveBookings = await HP_BOOKINGS.fetchAll();
+    renderLiveBookings();
+    alert('Booking saved.');
   }
 
   function saveMaint() {
