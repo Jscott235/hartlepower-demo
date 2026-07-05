@@ -358,11 +358,28 @@
     el.textContent = code;
     el.classList.add('revealed');
     setTimeout(() => { el.textContent = '••••'; el.classList.remove('revealed'); }, 5000);
-  }</strong>
+  }
+
+  async function openAdminMaintModal(id) {
+    const m = liveRequests.find(r => r.id === id);
+    if (!m) return;
+    document.getElementById('maintModalContent').innerHTML = `
+      <div style="background:var(--light);border-radius:10px;padding:14px;margin-bottom:16px;">
+        <strong style="font-size:14px;">${m.issue}</strong>
         <p style="font-size:13px;color:var(--mid);margin:4px 0 0;">${m.room} · ${m.building} · ${m.tenant}</p>
         <p style="font-size:13px;color:var(--mid);">${m.description}</p>
+        <div style="margin-top:8px;">${statusBadge(m.status)}</div>
+        ${m.proposed_time ? `<p style="font-size:13px;margin-top:6px;"><strong>Proposed visit:</strong> ${formatTime(m.proposed_time)}</p>` : ''}
+        ${m.tenant_response === 'reschedule_requested' ? '<div class="alert alert-warning" style="margin-top:8px;">Tenant has requested a reschedule.</div>' : ''}
+        ${m.tenant_response === 'accepted' ? '<div class="alert alert-success" style="margin-top:8px;">Tenant confirmed the visit time.</div>' : ''}
+      </div>
+      <div class="form-group">
+        <label>Propose visit date & time</label>
+        <input type="datetime-local" id="visit-datetime" value="${m.proposed_time ? m.proposed_time.slice(0,16) : ''}">
       </div>`;
     document.getElementById('maint-status').value = m.status === 'open' ? 'Open' : m.status === 'in-progress' ? 'In progress' : 'Resolved';
+    document.getElementById('maint-notes').value = m.admin_notes || '';
+    document.getElementById('maintModal').dataset.maintId = id;
     openModal('maintModal');
   }
 
@@ -417,7 +434,7 @@
           <strong>${m.issue}</strong>
           <p>${m.room} · ${m.tenant}</p>
         </div>
-        <button class="btn btn-outline btn-sm" onclick="openMaintModal(${m.id})">Update</button>
+        <button class="btn btn-outline btn-sm" onclick="openAdminMaintModal(`${m.id}`)">Update</button>
       </div>`).join('');
 
     // Full room inventory
