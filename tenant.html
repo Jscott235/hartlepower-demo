@@ -588,6 +588,55 @@
 
   loadLiveNotices();
 
+  // ── Missing functions ──────────────────────────────
+  async function submitTenantMaint() {
+    const title = document.getElementById('maint-title')?.value?.trim();
+    const desc = document.getElementById('maint-desc')?.value?.trim();
+    if (!title || !desc) { alert('Please fill in the issue summary and description.'); return; }
+    try {
+      await HP_DB.insert({
+        tenant: 'Sarah Mitchell',
+        business: 'Mitchell Creative',
+        room: 'Room 7',
+        building: 'Greenbank',
+        issue: title,
+        description: desc,
+        status: 'open',
+        priority: 'medium'
+      });
+      document.getElementById('maint-title').value = '';
+      document.getElementById('maint-desc').value = '';
+      closeModal('maintModal');
+      showToast('Maintenance request submitted. HartlePower will be in touch shortly.');
+    } catch(e) {
+      alert('Failed to submit request. Please try again.');
+    }
+  }
+
+  async function respondToVisit(response) {
+    try {
+      const prospects = await HP_PROSPECTS.fetchAll();
+      const pending = prospects.find(p => p.status === 'awaiting_confirmation');
+      if (!pending) { alert('No pending visit found.'); return; }
+      await HP_PROSPECTS.update(pending.id, { status: response === 'accepted' ? 'confirmed' : 'reschedule_requested' });
+      showToast(response === 'accepted' ? 'Visit confirmed. HartlePower will send a calendar invite.' : 'Reschedule request sent to HartlePower.');
+      loadLiveData();
+    } catch(e) {
+      alert('Failed to update visit. Please try again.');
+    }
+  }
+
+  function showToast(msg) {
+    let el = document.getElementById('liveToast') || document.createElement('div');
+    el.id = 'liveToast';
+    el.style.cssText = 'position:fixed;top:80px;right:20px;background:var(--teal);color:white;padding:14px 20px;border-radius:12px;font-size:14px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.2);max-width:320px;cursor:pointer;';
+    el.onclick = () => el.style.display = 'none';
+    document.body.appendChild(el);
+    el.innerHTML = msg;
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 5000);
+  }
+
 </script>
 <script src="js/bug-report.js"></script>
 

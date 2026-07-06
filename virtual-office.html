@@ -130,6 +130,7 @@
     .login-dropdown-menu .admin-link { color: var(--mid); font-size: 13px; }
 
   
+    html, body { overflow-x: hidden; max-width: 100%; }
     @media (max-width: 768px) {
       .page-hero { padding: 48px 20px 40px !important; }
       .page-hero h1 { font-size: 30px !important; line-height: 1.15 !important; }
@@ -150,6 +151,14 @@
       footer { padding: 40px 20px 0 !important; }
       .footer-grid { grid-template-columns: 1fr !important; }
       .footer-bottom { flex-direction: column !important; text-align: center !important; }
+      .page-hero { padding: 48px 20px 36px !important; }
+      .hero-split { display: block !important; gap: 0 !important; }
+      .hero-split > div:first-child { margin-bottom: 28px !important; }
+      .includes-section, .how-section { padding: 48px 20px !important; }
+      .steps-row { grid-template-columns: 1fr 1fr !important; gap: 16px !important; }
+      .plans-section { padding: 48px 20px !important; }
+      .signup-section { padding: 48px 20px !important; }
+
     }
   </style>
 </head>

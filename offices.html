@@ -180,6 +180,7 @@
     .login-dropdown-menu .admin-link { color: var(--mid); font-size: 13px; }
 
   
+    html, body { overflow-x: hidden; max-width: 100%; }
     @media (max-width: 768px) {
       .page-hero { padding: 56px 20px 40px !important; }
       .page-hero h1 { font-size: 30px !important; line-height: 1.15 !important; }
@@ -200,6 +201,13 @@
       footer { padding: 40px 20px 0 !important; }
       .footer-grid { grid-template-columns: 1fr !important; }
       .footer-bottom { flex-direction: column !important; text-align: center !important; }
+      .page-hero { padding: 48px 20px 36px !important; }
+      .page-hero h1 { font-size: 26px !important; }
+      [style*="padding:60px 40px"], [style*="padding: 60px 40px"] { padding: 40px 20px !important; }
+      [style*="grid-template-columns:2fr 1fr 1fr 1fr"] { display: block !important; }
+      [style*="grid-template-columns:2fr 1fr 1fr 1fr"] > * { margin-bottom: 24px !important; }
+      .enquiry-form { padding: 24px 18px !important; }
+
     }
   </style>
 </head>

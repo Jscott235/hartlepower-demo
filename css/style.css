@@ -1,3 +1,9 @@
+/* ─── GLOBAL OVERFLOW FIX ─────────────────────────── */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap');
 
 :root {
@@ -52,6 +58,7 @@ nav {
   position: sticky;
   top: 37px;
   z-index: 999;
+  /* Mobile: top reset handled in @media block */
   box-shadow: 0 2px 12px rgba(26,155,140,0.08);
 }
 
@@ -764,4 +771,111 @@ footer a:hover { color: var(--teal); }
   .grid-4 { grid-template-columns: 1fr; }
   .slot-grid { grid-template-columns: repeat(2, 1fr); }
   .btn-lg { padding: 14px 22px; font-size: 15px; }
+}
+
+/* ─── INLINE STYLE MOBILE OVERRIDES ────────────────── */
+@media (max-width: 768px) {
+  /* Fix pages with inline padding:80px 40px sections */
+  [style*="padding:80px 40px"],
+  [style*="padding: 80px 40px"] {
+    padding: 48px 20px !important;
+  }
+  [style*="padding:80px"],
+  [style*="padding: 80px"] {
+    padding: 48px 20px !important;
+  }
+  [style*="padding:60px"],
+  [style*="padding: 60px"] {
+    padding: 40px 20px !important;
+  }
+
+  /* Fix inline 2-col grids */
+  [style*="grid-template-columns:1fr 1fr"],
+  [style*="grid-template-columns: 1fr 1fr"],
+  [style*="grid-template-columns:2fr 1fr"],
+  [style*="grid-template-columns: 2fr 1fr"],
+  [style*="grid-template-columns:1fr 2fr"],
+  [style*="grid-template-columns: 1fr 2fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  /* Fix inline 3-col+ grids */
+  [style*="grid-template-columns:repeat(3"],
+  [style*="grid-template-columns: repeat(3"],
+  [style*="grid-template-columns:repeat(4"],
+  [style*="grid-template-columns: repeat(4"] {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* Fix inline flex rows that should stack */
+  [style*="display:flex"][style*="gap:40px"],
+  [style*="display:flex"][style*="gap: 40px"],
+  [style*="display:flex"][style*="gap:60px"],
+  [style*="display:flex"][style*="gap: 60px"],
+  [style*="display:flex"][style*="gap:80px"],
+  [style*="display:flex"][style*="gap: 80px"] {
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  /* Fix max-width constraints that cause overflow */
+  [style*="max-width:720px"],
+  [style*="max-width: 720px"],
+  [style*="max-width:700px"],
+  [style*="max-width: 700px"] {
+    max-width: 100% !important;
+  }
+
+  /* Page hero sections across all pages */
+  .page-hero {
+    padding: 60px 20px 40px !important;
+  }
+  .page-hero h1 { font-size: 26px !important; line-height: 1.2 !important; }
+  .page-hero p { font-size: 14px !important; }
+
+  /* Supporters strip */
+  .supporters-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  /* Nav sticky position on pages with demo banner */
+  nav {
+    top: 0 !important;
+  }
+
+  /* Forms */
+  .form-row {
+    flex-direction: column !important;
+  }
+
+  /* Buttons in groups */
+  .btn-group {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  .btn-group .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* Modal */
+  .modal-overlay { padding: 12px !important; }
+  .modal { 
+    padding: 24px 18px !important;
+    max-height: 85vh !important;
+    overflow-y: auto !important;
+  }
+
+  /* Table wraps */
+  .table-wrap { overflow-x: auto !important; }
+  table { min-width: 500px; }
+}
+
+@media (max-width: 480px) {
+  .supporters-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .stat-row { grid-template-columns: 1fr 1fr !important; }
 }
