@@ -742,9 +742,10 @@ footer a:hover { color: var(--teal); }
   .grid-3 { grid-template-columns: 1fr; }
   .grid-4 { grid-template-columns: 1fr 1fr; }
 
-  footer { padding: 40px 16px 0; }
-  .footer-grid { grid-template-columns: 1fr; gap: 24px; }
-  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  footer { padding: 32px 20px 0; }
+  .footer-grid { display: block; }
+  .footer-grid > div:not(:first-child) { display: none; } /* Hide nav cols — hamburger covers it */
+  .footer-bottom { flex-direction: column; gap: 6px; text-align: center; margin-top: 20px; }
 
   .slot-grid { grid-template-columns: repeat(3, 1fr); }
   .modal { padding: 24px 18px; }
