@@ -6,6 +6,7 @@
   <title>Tenant Portal — HartlePower</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
+    html, body { overflow-x: hidden; max-width: 100%; }
     body { background: #F0FAF9; }
 
     .tenant-header {
@@ -143,8 +144,18 @@
     .login-dropdown-menu a:hover { background: var(--teal-light); color: var(--teal-dark); }
     .login-dropdown-menu .staff-link { color: var(--mid); font-size: 13px; }
   
+    html, body { overflow-x: hidden; max-width: 100%; }
     @media (max-width: 900px) {
       .app-layout { flex-direction: column; }
+      .main-content { padding: 16px !important; }
+      .page-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .page-header h1 { font-size: 22px !important; }
+      .tenant-header { flex-wrap: wrap !important; }
+      .tenant-meta { margin-left: 0 !important; margin-top: 8px !important; }
+      .contract-bar { flex-direction: column !important; gap: 16px !important; }
+      .portal-card { padding: 16px !important; }
+      .grid-2 { grid-template-columns: 1fr !important; }
+      .modal { padding: 24px 18px !important; }
       .section-content { padding: 16px; }
       .stat-row { grid-template-columns: 1fr 1fr; }
     }

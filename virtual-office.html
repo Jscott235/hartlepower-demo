@@ -131,37 +131,25 @@
 
   
     @media (max-width: 768px) {
-      .plans-grid { grid-template-columns: 1fr !important; }
-      .features-grid { grid-template-columns: 1fr !important; }
-      .footer-grid { grid-template-columns: 1fr !important; }
-      .footer-bottom { flex-direction: column !important; text-align: center; }
-      footer { padding: 40px 16px 0 !important; }
-    }
-      html, body { overflow-x: hidden; max-width: 100%; }
-    @media (max-width: 768px) {
-      .section { padding: 40px 20px !important; }
-      .section-sm { padding: 28px 20px !important; }
-      .page-hero { padding: 60px 20px 40px !important; }
-      .page-hero h1 { font-size: 28px !important; }
-      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr !important; }
-      [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
-      footer { padding: 40px 20px 0 !important; }
-      .footer-grid { grid-template-columns: 1fr !important; }
-      .footer-bottom { flex-direction: column !important; text-align: center !important; }
-    }
-  
-    @media (max-width: 768px) {
-      .hero-split { grid-template-columns: 1fr !important; gap: 32px !important; }
       .page-hero { padding: 48px 20px 40px !important; }
-      .signup-card { padding: 24px 20px !important; }
+      .page-hero h1 { font-size: 30px !important; line-height: 1.15 !important; }
+      .hero-split { grid-template-columns: 1fr !important; gap: 32px !important; display: block !important; }
+      .signup-card { padding: 24px 20px !important; margin-top: 24px !important; }
       .price-badge { flex-wrap: wrap !important; font-size: 14px !important; }
       .price-badge strong { font-size: 32px !important; }
+      .plans-grid { grid-template-columns: 1fr !important; }
       .includes-section { padding: 48px 20px !important; }
       .includes-grid { grid-template-columns: 1fr !important; gap: 16px !important; margin-top: 28px !important; }
+      .features-grid { grid-template-columns: 1fr !important; }
       .how-section { padding: 48px 20px !important; }
       .steps-row { grid-template-columns: 1fr 1fr !important; gap: 20px !important; margin-top: 28px !important; }
       .notice-box { padding: 16px 20px !important; margin: 20px !important; }
-      [style*="padding: 0 40px"] { padding: 0 20px !important; }
+      [style*="grid-template-columns: repeat(3"] { display: block !important; }
+      [style*="grid-template-columns: repeat(4"] { grid-template-columns: 1fr 1fr !important; }
+      section, div[style*="padding:"] { padding-left: 20px !important; padding-right: 20px !important; }
+      footer { padding: 40px 20px 0 !important; }
+      .footer-grid { grid-template-columns: 1fr !important; }
+      .footer-bottom { flex-direction: column !important; text-align: center !important; }
     }
   </style>
 </head>

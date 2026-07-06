@@ -6,6 +6,7 @@
   <title>Admin Dashboard — HartlePower</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
+    html, body { overflow-x: hidden; max-width: 100%; }
     body { background: #F0FAF9; }
     .stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
     .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px; }
@@ -61,8 +62,18 @@
     .modal-overlay.open { opacity: 1; pointer-events: all; }
     .modal { background: var(--white); border-radius: 20px; padding: 36px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
   
+    html, body { overflow-x: hidden; max-width: 100%; }
     @media (max-width: 900px) {
       .app-layout { flex-direction: column; }
+      .main-content { padding: 16px !important; }
+      .page-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .page-header h1 { font-size: 22px !important; }
+      .stat-row { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+      .grid-2 { grid-template-columns: 1fr !important; }
+      .grid-dash-3 { grid-template-columns: 1fr !important; }
+      .portal-card { padding: 16px !important; }
+      .modal { padding: 24px 18px !important; border-radius: 16px !important; }
+      .notice-type-grid { grid-template-columns: 1fr 1fr 1fr !important; }
       .admin-grid { grid-template-columns: 1fr; }
       .stats-row { grid-template-columns: 1fr 1fr; }
     }

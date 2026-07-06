@@ -6,6 +6,7 @@
   <title>Virtual Tenant Portal — HartlePower</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
+    html, body { overflow-x: hidden; max-width: 100%; }
     body { background: #F0FAF9; }
     .portal-section { display: none; }
     .portal-section.active { display: block; }
@@ -46,8 +47,18 @@
     .doc-info span { font-size: 12px; color: var(--mid); }
     .grid-vt { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
   
+    html, body { overflow-x: hidden; max-width: 100%; }
     @media (max-width: 900px) {
       .app-layout { flex-direction: column; }
+      .main-content { padding: 16px !important; }
+      .page-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .page-header h1 { font-size: 22px !important; }
+      .address-card { flex-direction: column !important; gap: 16px !important; }
+      .divider { display: none !important; }
+      .grid-vt { grid-template-columns: 1fr !important; }
+      .portal-card { padding: 16px !important; }
+      .modal { padding: 24px 18px !important; }
+      .msg-bubble { max-width: 88% !important; }
       .vt-content { padding: 16px; }
     }
   </style>
