@@ -78,19 +78,19 @@
       <span class="demo-tag">ADMIN</span>
     </div>
     <div class="sidebar-section-label">Overview</div>
-    <a href="#" class="active" onclick="showSection('dashboard',this)">Dashboard</a>
-    <a href="#" onclick="showSection('rooms',this)">Room Inventory</a>
-    <a href="#" onclick="showSection('bookings',this)">Bookings</a>
+    <a href="#" class="active" onclick="event.preventDefault();showSection('dashboard',this)">Dashboard</a>
+    <a href="#" onclick="event.preventDefault();showSection('rooms',this)">Room Inventory</a>
+    <a href="#" onclick="event.preventDefault();showSection('bookings',this)">Bookings</a>
     <div class="sidebar-section-label">Tenants</div>
-    <a href="#" onclick="showSection('tenants',this)">Office Tenants</a>
-    <a href="#" onclick="showSection('virtual',this)">Virtual Tenants</a>
-    <a href="#" onclick="showSection('codes',this)">Room Codes</a>
+    <a href="#" onclick="event.preventDefault();showSection('tenants',this)">Office Tenants</a>
+    <a href="#" onclick="event.preventDefault();showSection('virtual',this)">Virtual Tenants</a>
+    <a href="#" onclick="event.preventDefault();showSection('codes',this)">Room Codes</a>
     <div class="sidebar-section-label">Enquiries</div>
-    <a href="#" onclick="showSection('prospects',this)">Prospects <span class="notif-dot"></span></a>
+    <a href="#" onclick="event.preventDefault();showSection('prospects',this)">Prospects <span class="notif-dot"></span></a>
     <div class="sidebar-section-label">Operations</div>
-    <a href="#" onclick="showSection('maintenance',this)">Maintenance <span class="notif-dot"></span></a>
-    <a href="#" onclick="showSection('notices',this)">Send Notice</a>
-    <a href="#" onclick="showSection('community',this)">Community Board</a>
+    <a href="#" onclick="event.preventDefault();showSection('maintenance',this)">Maintenance <span class="notif-dot"></span></a>
+    <a href="#" onclick="event.preventDefault();showSection('notices',this)">Send Notice</a>
+    <a href="#" onclick="event.preventDefault();showSection('community',this)">Community Board</a>
     <div class="sidebar-section-label"></div>
     <a href="index.html">View website</a>
   </div>
@@ -309,6 +309,13 @@
       if (sec) sec.classList.add('active');
       document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
       if (el) el.classList.add('active');
+      // Close mobile sidebar after navigation
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      const toggle = document.getElementById('sidebarToggle');
+      if (sidebar) sidebar.classList.remove('open');
+      if (overlay) overlay.classList.remove('open');
+      if (toggle) toggle.textContent = '☰';
     } catch(e) { console.error('showSection error:', e); }
   }
 

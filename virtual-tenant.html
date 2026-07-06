@@ -64,14 +64,14 @@
     </div>
     <div class="sidebar-section-label">My Account</div>
     <a href="#" class="active" onclick="showSection('dashboard',this)">Dashboard</a>
-    <a href="#" onclick="showSection('mail',this)">Mail log <span class="notif-dot"></span></a>
-    <a href="#" onclick="showSection('billing',this)">Billing</a>
-    <a href="#" onclick="showSection('documents',this)">Documents</a>
+    <a href="#" onclick="event.preventDefault();showSection('mail',this)">Mail log <span class="notif-dot" id="mailNotifDot"></span></a>
+    <a href="javascript:void(0)" onclick="showSection('billing',this)">Billing</a>
+    <a href="javascript:void(0)" onclick="showSection('documents',this)">Documents</a>
     <div class="sidebar-section-label">Building</div>
-    <a href="#" onclick="showSection('notices',this)">Notices <span class="notif-dot"></span></a>
-    <a href="#" onclick="showSection('community',this)">Community board</a>
+    <a href="javascript:void(0)" onclick="showSection('notices',this)">Notices <span class="notif-dot"></span></a>
+    <a href="javascript:void(0)" onclick="showSection('community',this)">Community board</a>
     <div class="sidebar-section-label">Support</div>
-    <a href="#" onclick="showSection('message',this)">Message HartlePower</a>
+    <a href="javascript:void(0)" onclick="showSection('message',this)">Message HartlePower</a>
     <a href="virtual-office.html">Manage subscription</a>
     <a href="index.html">Back to website</a>
   </div>
@@ -108,12 +108,12 @@
       </div>
 
       <div class="alert alert-warning" onclick="this.style.display='none'" style="cursor:pointer;">
-        You have <strong>1 item waiting for collection</strong> — received 3 July from HMRC. Collect Mon–Thu before 5pm.
+        <span id="mailDashAlert">You have <strong>1 item waiting for collection</strong> — received 3 July from HMRC. Collect Mon–Thu before 5pm.</span>
       </div>
 
       <div class="grid-vt">
         <div class="portal-card">
-          <div class="portal-card-header"><h4>Recent mail</h4><a href="#" onclick="showSection('mail',null)" style="font-size:13px;color:var(--teal);text-decoration:none;">Full mail log</a></div>
+          <div class="portal-card-header"><h4>Recent mail</h4><a href="javascript:void(0)" onclick="showSection('mail',null)" style="font-size:13px;color:var(--teal);text-decoration:none;">Full mail log</a></div>
           <div id="dashMail"></div>
         </div>
         <div>
@@ -140,9 +140,9 @@
     <!-- MAIL LOG -->
     <div class="portal-section" id="sec-mail">
       <div class="page-header"><div><h1>Mail log</h1><p>All post received on your behalf</p></div></div>
-      <div class="alert alert-warning">1 item awaiting collection — please collect during office hours.</div>
+      <div class="alert alert-warning" id="mailSectionAlert">1 item awaiting collection — please collect during office hours.</div>
       <div class="portal-card">
-        <div class="portal-card-header"><h4>All mail</h4><span class="tag tag-gold">1 uncollected</span></div>
+        <div class="portal-card-header"><h4>All mail</h4><span class="tag tag-gold" id="mailUncollectedBadge">1 uncollected</span></div>
         <div id="fullMailLog"></div>
       </div>
     </div>
@@ -279,7 +279,38 @@
 
   function markCollected(id) {
     const item = HP.virtualTenants[0].mail.find(m => m.id === id);
-    if (item) { item.collected = true; renderMail(); }
+    if (!item) return;
+    item.collected = true;
+    renderMail();
+    updateMailBadges();
+  }
+
+  function updateMailBadges() {
+    const uncollected = HP.virtualTenants[0].mail.filter(m => !m.collected).length;
+    // Update alert on dashboard
+    const dashAlert = document.getElementById('mailDashAlert');
+    if (dashAlert) {
+      if (uncollected === 0) {
+        dashAlert.style.display = 'none';
+      } else {
+        dashAlert.textContent = uncollected + ' item' + (uncollected > 1 ? 's' : '') + ' waiting for collection — received from HMRC. Collect Mon–Thu before 5pm.';
+      }
+    }
+    // Update mail section alert
+    const mailAlert = document.getElementById('mailSectionAlert');
+    if (mailAlert) {
+      mailAlert.style.display = uncollected === 0 ? 'none' : 'block';
+      mailAlert.textContent = uncollected + ' item' + (uncollected > 1 ? 's' : '') + ' awaiting collection — please collect during office hours.';
+    }
+    // Update uncollected badge in card header
+    const mailBadge = document.getElementById('mailUncollectedBadge');
+    if (mailBadge) {
+      mailBadge.textContent = uncollected === 0 ? 'All collected' : uncollected + ' uncollected';
+      mailBadge.className = uncollected === 0 ? 'tag tag-green' : 'tag tag-gold';
+    }
+    // Update sidebar notif dot
+    const mailNotifDot = document.getElementById('mailNotifDot');
+    if (mailNotifDot) mailNotifDot.style.display = uncollected > 0 ? 'inline-block' : 'none';
   }
 
   function renderFeed() {
