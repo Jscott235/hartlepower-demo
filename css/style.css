@@ -647,11 +647,8 @@ footer a:hover { color: var(--teal); }
 /* Pinned */
 .pinned-badge { font-size: 11px; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; margin-left: auto; display: flex; align-items: center; gap: 4px; }
 
-/* ═══════════════════════════════════════════════════
-   MOBILE-FIRST RESPONSIVE  — added
-═══════════════════════════════════════════════════ */
+/* ─── RESPONSIVE ───────────────────────────────────── */
 
-/* Hamburger button */
 .nav-hamburger {
   display: none;
   background: none;
@@ -660,9 +657,7 @@ footer a:hover { color: var(--teal); }
   padding: 8px;
   border-radius: 8px;
   color: var(--dark);
-  transition: background 0.2s;
 }
-.nav-hamburger:hover { background: var(--teal-light); }
 .nav-hamburger span {
   display: block;
   width: 22px;
@@ -676,18 +671,42 @@ footer a:hover { color: var(--teal); }
 .nav-hamburger.open span:nth-child(2) { opacity: 0; }
 .nav-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
-/* Mobile nav drawer */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  bottom: 80px;
+  left: 16px;
+  z-index: 600;
+  background: var(--teal);
+  color: var(--white);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(26,155,140,0.4);
+}
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 499;
+}
+.sidebar-overlay.open { display: block; }
+
 @media (max-width: 768px) {
   nav {
     padding: 0 16px;
     height: 60px;
-    top: 33px;
-    flex-wrap: wrap;
-    position: relative;
+    position: sticky;
+    top: 0;
   }
-
+  .demo-banner { font-size: 10px; padding: 6px 12px; }
   .nav-hamburger { display: block; }
-
   .nav-links {
     display: none;
     flex-direction: column;
@@ -703,83 +722,27 @@ footer a:hover { color: var(--teal); }
     z-index: 998;
     box-shadow: 0 8px 24px rgba(0,0,0,0.1);
   }
-
   .nav-links.open { display: flex; }
-
   .nav-links li { width: 100%; }
   .nav-links a { display: block; padding: 10px 14px; font-size: 15px; }
+  .login-dropdown { position: static; }
+  .login-dropdown-menu { position: static; box-shadow: none; }
 
-  /* Login dropdown in mobile nav */
-  .login-dropdown { position: static !important; }
-  .login-dropdown-menu {
-    position: static !important;
-    display: none !important;
-    box-shadow: none;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 4px;
-    margin-top: 4px;
-  }
-  .login-dropdown.open .login-dropdown-menu { display: block !important; }
+  .section { padding: 40px 16px; }
+  .section-sm { padding: 28px 16px; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .grid-4 { grid-template-columns: 1fr 1fr; }
 
-  /* Demo banner smaller */
-  .demo-banner { font-size: 10px; padding: 6px 12px; top: 0; }
-
-  /* Sections */
-  .section { padding: 48px 16px; }
-  .section-sm { padding: 32px 16px; }
-
-  /* Grids collapse to 1 col */
-  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-
-  /* Footer */
+  footer { padding: 40px 16px 0; }
   .footer-grid { grid-template-columns: 1fr; gap: 24px; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
-  footer { padding: 40px 16px 0; }
 
-  /* Supporters */
-  .supporters { padding: 24px 16px; }
-  .supporters-logos { gap: 20px; }
-
-  /* Cards */
-  .card { border-radius: 12px; }
-
-  /* Slot grid */
   .slot-grid { grid-template-columns: repeat(3, 1fr); }
-
-  /* Modal */
-  .modal { padding: 24px 20px; border-radius: 16px; }
-
-  /* Page-level hero/stats often use inline padding — override */
-  [style*="padding: 80px 40px"],
-  [style*="padding: 60px 40px"],
-  [style*="padding: 48px 40px"] {
-    padding: 40px 16px !important;
-  }
+  .modal { padding: 24px 18px; }
+  .supporters { padding: 24px 16px; }
 }
 
-@media (max-width: 480px) {
-  .section { padding: 40px 14px; }
-  .slot-grid { grid-template-columns: repeat(2, 1fr); }
-  h1 { font-size: 32px; }
-  h2 { font-size: 24px; }
-  h3 { font-size: 18px; }
-
-  .btn-lg { padding: 14px 24px; font-size: 15px; }
-
-  /* Stats strip on homepage */
-  [class*="stats-grid"] {
-    grid-template-columns: repeat(2, 1fr) !important;
-  }
-
-  /* Tenant grid */
-  .tenants-grid { grid-template-columns: 1fr !important; }
-
-  /* Projects grid */
-  .projects-grid { grid-template-columns: 1fr !important; }
-}
-
-/* ── Sidebar/portal pages ─────────────────────────── */
 @media (max-width: 900px) {
   .sidebar {
     transform: translateX(-100%);
@@ -788,56 +751,16 @@ footer a:hover { color: var(--teal); }
     top: 0;
     height: 100vh;
   }
-
   .sidebar.open { transform: translateX(0); }
-
-  .main-content {
-    margin-left: 0;
-    padding: 20px 16px;
-  }
-
+  .main-content { margin-left: 0; padding: 20px 16px; }
   .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .page-header h1 { font-size: 22px; }
-
-  /* Mobile sidebar toggle button */
-  .sidebar-toggle {
-    display: flex !important;
-    position: fixed;
-    bottom: 80px;
-    left: 16px;
-    z-index: 600;
-    background: var(--teal);
-    color: var(--white);
-    border: none;
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(26,155,140,0.4);
-  }
-
-  /* Overlay when sidebar open */
-  .sidebar-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 499;
-  }
-  .sidebar-overlay.open { display: block; }
+  .sidebar-toggle { display: flex; }
 }
 
-/* Inline footer grids from rooms/offices pages */
-@media (max-width: 768px) {
-  footer > div[style*="grid-template-columns: 2fr"] {
-    grid-template-columns: 1fr !important;
-  }
-  footer > div[style*="display:flex"][style*="justify-content:space-between"] {
-    flex-direction: column !important;
-    gap: 8px;
-    text-align: center;
-  }
+@media (max-width: 480px) {
+  h1 { font-size: 30px; }
+  h2 { font-size: 22px; }
+  .grid-4 { grid-template-columns: 1fr; }
+  .slot-grid { grid-template-columns: repeat(2, 1fr); }
+  .btn-lg { padding: 14px 22px; font-size: 15px; }
 }
