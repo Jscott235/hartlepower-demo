@@ -118,6 +118,18 @@
       .footer-bottom { flex-direction: column !important; text-align: center; }
       footer { padding: 40px 16px 0 !important; }
     }
+      html, body { overflow-x: hidden; max-width: 100%; }
+    @media (max-width: 768px) {
+      .section { padding: 40px 20px !important; }
+      .section-sm { padding: 28px 20px !important; }
+      .page-hero { padding: 60px 20px 40px !important; }
+      .page-hero h1 { font-size: 28px !important; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr !important; }
+      [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+      footer { padding: 40px 20px 0 !important; }
+      .footer-grid { grid-template-columns: 1fr !important; }
+      .footer-bottom { flex-direction: column !important; text-align: center !important; }
+    }
   </style>
 </head>
 <body>
