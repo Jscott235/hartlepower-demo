@@ -363,10 +363,20 @@
       }
 
       /* ── About split ── */
-      .about-split { flex-direction: column !important; gap: 24px !important; }
-      .about-img { width: 100% !important; }
-      .about-img img { width: 100% !important; height: 220px !important; object-fit: cover !important; border-radius: 16px !important; }
-      .about-badge { bottom: 16px !important; right: 16px !important; }
+      .about-split {
+        display: block !important;
+      }
+      .about-img {
+        width: 100% !important;
+        margin-bottom: 24px !important;
+        border-radius: 16px !important;
+        overflow: hidden !important;
+      }
+      .about-img img { width: 100% !important; height: 220px !important; object-fit: cover !important; }
+      .about-badge { bottom: 16px !important; left: 16px !important; padding: 12px 16px !important; }
+      .about-badge strong { font-size: 22px !important; }
+      .about-content h2 { font-size: 24px !important; }
+      .about-content p { font-size: 14px !important; line-height: 1.7 !important; }
 
       /* ── Dark section ── */
       [style*="background:var(--dark)"][style*="padding:80px 40px"] {
@@ -395,7 +405,26 @@
       }
 
       /* ── Contact strip ── */
-      .contact-strip, [class*="contact"] { padding: 32px 20px !important; }
+      .contact-strip { padding: 28px 20px !important; }
+      .contact-strip-inner {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0 !important;
+      }
+      .contact-info {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 16px !important;
+        width: 100% !important;
+        margin-bottom: 20px !important;
+      }
+      .contact-item {
+        font-size: 13px !important;
+        gap: 6px !important;
+        align-items: flex-start !important;
+      }
+      .contact-item .ci-icon { font-size: 16px !important; margin-top: 2px; }
+      .contact-strip .btn { width: 100% !important; justify-content: center !important; }
 
       /* ── Supporters ── */
       .supporters { padding: 32px 20px !important; }
@@ -417,14 +446,18 @@
       h3 { font-size: 18px !important; }
 
       /* ── Inline grid overrides (elements using inline style) ── */
-      [style*="display:grid"], [style*="display: grid"] {
+      /* Only target inline grids with 3+ columns */
+      [style*="grid-template-columns:repeat(3"],
+      [style*="grid-template-columns:repeat(4"],
+      [style*="grid-template-columns: repeat(3"],
+      [style*="grid-template-columns: repeat(4"] {
         display: block !important;
       }
-      [style*="display:grid"] > *, [style*="display: grid"] > * {
+      [style*="grid-template-columns:repeat(3"] > *,
+      [style*="grid-template-columns:repeat(4"] > *,
+      [style*="grid-template-columns: repeat(3"] > *,
+      [style*="grid-template-columns: repeat(4"] > * {
         margin-bottom: 16px !important;
-      }
-      [style*="display:grid"] > *:last-child, [style*="display: grid"] > *:last-child {
-        margin-bottom: 0 !important;
       }
 
       /* Feedback button — keep accessible */
