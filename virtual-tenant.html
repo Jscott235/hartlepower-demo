@@ -359,5 +359,31 @@
 
 </script>
 <script src="js/bug-report.js"></script>
+
+  <button class="sidebar-toggle" id="sidebarToggle" style="display:none;" title="Menu">☰</button>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+<script>
+  // Mobile sidebar
+  (function(){
+    var toggle = document.getElementById('sidebarToggle');
+    var sidebar = document.querySelector('.sidebar');
+    var overlay = document.getElementById('sidebarOverlay');
+    if(!toggle || !sidebar) return;
+    if(window.innerWidth <= 900) toggle.style.display = 'flex';
+    window.addEventListener('resize', function(){
+      toggle.style.display = window.innerWidth <= 900 ? 'flex' : 'none';
+    });
+    toggle.addEventListener('click', function(){
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('open');
+      toggle.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+    });
+    overlay.addEventListener('click', function(){
+      sidebar.classList.remove('open');
+      overlay.classList.remove('open');
+      toggle.textContent = '☰';
+    });
+  })();
+</script>
 </body>
 </html>
