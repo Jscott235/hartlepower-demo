@@ -149,6 +149,20 @@
       .footer-grid { grid-template-columns: 1fr !important; }
       .footer-bottom { flex-direction: column !important; text-align: center !important; }
     }
+  
+    @media (max-width: 768px) {
+      .hero-split { grid-template-columns: 1fr !important; gap: 32px !important; }
+      .page-hero { padding: 48px 20px 40px !important; }
+      .signup-card { padding: 24px 20px !important; }
+      .price-badge { flex-wrap: wrap !important; font-size: 14px !important; }
+      .price-badge strong { font-size: 32px !important; }
+      .includes-section { padding: 48px 20px !important; }
+      .includes-grid { grid-template-columns: 1fr !important; gap: 16px !important; margin-top: 28px !important; }
+      .how-section { padding: 48px 20px !important; }
+      .steps-row { grid-template-columns: 1fr 1fr !important; gap: 20px !important; margin-top: 28px !important; }
+      .notice-box { padding: 16px 20px !important; margin: 20px !important; }
+      [style*="padding: 0 40px"] { padding: 0 20px !important; }
+    }
   </style>
 </head>
 <body>
@@ -387,7 +401,7 @@
   <div class="footer-grid">
     <div>
       <img src="https://static.wixstatic.com/media/4c82ce_98dcc161f99241cdb58a193f59f7f739~mv2.png/v1/crop/x_220,y_297,w_501,h_169/fill/w_255,h_86,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Untitled%20design%20(27).png" alt="HartlePower" style="height:40px;margin-bottom:16px;">
-      <p style="font-size:14px;line-height:1.7;">Supporting our community since 2017. A not-for-profit Community Interest Company based at Greenbank, Hartlepool.</p>
+      <p style="font-size:14px;line-height:1.7;">Supporting our community since 2015. A not-for-profit Community Interest Company based at Greenbank, Hartlepool.</p>
       <div style="display:flex;gap:12px;margin-top:16px;">
         <a href="https://www.facebook.com/hartlepower/" target="_blank" title="Facebook"
            style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:rgba(255,255,255,0.1);border-radius:8px;color:rgba(255,255,255,0.7);transition:all 0.2s;"
@@ -420,7 +434,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 HartlePower CIC — Company No. 09404055</span>
+    <span>© 2026 HartlePower CIC — Company No. 09404055</span>
     <span style="color:rgba(255,255,255,0.3);font-size:11px;">Demo by <a href="https://launchpadme.co.uk" style="color:var(--teal);">Launchpad Digital Solutions</a></span>
   </div>
 </footer>
@@ -452,5 +466,24 @@
 </script>
 
 <script src="js/bug-report.js"></script>
+<script>
+  // Hamburger nav
+  (function(){
+    var btn = document.getElementById("navHamburger");
+    var links = document.querySelector(".nav-links");
+    if(!btn || !links) return;
+    btn.addEventListener("click", function(e){
+      e.stopPropagation();
+      links.classList.toggle("open");
+      btn.classList.toggle("open");
+    });
+    document.addEventListener("click", function(e){
+      if(!btn.contains(e.target) && !links.contains(e.target)){
+        links.classList.remove("open");
+        btn.classList.remove("open");
+      }
+    });
+  })();
+</script>
 </body>
 </html>

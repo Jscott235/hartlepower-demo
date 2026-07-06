@@ -421,5 +421,24 @@
     });
   })();
 </script>
+<script>
+  // Hamburger nav
+  (function(){
+    var btn = document.getElementById("navHamburger");
+    var links = document.querySelector(".nav-links");
+    if(!btn || !links) return;
+    btn.addEventListener("click", function(e){
+      e.stopPropagation();
+      links.classList.toggle("open");
+      btn.classList.toggle("open");
+    });
+    document.addEventListener("click", function(e){
+      if(!btn.contains(e.target) && !links.contains(e.target)){
+        links.classList.remove("open");
+        btn.classList.remove("open");
+      }
+    });
+  })();
+</script>
 </body>
 </html>
