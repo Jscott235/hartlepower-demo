@@ -184,16 +184,16 @@
     .login-dropdown-menu a:last-child { border-bottom: none; }
     .login-dropdown-menu a:hover { background: var(--teal-light); color: var(--teal-dark); }
     .login-dropdown-menu .admin-link { color: var(--mid); font-size: 13px; }
+
   
     @media (max-width: 768px) {
-      .community-hero { padding: 48px 16px; }
-      .tenants-section { padding: 40px 16px; }
-      .tenants-grid { grid-template-columns: 1fr; }
-      .virtual-section { padding: 40px 16px; }
-      .virtual-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 480px) {
-      .virtual-grid { grid-template-columns: 1fr 1fr; }
+      .tenants-grid { grid-template-columns: 1fr !important; }
+      .virtual-grid { grid-template-columns: 1fr 1fr !important; }
+      .tenants-section { padding: 40px 16px !important; }
+      .virtual-section { padding: 40px 16px !important; }
+      .footer-grid { grid-template-columns: 1fr !important; }
+      .footer-bottom { flex-direction: column !important; text-align: center; }
+      footer { padding: 40px 16px 0 !important; }
     }
   </style>
 </head>
