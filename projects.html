@@ -36,10 +36,17 @@
 
     .project-thumb {
       height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 56px;
+      overflow: hidden;
+      position: relative;
+    }
+    .project-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .project-card:hover .project-thumb img {
+      transform: scale(1.05);
     }
 
     .project-body { padding: 24px; }
@@ -167,16 +174,7 @@
 <div class="projects-grid">
 
   <div class="project-card">
-    <div class="project-thumb" style="background:#E8F7F5;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="none" viewBox="0 0 256 256" stroke="#1A9B8C" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="40" y="80" width="176" height="144" rx="8" fill="none"/>
-            <path d="M16,80l112-64,112,64" fill="none"/>
-            <line x1="128" y1="224" x2="128" y2="144"/>
-            <rect x="96" y="144" width="64" height="80" rx="4" fill="none"/>
-            <line x1="80" y1="120" x2="80" y2="80"/>
-            <line x1="176" y1="120" x2="176" y2="80"/>
-          </svg>
-        </div>
+    <div class="project-thumb"><img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&h=360&fit=crop&auto=format" alt="Restoration Project" loading="lazy"></div>
     <div class="project-body">
       <div class="project-status" style="margin-bottom:10px;"><div class="status-dot active"></div><span style="color:var(--success);">Active</span></div>
       <h3>Restoration Project</h3>
@@ -186,17 +184,7 @@
   </div>
 
   <div class="project-card">
-    <div class="project-thumb" style="background:#FEF3D7;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="none" viewBox="0 0 256 256" stroke="#E8A020" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="48" y="48" width="160" height="176" rx="8" fill="none"/>
-            <path d="M128,48V224" fill="none"/>
-            <path d="M48,128H208" fill="none"/>
-            <path d="M96,88h-16v24h16" fill="none"/>
-            <path d="M176,88h-16v24h16" fill="none"/>
-            <path d="M96,152h-16v24h16" fill="none"/>
-            <path d="M176,152h-16v24h16" fill="none"/>
-          </svg>
-        </div>
+    <div class="project-thumb"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=360&fit=crop&auto=format" alt="HEET Project" loading="lazy"></div>
     <div class="project-body">
       <div class="project-status" style="margin-bottom:10px;"><div class="status-dot active"></div><span style="color:var(--success);">Active</span></div>
       <h3>HEET Project</h3>
@@ -206,14 +194,7 @@
   </div>
 
   <div class="project-card">
-    <div class="project-thumb" style="background:#E8F0FF;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="none" viewBox="0 0 256 256" stroke="#4A6FA5" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="128" cy="128" r="96" fill="none"/>
-            <line x1="32" y1="128" x2="224" y2="128"/>
-            <path d="M128,32c-32,32-48,64-48,96s16,64,48,96" fill="none"/>
-            <path d="M128,32c32,32,48,64,48,96s-16,64-48,96" fill="none"/>
-          </svg>
-        </div>
+    <div class="project-thumb"><img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&h=360&fit=crop&auto=format" alt="Get Connected" loading="lazy"></div>
     <div class="project-body">
       <div class="project-status" style="margin-bottom:10px;"><div class="status-dot active"></div><span style="color:var(--success);">Active</span></div>
       <h3>Get Connected</h3>
@@ -223,14 +204,7 @@
   </div>
 
   <div class="project-card">
-    <div class="project-thumb" style="background:#FFF0F0;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="none" viewBox="0 0 256 256" stroke="#E05252" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="100" cy="100" r="60" fill="none"/>
-            <circle cx="156" cy="100" r="60" fill="none"/>
-            <path d="M128,57a60,60,0,0,1,0,86" fill="none"/>
-            <path d="M128,57a60,60,0,0,0,0,86" fill="none"/>
-          </svg>
-        </div>
+    <div class="project-thumb"><img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&h=360&fit=crop&auto=format" alt="Business for Communities" loading="lazy"></div>
     <div class="project-body">
       <div class="project-status" style="margin-bottom:10px;"><div class="status-dot ongoing"></div><span style="color:var(--gold);">Ongoing</span></div>
       <h3>Business for Communities</h3>
@@ -240,11 +214,7 @@
   </div>
 
   <div class="project-card">
-    <div class="project-thumb" style="background:#F0FFF4;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="none" viewBox="0 0 256 256" stroke="#1A9B8C" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="152,16 56,152 120,152 104,240 200,104 136,104 152,16" fill="none"/>
-          </svg>
-        </div>
+    <div class="project-thumb"><img src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=600&h=360&fit=crop&auto=format" alt="Energy Advice Stall" loading="lazy"></div>
     <div class="project-body">
       <div class="project-status" style="margin-bottom:10px;"><div class="status-dot ongoing"></div><span style="color:var(--gold);">Ongoing</span></div>
       <h3>Energy Advice Stall</h3>
@@ -254,14 +224,7 @@
   </div>
 
   <div class="project-card">
-    <div class="project-thumb" style="background:#F5F0FF;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="none" viewBox="0 0 256 256" stroke="#7B5EA7" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="88" cy="88" r="48" fill="none"/>
-            <path d="M30,208a72,72,0,0,1,116,0" fill="none"/>
-            <path d="M152,32a48,48,0,0,1,0,96" fill="none"/>
-            <path d="M180,208a72,72,0,0,0-28-22" fill="none"/>
-          </svg>
-        </div>
+    <div class="project-thumb"><img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=600&h=360&fit=crop&auto=format" alt="Wheels 2 Work" loading="lazy"></div>
     <div class="project-body">
       <div class="project-status" style="margin-bottom:10px;"><div class="status-dot active"></div><span style="color:var(--success);">Active</span></div>
       <h3>Wheels 2 Work</h3>
@@ -271,14 +234,7 @@
   </div>
 
   <div class="project-card">
-    <div class="project-thumb" style="background:#FFF8E8;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="none" viewBox="0 0 256 256" stroke="#E8A020" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="16" y="96" width="224" height="112" rx="16" fill="none"/>
-            <path d="M188,96V80a60,60,0,0,0-120,0V96" fill="none"/>
-            <circle cx="128" cy="152" r="20" fill="none"/>
-            <line x1="128" y1="172" x2="128" y2="192"/>
-          </svg>
-        </div>
+    <div class="project-thumb"><img src="https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=600&h=360&fit=crop&auto=format" alt="Car Club" loading="lazy"></div>
     <div class="project-body">
       <div class="project-status" style="margin-bottom:10px;"><div class="status-dot ongoing"></div><span style="color:var(--gold);">Ongoing</span></div>
       <h3>Car Club</h3>
@@ -288,19 +244,7 @@
   </div>
 
   <div class="project-card">
-    <div class="project-thumb" style="background:#E8F7E8;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="none" viewBox="0 0 256 256" stroke="#2D8A54" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="128" cy="128" r="40" fill="none"/>
-            <line x1="128" y1="24" x2="128" y2="56"/>
-            <line x1="128" y1="200" x2="128" y2="232"/>
-            <line x1="24" y1="128" x2="56" y2="128"/>
-            <line x1="200" y1="128" x2="232" y2="128"/>
-            <line x1="55" y1="55" x2="79" y2="79"/>
-            <line x1="177" y1="177" x2="201" y2="201"/>
-            <line x1="201" y1="55" x2="177" y2="79"/>
-            <line x1="79" y1="177" x2="55" y2="201"/>
-          </svg>
-        </div>
+    <div class="project-thumb"><img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&h=360&fit=crop&auto=format" alt="West Park Solar School" loading="lazy"></div>
     <div class="project-body">
       <div class="project-status" style="margin-bottom:10px;"><div class="status-dot complete"></div><span style="color:var(--teal);">Completed</span></div>
       <h3>West Park Solar School</h3>
@@ -341,6 +285,18 @@
     <div>
       <img src="https://static.wixstatic.com/media/4c82ce_98dcc161f99241cdb58a193f59f7f739~mv2.png/v1/crop/x_220,y_297,w_501,h_169/fill/w_255,h_86,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Untitled%20design%20(27).png" alt="HartlePower" style="height:40px;margin-bottom:16px;">
       <p style="font-size:14px;line-height:1.7;">Supporting our community since 2017. A not-for-profit Community Interest Company based at Greenbank, Hartlepool.</p>
+      <div style="display:flex;gap:12px;margin-top:16px;">
+        <a href="https://www.facebook.com/hartlepower/" target="_blank" title="Facebook"
+           style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:rgba(255,255,255,0.1);border-radius:8px;color:rgba(255,255,255,0.7);transition:all 0.2s;"
+           onmouseover="this.style.background='#1877F2';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.7)'">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="https://x.com/hartlepower_cic" target="_blank" title="X (Twitter)"
+           style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:rgba(255,255,255,0.1);border-radius:8px;color:rgba(255,255,255,0.7);transition:all 0.2s;"
+           onmouseover="this.style.background='#000';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.7)'">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
     </div>
     <div>
       <h4>Services</h4>
