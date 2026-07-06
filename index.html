@@ -378,13 +378,37 @@
       .about-content h2 { font-size: 24px !important; }
       .about-content p { font-size: 14px !important; line-height: 1.7 !important; }
 
+      /* ── Mission section ── */
+      .mission-grid {
+        display: block !important;
+      }
+      .mission-grid > div:first-child {
+        margin-bottom: 32px !important;
+      }
+      .mission-grid > div:first-child h2 {
+        font-size: 28px !important;
+        line-height: 1.2 !important;
+      }
+      .mission-grid > div:first-child p {
+        font-size: 15px !important;
+        line-height: 1.7 !important;
+      }
+
       /* ── Dark section ── */
       [style*="background:var(--dark)"][style*="padding:80px 40px"] {
         padding: 48px 20px !important;
       }
-      [style*="background:var(--dark)"] [style*="grid-template-columns:repeat(4"] {
-        grid-template-columns: 1fr 1fr !important;
-        gap: 16px !important;
+      .rent-grid {
+        display: block !important;
+      }
+      .rent-grid > div {
+        margin-bottom: 24px !important;
+        padding-bottom: 24px !important;
+        border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+      }
+      .rent-grid > div:last-child {
+        margin-bottom: 0 !important;
+        border-bottom: none !important;
       }
 
       /* ── Cards ── */
@@ -558,7 +582,7 @@
 <!-- Mission section -->
 <section class="section" style="background:var(--white);">
   <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;">
+    <div class="mission-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;">
       <div>
         <div class="section-label">Who we are</div>
         <h2 style="margin-bottom:24px;">Built for Hartlepool.<br>Owned by the community.</h2>
@@ -599,7 +623,7 @@
   <div class="container">
     <div class="section-label" style="color:var(--teal);">What your rent does</div>
     <h2 style="color:var(--white);margin-bottom:48px;max-width:540px;">Every booking. Every tenancy. Every virtual office. It all adds up.</h2>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
+    <div class="rent-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;">
       <div style="border-top:3px solid var(--teal);padding-top:24px;">
         <h3 style="color:var(--white);font-size:18px;margin-bottom:10px;">Free infrastructure for local groups</h3>
         <p style="color:rgba(255,255,255,0.6);font-size:14px;line-height:1.7;">Board rooms, advice, fundraising support and representation — available free to any of Hartlepool's 500+ voluntary and community organisations.</p>
