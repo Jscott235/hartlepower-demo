@@ -140,11 +140,13 @@
     .login-dropdown-menu a:last-child { border-bottom: none; }
     .login-dropdown-menu a:hover { background: var(--teal-light); color: var(--teal-dark); }
     .login-dropdown-menu .admin-link { color: var(--mid); font-size: 13px; }
+
   
     @media (max-width: 768px) {
-      .contact-hero { padding: 48px 16px; }
-      .contact-grid { grid-template-columns: 1fr; }
-      .contact-info { flex-direction: column; gap: 16px; }
+      .contact-grid { grid-template-columns: 1fr !important; }
+      .footer-grid { grid-template-columns: 1fr !important; }
+      .footer-bottom { flex-direction: column !important; text-align: center; }
+      footer { padding: 40px 16px 0 !important; }
     }
   </style>
 </head>
