@@ -195,6 +195,25 @@
       .footer-bottom { flex-direction: column !important; text-align: center; }
       footer { padding: 40px 16px 0 !important; }
     }
+
+    html, body { overflow-x: hidden; max-width: 100%; }
+    @media (max-width: 768px) {
+      .page-hero { padding: 60px 20px 40px !important; }
+      .page-hero h1 { font-size: 28px !important; }
+      .page-hero p { font-size: 15px !important; }
+      .community-intro { padding: 28px 20px !important; }
+      .community-intro p { font-size: 14px !important; }
+      .tenants-section { padding: 40px 20px !important; }
+      .tenants-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+        margin-top: 28px !important;
+      }
+      .tenant-card-header { padding: 20px 20px 0 !important; }
+      .tenant-card-body { padding: 12px 20px 20px !important; }
+      .filter-bar { flex-wrap: wrap !important; gap: 8px !important; padding: 16px 20px !important; }
+      .filter-btn { font-size: 12px !important; padding: 6px 12px !important; }
+    }
   </style>
 </head>
 <body>
@@ -315,126 +334,115 @@
 
 <script src="js/data.js"></script>
 <script>
+  // Tenants sourced from hartlepower.co.uk/hartlepower-community
   const officeTenants = [
-    {
-      name: "Mitchell Creative",
-      type: "Brand & Design Studio",
-      room: "Room 7", building: "Greenbank",
-      desc: "Brand identity, print design and creative direction for businesses across the North East. Sarah and her team specialise in making small businesses look big.",
-      color: "#1A9B8C", initials: "MC",
-      website: "#", email: "sarah@mitchellcreative.co.uk",
-      tags: ["Design", "Branding", "Print"],
-    },
-    {
-      name: "Tees Valley Web",
-      type: "Web Development",
-      room: "Room 9", building: "Business Hub",
-      desc: "Full-stack web development and digital strategy for SMEs across Teesside. Specialists in e-commerce, custom platforms and digital transformation.",
-      color: "#E8A020", initials: "TV",
-      website: "#", email: "james@teesvalleyweb.co.uk",
-      tags: ["Web", "E-commerce", "Digital"],
-    },
-    {
-      name: "Hartlepool Counselling Services",
-      type: "Mental Health & Wellbeing",
-      room: "Suite 3", building: "Greenbank",
-      desc: "Professional counselling and therapeutic services for individuals and organisations. Offering a free 15-minute consultation to all HartlePower community members.",
-      color: "#7B5EA7", initials: "HC",
-      website: "#", email: "priya@hartlepoolcounselling.co.uk",
-      tags: ["Healthcare", "Wellbeing", "Counselling"],
-    },
-    {
-      name: "NorthEast Accountancy",
-      type: "Accountancy & Tax",
-      room: "Room 4", building: "Greenbank",
-      desc: "Specialist accountancy services for sole traders, SMEs and CICs. Expert in charity finance, VAT and payroll across the Tees Valley region.",
-      color: "#2D6A9F", initials: "NA",
-      website: "#", email: "hello@neaccountancy.co.uk",
-      tags: ["Finance", "Accountancy", "Tax"],
-    },
-    {
-      name: "Headland Media",
-      type: "Photography & Video",
-      room: "Room 6", building: "Business Hub",
-      desc: "Commercial photography and video production covering events, product shoots and corporate content across the North East.",
-      color: "#C0392B", initials: "HM",
-      website: "#", email: "info@headlandmedia.co.uk",
-      tags: ["Photography", "Video", "Media"],
-    },
-    {
-      name: "Stranton Training",
-      type: "Professional Training",
-      room: "Room 2", building: "Business Hub",
-      desc: "Accredited workplace training in health & safety, first aid and business skills. Regular courses run from the HartlePower training rooms.",
-      color: "#27AE60", initials: "ST",
-      website: "#", email: "info@strantontraining.co.uk",
-      tags: ["Training", "Health & Safety", "CPD"],
-    },
     {
       name: "Connor's Cuts",
       type: "Barbershop",
-      room: "Ground Floor Studio", building: "Greenbank",
-      desc: "Experienced barber serving Hartlepool clientele from the Greenbank site. Connor graduated from SB International Barbering Academy and brings a relaxed, professional service to the community.",
+      room: "Greenbank", building: "Greenbank",
+      desc: "Connor graduated from SB International Barbering Academy and serves his Hartlepool clientele from the Greenbank site. Drop him a message on Facebook or Instagram to book in.",
       color: "#E8A020", initials: "CC",
-      website: "#", email: "connor@hartlepower.co.uk",
+      website: "#", email: "info@hartlepower.co.uk",
       tags: ["Barbering", "Grooming", "Community"],
     },
     {
       name: "Louise Robinson Ceramics",
-      type: "Ceramic Artist & Studio",
-      room: "Creative Studio", building: "Greenbank",
-      desc: "Louise creates beautiful ceramic tableware — available from her own designs or accepting commission pieces. Inspired by her studies in Ireland, Louise brings craft heritage back to her home town.",
+      type: "Ceramic Artist & Potter",
+      room: "Greenbank", building: "Greenbank",
+      desc: "Louise creates beautiful ceramic tableware — from her own designs or on commission. Inspired by her studies in Ireland, Louise brought her studio back to her hometown of Hartlepool.",
       color: "#C0392B", initials: "LR",
-      website: "#", email: "louise@louiserobinsonce ramics.co.uk",
+      website: "#", email: "info@hartlepower.co.uk",
       tags: ["Ceramics", "Craft", "Commission"],
     },
     {
-      name: "High Tide Solutions",
+      name: "High Tide",
       type: "IT & Cloud Services",
-      room: "Room 11", building: "Business Hub",
-      desc: "Leading independent IT solutions provider across the North East, headed by Andrew Ingham. Specialists in cloud solutions and email systems for a range of business needs.",
+      room: "Greenbank", building: "Greenbank",
+      desc: "Leading independent IT solutions provider across the North East, led by Andrew Ingham. Specialists in cloud solutions and email systems for businesses of all sizes.",
       color: "#1A9B8C", initials: "HT",
-      website: "#", email: "andrew@hightide.co.uk",
+      website: "#", email: "info@hartlepower.co.uk",
       tags: ["IT", "Cloud", "Tech Support"],
     },
     {
-      name: "HRBBS Bookkeeping",
+      name: "HRBBS",
       type: "Bookkeeping & Payroll",
-      room: "Room 5", building: "Greenbank",
-      desc: "Owned by qualified bookkeeper Helen Ryder. Flexible support packages for sole traders to small businesses — covering bookkeeping, payroll, self-assessment, and VAT returns.",
-      color: "#2D6A9F", initials: "HB",
-      website: "#", email: "helen@hrbbs.co.uk",
+      room: "Greenbank", building: "Greenbank",
+      desc: "Qualified bookkeeper Helen Ryder offers flexible support packages from sole traders to small businesses — bookkeeping, payroll, self-assessment and VAT returns.",
+      color: "#2D6A9F", initials: "HR",
+      website: "#", email: "info@hartlepower.co.uk",
       tags: ["Bookkeeping", "Payroll", "VAT"],
     },
     {
       name: "Hartlepool Vision Support",
       type: "Visual Impairment Charity",
-      room: "West Wing", building: "Greenbank",
-      desc: "Supporting those with sight loss and visual impairment in the Hartlepool community for over a century. Providing practical help, advice and connection to those who need it most.",
+      room: "Greenbank", building: "Greenbank",
+      desc: "Over a century of supporting people with sight loss and visual impairment in Hartlepool. Providing practical help, advice and connection to those who need it most.",
       color: "#7B5EA7", initials: "HV",
-      website: "#", email: "info@hartlepoolvisionsupport.org.uk",
+      website: "#", email: "info@hartlepower.co.uk",
       tags: ["Charity", "Disability", "Support"],
     },
     {
-      name: "Active Links",
-      type: "Social Prescribing",
-      room: "Suite 2", building: "Greenbank",
-      desc: "Social Prescribing Link Worker service connecting residents to community activities, groups and support. Placed within Primary Care Networks across the Hartlepool locality.",
-      color: "#27AE60", initials: "AL",
-      website: "#", email: "activelinks@hartlepool.nhs.uk",
+      name: "Philipa Appleby Tuition",
+      type: "Education & Tutoring",
+      room: "Greenbank", building: "Greenbank",
+      desc: "English teacher with over 14 years experience offering one-to-one and small group tuition for all ages and abilities in English and KS1/2 Maths.",
+      color: "#27AE60", initials: "PA",
+      website: "#", email: "info@hartlepower.co.uk",
+      tags: ["Education", "Tutoring", "Maths"],
+    },
+    {
+      name: "XiHu",
+      type: "Massage & Beauty",
+      room: "Greenbank", building: "Greenbank",
+      desc: "Ming is a qualified masseur and beauty technician specialising in traditional Chinese and Swedish massage therapy. She's transformed her space into a relaxing haven for clients.",
+      color: "#C0392B", initials: "XH",
+      website: "#", email: "info@hartlepower.co.uk",
+      tags: ["Wellness", "Beauty", "Massage"],
+    },
+    {
+      name: "Jax Story Gaming From the Heart CIC",
+      type: "Gaming & Young People CIC",
+      room: "Greenbank", building: "Greenbank",
+      desc: "Dave Bradley and Charlotte Bell created this CIC to raise awareness of Gaming Disorder and support young people affected by online gaming addiction.",
+      color: "#16A085", initials: "JS",
+      website: "#", email: "info@hartlepower.co.uk",
+      tags: ["CIC", "Young People", "Gaming"],
+    },
+    {
+      name: "Social Prescribing Link Workers",
+      type: "NHS Primary Care",
+      room: "Greenbank", building: "Greenbank",
+      desc: "Link Worker service connecting Hartlepool residents to community activities, groups and support through Primary Care Networks across the locality.",
+      color: "#27AE60", initials: "SP",
+      website: "#", email: "info@hartlepower.co.uk",
       tags: ["Healthcare", "NHS", "Community"],
+    },
+    {
+      name: "Emerald Associates",
+      type: "Financial Advice",
+      room: "Room 80, Greenbank", building: "Greenbank",
+      desc: "Harrison Smith is a Hartlepool-born financial adviser helping local businesses and individuals plan for the future. Hosts regular networking events from Greenbank.",
+      color: "#27AE60", initials: "EA",
+      website: "#", email: "info@hartlepower.co.uk",
+      tags: ["Finance", "Planning", "Networking"],
+    },
+    {
+      name: "Hartlepool Community Trust",
+      type: "Community Charity",
+      room: "Greenbank", building: "Greenbank",
+      desc: "Supporting, connecting, championing and strengthening civil society in Hartlepool. Provides free advice, funding guidance and governance support to the voluntary sector.",
+      color: "#1A9B8C", initials: "HC",
+      website: "https://www.hartlepoolcommunitytrust.org.uk", email: "info@hartlepower.co.uk",
+      tags: ["Charity", "VCS", "Community"],
     },
   ];
 
+  // Virtual office tenants — illustrative for this demo
   const virtualTenants = [
-    { name: "Carr Financial Consulting", type: "Finance", initials: "CF", color: "#1A9B8C" },
-    { name: "Headland Legal", type: "Legal Services", initials: "HL", color: "#2D6A9F" },
-    { name: "Tees Physio", type: "Physiotherapy", initials: "TP", color: "#E8A020" },
-    { name: "NE Social Media Co", type: "Social Media", initials: "NS", color: "#C0392B" },
-    { name: "Hartlepool Handcraft", type: "Retail", initials: "HH", color: "#7B5EA7" },
-    { name: "Bay View Consulting", type: "Business Consulting", initials: "BV", color: "#27AE60" },
-    { name: "Seaton Print", type: "Print & Design", initials: "SP", color: "#E67E22" },
-    { name: "NE Property Group", type: "Property", initials: "NP", color: "#16A085" },
+    { name: "Virtual Office Member", type: "Example — your business here", initials: "VO", color: "#1A9B8C" },
+    { name: "Virtual Office Member", type: "Example — your business here", initials: "VO", color: "#2D6A9F" },
+    { name: "Virtual Office Member", type: "Example — your business here", initials: "VO", color: "#E8A020" },
+    { name: "Virtual Office Member", type: "Example — your business here", initials: "VO", color: "#7B5EA7" },
   ];
 
   document.getElementById('tenantsGrid').innerHTML = officeTenants.map(t => `
