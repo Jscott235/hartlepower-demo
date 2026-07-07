@@ -8,6 +8,8 @@
   <style>
     html, body { overflow-x: hidden; max-width: 100%; }
     body { background: #F0FAF9; }
+
+    /* Stat cards */
     .stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
     .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px; }
     .stat-card .label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--mid); margin-bottom: 8px; }
@@ -16,6 +18,8 @@
     .stat-card .value.gold { color: var(--gold); }
     .stat-card .value.red { color: var(--danger); }
     .stat-card .sub { font-size: 13px; color: var(--mid); }
+
+    /* Portal layout */
     .portal-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 20px; }
     .portal-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
     .portal-card-header h4 { font-size: 15px; }
@@ -23,6 +27,8 @@
     .portal-section.active { display: block; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     .grid-dash-3 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+
+    /* Rows */
     .room-row { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
     .room-row:last-child { border-bottom: none; }
     .room-status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
@@ -32,8 +38,9 @@
     .room-row-info { flex: 1; }
     .room-row-info strong { font-size: 14px; font-weight: 600; }
     .room-row-info span { font-size: 12px; color: var(--mid); display: block; }
-    .room-code { background: var(--light); border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px; font-size: 13px; font-weight: 700; color: var(--dark); font-family: monospace; letter-spacing: 2px; cursor: pointer; transition: all 0.15s; }
-    .room-code:hover { background: var(--teal); color: var(--white); border-color: var(--teal); }
+    .booking-row { display: flex; align-items: center; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .booking-row:last-child { border-bottom: none; }
+    .booking-row .room-name { font-weight: 600; flex: 1; }
     .maint-row { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--border); }
     .maint-row:last-child { border-bottom: none; }
     .priority-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
@@ -43,26 +50,40 @@
     .maint-info { flex: 1; }
     .maint-info strong { font-size: 14px; font-weight: 600; }
     .maint-info p { font-size: 13px; color: var(--mid); margin: 2px 0; }
-    .prospect-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; background: var(--white); }
-    .prospect-card:last-child { margin-bottom: 0; }
-    .booking-row { display: flex; align-items: center; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
-    .booking-row:last-child { border-bottom: none; }
-    .booking-row .room-name { font-weight: 600; flex: 1; }
-    .tenant-row { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
-    .tenant-row:last-child { border-bottom: none; }
-    .tenant-avatar-sm { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 13px; flex-shrink: 0; }
-    .tenant-row-info { flex: 1; }
-    .tenant-row-info strong { font-size: 14px; font-weight: 600; display: block; }
-    .tenant-row-info span { font-size: 12px; color: var(--mid); }
-    .notice-type-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
-    .notice-type-btn { padding: 8px; border: 1.5px solid var(--border); border-radius: 8px; background: var(--white); cursor: pointer; font-size: 12px; font-weight: 600; text-align: center; transition: all 0.15s; font-family: 'Inter', sans-serif; color: var(--mid); }
-    .notice-type-btn.active { background: var(--teal); color: var(--white); border-color: var(--teal); }
+
+    /* Enquiry / prospect cards */
+    .enquiry-card { border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 12px; background: var(--white); }
+    .enquiry-card:last-child { margin-bottom: 0; }
+
     /* Modal */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
     .modal-overlay.open { opacity: 1; pointer-events: all; }
-    .modal { background: var(--white); border-radius: 20px; padding: 36px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
-  
-    html, body { overflow-x: hidden; max-width: 100%; }
+    .modal { background: var(--white); border-radius: 20px; padding: 36px; max-width: 520px; width: 100%; max-height: 90vh; overflow-y: auto; }
+
+    /* Calendar */
+    .cal-week { display: grid; grid-template-columns: 80px repeat(7,1fr); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .cal-header { background: var(--dark); color: var(--white); font-size: 11px; font-weight: 700; text-align: center; padding: 10px 4px; letter-spacing: 0.5px; text-transform: uppercase; }
+    .cal-time-label { background: var(--light); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); font-size: 11px; color: var(--mid); font-weight: 600; padding: 8px 6px; display: flex; align-items: center; justify-content: flex-end; }
+    .cal-cell { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); min-height: 40px; background: var(--white); position: relative; cursor: pointer; transition: background 0.1s; }
+    .cal-cell:last-child { border-right: none; }
+    .cal-cell:hover { background: #F0FAF9; }
+    .cal-booking { position: absolute; inset: 2px; background: var(--teal); border-radius: 6px; padding: 3px 6px; font-size: 10px; font-weight: 600; color: white; overflow: hidden; cursor: pointer; }
+    .cal-booking.unpaid { background: var(--gold); color: var(--dark); }
+
+    /* Vacant office cards */
+    .office-listing-card { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; background: var(--white); display: flex; gap: 0; margin-bottom: 16px; }
+    .office-listing-img { width: 140px; flex-shrink: 0; object-fit: cover; }
+    .office-listing-body { padding: 18px; flex: 1; }
+    .office-listing-body h4 { margin-bottom: 4px; font-size: 15px; }
+    .office-listing-meta { font-size: 13px; color: var(--mid); margin-bottom: 12px; }
+    .office-listing-price { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--teal); }
+    .office-listing-actions { display: flex; gap: 8px; margin-top: 12px; }
+
+    /* Add office form */
+    .add-office-form { background: var(--light); border: 1.5px dashed var(--border); border-radius: 16px; padding: 24px; margin-bottom: 20px; }
+    .add-office-form h4 { margin-bottom: 16px; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
     @media (max-width: 900px) {
       .app-layout { flex-direction: column; }
       .main-content { padding: 16px !important; }
@@ -73,9 +94,10 @@
       .grid-dash-3 { grid-template-columns: 1fr !important; }
       .portal-card { padding: 16px !important; }
       .modal { padding: 24px 18px !important; border-radius: 16px !important; }
-      .notice-type-grid { grid-template-columns: 1fr 1fr 1fr !important; }
-      .admin-grid { grid-template-columns: 1fr; }
-      .stats-row { grid-template-columns: 1fr 1fr; }
+      .cal-week { grid-template-columns: 50px repeat(7,1fr); font-size: 10px; }
+      .office-listing-card { flex-direction: column; }
+      .office-listing-img { width: 100%; height: 160px; }
+      .form-row-3 { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -90,20 +112,15 @@
     </div>
     <div class="sidebar-section-label">Overview</div>
     <a href="#" class="active" onclick="event.preventDefault();showSection('dashboard',this)">Dashboard</a>
-    <a href="#" onclick="event.preventDefault();showSection('rooms',this)">Room Inventory</a>
-    <a href="#" onclick="event.preventDefault();showSection('bookings',this)">Bookings</a>
-    <div class="sidebar-section-label">Tenants</div>
-    <a href="#" onclick="event.preventDefault();showSection('tenants',this)">Office Tenants</a>
-    <a href="#" onclick="event.preventDefault();showSection('virtual',this)">Virtual Tenants</a>
-    <a href="#" onclick="event.preventDefault();showSection('codes',this)">Room Codes</a>
-    <div class="sidebar-section-label">Enquiries</div>
-    <a href="#" onclick="event.preventDefault();showSection('prospects',this)">Prospects <span class="notif-dot"></span></a>
+    <a href="#" onclick="event.preventDefault();showSection('bookings',this)">Room Bookings</a>
+    <div class="sidebar-section-label">Offices</div>
+    <a href="#" onclick="event.preventDefault();showSection('offices',this)">Vacant Listings</a>
+    <a href="#" onclick="event.preventDefault();showSection('viewings',this)">Viewing Requests <span class="notif-dot" id="viewingDot" style="display:none;"></span></a>
+    <a href="#" onclick="event.preventDefault();showSection('enquiries',this)">Enquiries <span class="notif-dot" id="enquiryDot" style="display:none;"></span></a>
     <div class="sidebar-section-label">Operations</div>
     <a href="#" onclick="event.preventDefault();showSection('maintenance',this)">Maintenance <span class="notif-dot"></span></a>
-    <a href="#" onclick="event.preventDefault();showSection('notices',this)">Send Notice</a>
-    <a href="#" onclick="event.preventDefault();showSection('community',this)">Community Board</a>
     <div class="sidebar-section-label"></div>
-    <a href="index.html">View website</a>
+    <a href="index.html">← View website</a>
   </div>
 
   <div class="main-content">
@@ -111,141 +128,147 @@
     <!-- DASHBOARD -->
     <div class="portal-section active" id="sec-dashboard">
       <div class="page-header">
-        <div><h1>Good morning</h1><p>Sunday 5 July 2025 — Greenbank & Business Hub</p></div>
-        <div style="display:flex;gap:10px;"><button class="btn btn-primary" onclick="showSection('notices',null)">Send notice</button><button class="btn" style="background:#FDEAEA;color:var(--danger);border:1.5px solid #F5BABA;" onclick="DEMO_RESET()">Reset demo</button></div>
+        <div>
+          <h1 id="dashGreeting">Good morning</h1>
+          <p id="dashDate">HartlePower CIC — Business Hub &amp; Greenbank</p>
+        </div>
+        <button class="btn btn-sm" style="background:#FDEAEA;color:var(--danger);border:1.5px solid #F5BABA;" onclick="DEMO_RESET()">Reset demo</button>
       </div>
       <div class="stat-row">
-        <div class="stat-card"><div class="label">Occupied offices</div><div class="value teal">3<span style="font-size:18px;color:var(--mid);">/8</span></div><div class="sub">3 vacant · 2 viewing booked</div></div>
-        <div class="stat-card"><div class="label">Monthly revenue</div><div class="value teal">£1,765</div><div class="sub">Office rent this month</div></div>
-        <div class="stat-card"><div class="label">New prospects</div><div class="value gold">2</div><div class="sub">Awaiting response</div></div>
-        <div class="stat-card"><div class="label">Open maintenance</div><div class="value red">2</div><div class="sub">1 in progress</div></div>
+        <div class="stat-card">
+          <div class="label">Vacant offices</div>
+          <div class="value teal" id="dashVacantCount">—</div>
+          <div class="sub">Available to let</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">New enquiries</div>
+          <div class="value gold" id="dashEnquiryCount">—</div>
+          <div class="sub">Awaiting response</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Viewing requests</div>
+          <div class="value teal" id="dashViewingCount">—</div>
+          <div class="sub">To be booked</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Open maintenance</div>
+          <div class="value red" id="dashMaintCount">—</div>
+          <div class="sub">Awaiting action</div>
+        </div>
       </div>
       <div class="grid-dash-3" style="margin-bottom:20px;">
         <div class="portal-card">
-          <div class="portal-card-header"><h4>Room inventory</h4><a href="#" onclick="showSection('rooms',null)" style="font-size:13px;color:var(--teal);text-decoration:none;">Manage all</a></div>
-          <div id="dashRooms"></div>
+          <div class="portal-card-header"><h4>Today's bookings</h4><a href="#" onclick="showSection('bookings',null)" style="font-size:13px;color:var(--teal);text-decoration:none;">Full calendar</a></div>
+          <div id="dashBookings"><p style="font-size:13px;color:var(--mid);padding:8px 0;">Loading…</p></div>
         </div>
         <div class="portal-card">
-          <div class="portal-card-header"><h4>New prospects</h4><a href="#" onclick="showSection('prospects',null)" style="font-size:13px;color:var(--teal);text-decoration:none;">View all</a></div>
-          <div id="dashProspects"></div>
+          <div class="portal-card-header"><h4>New enquiries</h4><a href="#" onclick="showSection('enquiries',null)" style="font-size:13px;color:var(--teal);text-decoration:none;">View all</a></div>
+          <div id="dashEnquiries"><p style="font-size:13px;color:var(--mid);padding:8px 0;">Loading…</p></div>
         </div>
       </div>
       <div class="grid-2">
         <div class="portal-card">
-          <div class="portal-card-header"><h4>Today's bookings</h4><a href="#" onclick="showSection('bookings',null)" style="font-size:13px;color:var(--teal);text-decoration:none;">Full calendar</a></div>
-          <div id="dashBookings"></div>
+          <div class="portal-card-header"><h4>Vacant offices</h4><a href="#" onclick="showSection('offices',null)" style="font-size:13px;color:var(--teal);text-decoration:none;">Manage listings</a></div>
+          <div id="dashOffices"><p style="font-size:13px;color:var(--mid);padding:8px 0;">Loading…</p></div>
         </div>
         <div class="portal-card">
           <div class="portal-card-header"><h4>Open maintenance</h4><a href="#" onclick="showSection('maintenance',null)" style="font-size:13px;color:var(--teal);text-decoration:none;">All requests</a></div>
-          <div id="dashMaintenance"></div>
+          <div id="dashMaintenance"><p style="font-size:13px;color:var(--mid);padding:8px 0;">Loading…</p></div>
         </div>
       </div>
     </div>
 
-    <!-- ROOM INVENTORY -->
-    <div class="portal-section" id="sec-rooms">
-      <div class="page-header"><div><h1>Room Inventory</h1><p>All offices and hire rooms across both buildings</p></div></div>
-      <div class="portal-card">
-        <div class="portal-card-header"><h4>Offices</h4><span class="tag tag-teal">3 of 4 vacant</span></div>
-        <div id="officeInventory"></div>
-      </div>
-      <div class="portal-card">
-        <div class="portal-card-header"><h4>Hire rooms</h4><span class="tag tag-green">All available today</span></div>
-        <div id="hireInventory"></div>
-      </div>
-    </div>
-
-    <!-- BOOKINGS -->
+    <!-- BOOKINGS + CALENDAR -->
     <div class="portal-section" id="sec-bookings">
       <div class="page-header">
-        <div><h1>Room Bookings</h1><p>All hire room bookings</p></div>
+        <div><h1>Room Bookings</h1><p>Meeting &amp; hire room calendar</p></div>
         <button class="btn btn-primary" onclick="openModal('newBookingModal')">+ Manual booking</button>
       </div>
-      <div class="portal-card">
-        <div class="portal-card-header"><h4>Today — 5 July 2025</h4></div>
-        <div id="bookingsList"></div>
+      <!-- Week nav -->
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">
+        <button class="btn btn-outline btn-sm" onclick="shiftWeek(-1)">← Prev</button>
+        <span id="calWeekLabel" style="font-weight:700;font-size:15px;"></span>
+        <button class="btn btn-outline btn-sm" onclick="shiftWeek(1)">Next →</button>
+        <button class="btn btn-sm" style="margin-left:auto;" onclick="calOffset=0;renderCalendar()">Today</button>
+      </div>
+      <div class="portal-card" style="padding:0;overflow:hidden;">
+        <div class="cal-week" id="calGrid"></div>
       </div>
       <div class="portal-card" style="margin-top:20px;">
-        <div class="portal-card-header"><h4>Upcoming</h4></div>
-        <div class="booking-row"><div class="room-name">Greenbank Boardroom</div><span>8 Jul · St Hilda's Community Centre</span><span>10:00–12:00</span><span class="tag tag-gold">Awaiting payment</span><button class="btn btn-outline btn-sm" onclick="alert('Payment reminder sent.')">Chase payment</button></div>
-        <div class="booking-row"><div class="room-name">Energy Hub Training Room 1</div><span>9 Jul · Hartlepool College</span><span>09:00–17:00</span><span class="tag tag-green">Paid</span><button class="btn btn-outline btn-sm" onclick="alert('Booking confirmed. Email sent.')">Confirm</button></div>
+        <div class="portal-card-header"><h4>Upcoming bookings</h4></div>
+        <div id="bookingsList"><p style="font-size:13px;color:var(--mid);">Loading…</p></div>
       </div>
     </div>
 
-    <!-- TENANTS -->
-    <div class="portal-section" id="sec-tenants">
-      <div class="page-header"><div><h1>Office Tenants</h1><p>All current office tenants</p></div></div>
+    <!-- VACANT OFFICE LISTINGS -->
+    <div class="portal-section" id="sec-offices">
+      <div class="page-header">
+        <div><h1>Vacant Listings</h1><p>Offices shown on the public website</p></div>
+      </div>
+
+      <!-- Add new office form -->
+      <div class="add-office-form" id="addOfficeForm">
+        <h4>➕ Add a vacant office</h4>
+        <div class="form-row-3" style="margin-bottom:12px;">
+          <div class="form-group" style="margin:0;"><label>Room number</label><input type="text" id="ao-room" placeholder="e.g. 12"></div>
+          <div class="form-group" style="margin:0;"><label>Title</label><input type="text" id="ao-title" placeholder="e.g. Room 12"></div>
+          <div class="form-group" style="margin:0;"><label>Building</label>
+            <select id="ao-building"><option>Hub 1</option><option>Greenbank</option></select>
+          </div>
+        </div>
+        <div class="form-row-3" style="margin-bottom:12px;">
+          <div class="form-group" style="margin:0;"><label>Size (m²)</label><input type="number" id="ao-sqm" placeholder="e.g. 16"></div>
+          <div class="form-group" style="margin:0;"><label>Price (£/pcm)</label><input type="number" id="ao-price" placeholder="e.g. 320"></div>
+          <div class="form-group" style="margin:0;"><label>Photo URL</label><input type="url" id="ao-img" placeholder="https://…"></div>
+        </div>
+        <div class="form-group" style="margin-bottom:12px;"><label>Description (optional)</label><textarea id="ao-desc" placeholder="Brief description of the room…" style="min-height:70px;"></textarea></div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-primary" onclick="addOffice()">Save listing</button>
+          <button class="btn btn-outline" onclick="clearOfficeForm()">Clear</button>
+        </div>
+        <div id="officeFormMsg" style="display:none;margin-top:10px;" class="alert alert-success">Office listing saved and live on the website.</div>
+      </div>
+
+      <!-- Current listings -->
       <div class="portal-card">
-        <div id="tenantsList"></div>
+        <div class="portal-card-header"><h4>Current listings</h4><span class="tag tag-teal" id="officeListingCount">Loading…</span></div>
+        <div id="officeListings"><p style="font-size:13px;color:var(--mid);">Loading…</p></div>
       </div>
     </div>
 
-    <!-- VIRTUAL TENANTS -->
-    <div class="portal-section" id="sec-virtual">
-      <div class="page-header"><div><h1>Virtual Tenants</h1><p>Virtual office subscribers</p></div></div>
+    <!-- VIEWING REQUESTS -->
+    <div class="portal-section" id="sec-viewings">
+      <div class="page-header">
+        <div><h1>Viewing Requests</h1><p>Submitted through the website</p></div>
+      </div>
       <div class="portal-card">
-        <div class="portal-card-header"><h4>Active subscriptions</h4><span class="tag tag-teal">8 active</span></div>
-        <div id="virtualList"></div>
+        <div class="portal-card-header"><h4>All requests</h4><span id="viewingCount" class="tag tag-gold">Loading…</span></div>
+        <div id="viewingsList"><p style="font-size:13px;color:var(--mid);">Loading…</p></div>
       </div>
     </div>
 
-    <!-- ROOM CODES -->
-    <div class="portal-section" id="sec-codes">
-      <div class="page-header"><div><h1>Room Codes</h1><p>Click a code to reveal. Auto-hides after 5 seconds.</p></div></div>
-      <div class="portal-card">
-        <div class="portal-card-header"><h4>All rooms</h4></div>
-        <div id="codesList"></div>
+    <!-- ENQUIRIES -->
+    <div class="portal-section" id="sec-enquiries">
+      <div class="page-header">
+        <div><h1>Enquiries</h1><p>Office enquiries from the website</p></div>
       </div>
-    </div>
-
-    <!-- PROSPECTS -->
-    <div class="portal-section" id="sec-prospects">
-      <div class="page-header"><div><h1>Prospects</h1><p>Office enquiries from the website</p></div></div>
-      <div id="prospectsList"></div>
+      <div id="enquiriesList"></div>
     </div>
 
     <!-- MAINTENANCE -->
     <div class="portal-section" id="sec-maintenance">
-      <div class="page-header"><div><h1>Maintenance</h1><p>Live — updates in real time</p></div><span class="tag tag-teal" id="maintLive">Live</span></div>
+      <div class="page-header">
+        <div><h1>Maintenance</h1><p>Live — updates in real time</p></div>
+        <span class="tag tag-teal" id="maintLive">● Live</span>
+      </div>
       <div class="portal-card">
-        <div class="portal-card-header"><h4>Open requests</h4><span id="maintCount" class="tag tag-gold">Loading...</span></div>
-        <div id="maintOpenList"><div style="padding:20px;text-align:center;color:var(--mid);font-size:14px;">Loading...</div></div>
+        <div class="portal-card-header"><h4>Open requests</h4><span id="maintCount" class="tag tag-gold">Loading…</span></div>
+        <div id="maintOpenList"><p style="padding:20px;text-align:center;color:var(--mid);font-size:14px;">Loading…</p></div>
       </div>
     </div>
 
-    <!-- NOTICES -->
-    <div class="portal-section" id="sec-notices">
-      <div class="page-header"><div><h1>Send a Notice</h1><p>Push updates to tenants</p></div></div>
-      <div class="portal-card" style="max-width:600px;">
-        <div class="form-group">
-          <label>Send to</label>
-          <div class="notice-type-grid">
-            <button class="notice-type-btn active" onclick="selectNoticeType(this)">All tenants</button>
-            <button class="notice-type-btn" onclick="selectNoticeType(this)">Greenbank only</button>
-            <button class="notice-type-btn" onclick="selectNoticeType(this)">Hub only</button>
-            <button class="notice-type-btn" onclick="selectNoticeType(this)">Virtual tenants</button>
-            <button class="notice-type-btn" onclick="selectNoticeType(this)">Specific room</button>
-          </div>
-        </div>
-        <div class="form-group"><label>Title</label><input type="text" id="notice-title" placeholder="e.g. Fire alarm test today at 12:00"></div>
-        <div class="form-group"><label>Message</label><textarea id="notice-body" placeholder="Notice details..." style="min-height:120px;"></textarea></div>
-        <div class="form-group"><label>Schedule (optional — leave blank to send now)</label><input type="datetime-local" id="notice-schedule"></div>
-        <div style="display:flex;gap:10px;">
-          <button class="btn btn-outline" onclick="showSection('dashboard',null)">Cancel</button>
-          <button class="btn btn-primary" style="flex:1;" onclick="sendNotice()">Send notice now</button>
-        </div>
-        <div id="noticeSuccess" style="display:none;" class="alert alert-success" style="margin-top:16px;">Notice sent to all tenants.</div>
-      </div>
-    </div>
-
-    <!-- COMMUNITY -->
-    <div class="portal-section" id="sec-community">
-      <div class="page-header"><div><h1>Community Board</h1><p>Moderate tenant posts</p></div></div>
-      <div id="adminCommunityFeed"></div>
-    </div>
-
-  </div>
-</div>
+  </div><!-- /main-content -->
+</div><!-- /app-layout -->
 
 <!-- New booking modal -->
 <div class="modal-overlay" id="newBookingModal">
@@ -255,14 +278,24 @@
       <button onclick="closeModal('newBookingModal')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--mid);">✕</button>
     </div>
     <div class="form-group"><label>Room</label>
-      <select><option>Greenbank Boardroom</option><option>Energy Hub Training Room 1</option><option>West Wing Meeting Room</option></select>
+      <select id="nb-room">
+        <option>Greenbank Boardroom</option>
+        <option>Energy Hub Training Room 1</option>
+        <option>West Wing Meeting Room</option>
+      </select>
     </div>
-    <div class="form-group"><label>Booker name</label><input type="text" placeholder="Jane Smith"></div>
-    <div class="form-group"><label>Organisation</label><input type="text" placeholder="Smith & Co Ltd"></div>
-    <div class="form-group"><label>Email</label><input type="email" placeholder="jane@company.co.uk"></div>
+    <div class="form-group"><label>Booker name</label><input type="text" id="nb-name" placeholder="Jane Smith"></div>
+    <div class="form-group"><label>Organisation</label><input type="text" id="nb-org" placeholder="Smith &amp; Co Ltd"></div>
+    <div class="form-group"><label>Email</label><input type="email" id="nb-email" placeholder="jane@company.co.uk"></div>
     <div class="grid-2">
-      <div class="form-group"><label>Date</label><input type="date"></div>
-      <div class="form-group"><label>Time</label><select><option>09:00–10:00</option><option>10:00–11:00</option><option>11:00–12:00</option><option>13:00–14:00</option><option>14:00–15:00</option><option>15:00–16:00</option><option>Full day</option></select></div>
+      <div class="form-group"><label>Date</label><input type="date" id="nb-date"></div>
+      <div class="form-group"><label>Time slot</label>
+        <select id="nb-time">
+          <option>09:00–10:00</option><option>10:00–11:00</option><option>11:00–12:00</option>
+          <option>13:00–14:00</option><option>14:00–15:00</option><option>15:00–16:00</option>
+          <option>Full day</option>
+        </select>
+      </div>
     </div>
     <div style="display:flex;gap:10px;margin-top:8px;">
       <button class="btn btn-outline" onclick="closeModal('newBookingModal')">Cancel</button>
@@ -282,7 +315,7 @@
     <div class="form-group"><label>Status</label>
       <select id="maint-status"><option>Open</option><option>In progress</option><option>Resolved</option></select>
     </div>
-    <div class="form-group"><label>Notes for tenant</label><textarea placeholder="Add an update..." id="maint-notes"></textarea></div>
+    <div class="form-group"><label>Notes</label><textarea placeholder="Add an update…" id="maint-notes"></textarea></div>
     <div style="display:flex;gap:10px;">
       <button class="btn btn-outline" onclick="closeModal('maintModal')">Cancel</button>
       <button class="btn btn-primary" style="flex:1;" onclick="saveMaint()">Save update</button>
@@ -290,22 +323,23 @@
   </div>
 </div>
 
-<!-- Viewing modal -->
-<div class="modal-overlay" id="viewingModal">
+<!-- Confirm viewing modal -->
+<div class="modal-overlay" id="bookViewingModal">
   <div class="modal">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <h3>Book viewing</h3>
-      <button onclick="closeModal('viewingModal')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--mid);">✕</button>
+      <h3>Confirm viewing</h3>
+      <button onclick="closeModal('bookViewingModal')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--mid);">✕</button>
     </div>
-    <div id="viewingContent"></div>
-    <div class="form-group"><label>Viewing date</label><input type="date" id="viewing-date"></div>
+    <div id="bookViewingContent"></div>
+    <div class="form-group"><label>Confirmed date</label><input type="date" id="bv-date"></div>
     <div class="form-group"><label>Time</label>
-      <select id="viewing-time"><option>09:00</option><option>10:00</option><option>11:00</option><option>14:00</option><option>15:00</option></select>
+      <select id="bv-time">
+        <option>09:00</option><option>10:00</option><option>11:00</option><option>14:00</option><option>15:00</option>
+      </select>
     </div>
-    <div class="form-group"><label>Notes</label><input type="text" placeholder="Any specific rooms to show..." id="viewing-notes"></div>
-    <div style="display:flex;gap:10px;">
-      <button class="btn btn-outline" onclick="closeModal('viewingModal')">Cancel</button>
-      <button class="btn btn-primary" style="flex:1;" onclick="saveViewing()">Confirm viewing</button>
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <button class="btn btn-outline" onclick="closeModal('bookViewingModal')">Cancel</button>
+      <button class="btn btn-primary" style="flex:1;" onclick="confirmViewing()">Confirm viewing</button>
     </div>
   </div>
 </div>
@@ -313,277 +347,345 @@
 <script src="js/data.js"></script>
 <script src="js/supabase-maintenance.js"></script>
 <script>
-  function showSection(id, el) {
-    try {
-      document.querySelectorAll('.portal-section').forEach(s => s.classList.remove('active'));
-      const sec = document.getElementById('sec-' + id);
-      if (sec) sec.classList.add('active');
-      document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
-      if (el) el.classList.add('active');
-      // Close mobile sidebar after navigation
-      const sidebar = document.querySelector('.sidebar');
-      const overlay = document.getElementById('sidebarOverlay');
-      const toggle = document.getElementById('sidebarToggle');
-      if (sidebar) sidebar.classList.remove('open');
-      if (overlay) overlay.classList.remove('open');
-      if (toggle) toggle.textContent = '☰';
-    } catch(e) { console.error('showSection error:', e); }
-  }
+  const SB = {
+    url: 'https://qgjdaologsmrviaikzej.supabase.co',
+    key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFnamRhb2xvZ3NtcnZpYWlremVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4MTQxMzQsImV4cCI6MjA5NzM5MDEzNH0.gOya9F8I45uRFOLH6uFLFADSPda1YUDOjJkrnP2lCyw',
+    h: () => ({ 'apikey': SB.key, 'Authorization': `Bearer ${SB.key}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' }),
+    get: async (table, qs='') => (await fetch(`${SB.url}/rest/v1/${table}${qs}`, { headers: SB.h() })).json(),
+    post: async (table, data) => (await fetch(`${SB.url}/rest/v1/${table}`, { method:'POST', headers: SB.h(), body: JSON.stringify(data) })).json(),
+    patch: async (table, id, data) => (await fetch(`${SB.url}/rest/v1/${table}?id=eq.${id}`, { method:'PATCH', headers: SB.h(), body: JSON.stringify(data) })).json(),
+    del: async (table, id) => fetch(`${SB.url}/rest/v1/${table}?id=eq.${id}`, { method:'DELETE', headers: SB.h() }),
+  };
 
+  // ── Nav ───────────────────────────────────────────────────
+  function showSection(id, el) {
+    document.querySelectorAll('.portal-section').forEach(s => s.classList.remove('active'));
+    const sec = document.getElementById('sec-' + id);
+    if (sec) sec.classList.add('active');
+    document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+    if (el) el.classList.add('active');
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const toggle = document.getElementById('sidebarToggle');
+    if (sidebar) sidebar.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
+    if (toggle) toggle.textContent = '☰';
+  }
   function openModal(id) { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-  function selectNoticeType(el) {
-    document.querySelectorAll('.notice-type-btn').forEach(b => b.classList.remove('active'));
-    el.classList.add('active');
+  // ── Dashboard greeting ────────────────────────────────────
+  (function() {
+    const h = new Date().getHours();
+    const greet = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+    document.getElementById('dashGreeting').textContent = greet;
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const d = new Date();
+    document.getElementById('dashDate').textContent = `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} — Business Hub & Greenbank`;
+  })();
+
+  // ── Calendar ──────────────────────────────────────────────
+  let calOffset = 0;
+  const ROOMS = ['Greenbank Boardroom', 'Energy Hub Training Room 1', 'West Wing Meeting Room'];
+  const SLOTS = ['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00'];
+  let liveBookings = [];
+
+  function getWeekDates(offset) {
+    const now = new Date();
+    const mon = new Date(now);
+    mon.setDate(now.getDate() - now.getDay() + 1 + offset * 7);
+    return Array.from({length:7}, (_, i) => { const d = new Date(mon); d.setDate(mon.getDate()+i); return d; });
   }
 
-  async function sendNotice() {
-    const title = document.getElementById('notice-title').value;
-    const body = document.getElementById('notice-body').value;
-    if (!title) { alert('Please enter a title'); return; }
-    const target = document.querySelector('.notice-type-btn.active').textContent.toLowerCase().includes('all') ? 'all'
-      : document.querySelector('.notice-type-btn.active').textContent.toLowerCase().includes('greenbank') ? 'greenbank'
-      : document.querySelector('.notice-type-btn.active').textContent.toLowerCase().includes('hub') ? 'hub'
-      : document.querySelector('.notice-type-btn.active').textContent.toLowerCase().includes('virtual') ? 'virtual' : 'all';
-    await HP_NOTICES.insert({ title, body: body || '(No message body)', target });
-    document.getElementById('notice-title').value = '';
-    document.getElementById('notice-body').value = '';
-    document.getElementById('noticeSuccess').style.display = 'flex';
-    setTimeout(() => document.getElementById('noticeSuccess').style.display = 'none', 3000);
+  function renderCalendar() {
+    const days = getWeekDates(calOffset);
+    const dayNames = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    document.getElementById('calWeekLabel').textContent =
+      `${days[0].getDate()} ${months[days[0].getMonth()]} — ${days[6].getDate()} ${months[days[6].getMonth()]} ${days[6].getFullYear()}`;
+
+    let html = `<div class="cal-header" style="background:#1A2830;">Room / Time</div>`;
+    days.forEach((d, i) => {
+      const isToday = d.toDateString() === new Date().toDateString();
+      html += `<div class="cal-header" style="${isToday ? 'background:var(--teal);' : ''}">${dayNames[i]}<br><span style="font-size:14px;font-weight:800;">${d.getDate()}</span></div>`;
+    });
+
+    SLOTS.forEach(slot => {
+      html += `<div class="cal-time-label">${slot}</div>`;
+      days.forEach(d => {
+        const dateStr = d.toISOString().split('T')[0];
+        const booking = liveBookings.find(b => b.date === dateStr && b.time_slot && b.time_slot.startsWith(slot));
+        if (booking) {
+          html += `<div class="cal-cell"><div class="cal-booking ${booking.paid ? '' : 'unpaid'}" title="${booking.booker_name} — ${booking.room}">${booking.room.split(' ')[0]}<br>${booking.booker_name}</div></div>`;
+        } else {
+          html += `<div class="cal-cell" onclick="quickBook('${dateStr}','${slot}')"></div>`;
+        }
+      });
+    });
+
+    document.getElementById('calGrid').innerHTML = html;
+  }
+
+  function shiftWeek(dir) { calOffset += dir; renderCalendar(); }
+
+  function quickBook(date, slot) {
+    document.getElementById('nb-date').value = date;
+    document.getElementById('nb-time').value = slot + '–' + (parseInt(slot)+1).toString().padStart(2,'0') + ':00';
+    openModal('newBookingModal');
   }
 
   async function saveBooking() {
-    const room = document.querySelector('#newBookingModal select').value;
-    const name = document.querySelector('#newBookingModal input[type=text]').value;
-    const email = document.querySelector('#newBookingModal input[type=email]').value;
-    const date = document.querySelector('#newBookingModal input[type=date]').value;
-    const slot = document.querySelectorAll('#newBookingModal select')[1].value;
-    if (!name || !date) { alert('Please fill in name and date'); return; }
-    await HP_BOOKINGS.insert({ room, building: room.includes('Greenbank') ? 'Greenbank' : 'Business Hub', booker_name: name, booker_email: email || '', booker_org: '', date, time_slot: slot, paid: false, status: 'confirmed' });
+    const room = document.getElementById('nb-room').value;
+    const name = document.getElementById('nb-name').value;
+    const email = document.getElementById('nb-email').value || '';
+    const org = document.getElementById('nb-org').value || '';
+    const date = document.getElementById('nb-date').value;
+    const slot = document.getElementById('nb-time').value;
+    if (!name || !date) { alert('Please enter a name and date'); return; }
+    await HP_BOOKINGS.insert({ room, building: room.includes('Greenbank') ? 'Greenbank' : 'Business Hub', booker_name: name, booker_email: email, booker_org: org, date, time_slot: slot, paid: false, status: 'confirmed' });
     closeModal('newBookingModal');
     liveBookings = await HP_BOOKINGS.fetchAll();
-    renderLiveBookings();
-    alert('Booking saved.');
+    renderCalendar();
+    renderBookingsList();
+    flashNotif('Booking saved.');
   }
 
-  function saveMaint() {
-    const status = document.getElementById('maint-status').value;
-    closeModal('maintModal');
-    alert('Maintenance updated to: ' + status);
-    renderAll();
-  }
-
-  function saveViewing() {
-    const date = document.getElementById('viewing-date').value;
-    if (!date) { alert('Please select a date'); return; }
-    closeModal('viewingModal');
-    alert('Viewing booked. Confirmation sent to prospect.');
-  }
-
-  function revealCode(el, code) {
-    el.textContent = code;
-    el.classList.add('revealed');
-    setTimeout(() => { el.textContent = '••••'; el.classList.remove('revealed'); }, 5000);
-  }
-
-  async function openAdminMaintModal(id) {
-    const m = liveRequests.find(r => r.id === id);
-    if (!m) return;
-    document.getElementById('maintModalContent').innerHTML = `
-      <div style="background:var(--light);border-radius:10px;padding:14px;margin-bottom:16px;">
-        <strong style="font-size:14px;">${m.issue}</strong>
-        <p style="font-size:13px;color:var(--mid);margin:4px 0 0;">${m.room} · ${m.building} · ${m.tenant}</p>
-        <p style="font-size:13px;color:var(--mid);">${m.description}</p>
-        <div style="margin-top:8px;">${statusBadge(m.status)}</div>
-        ${m.proposed_time ? `<p style="font-size:13px;margin-top:6px;"><strong>Proposed visit:</strong> ${formatTime(m.proposed_time)}</p>` : ''}
-        ${m.tenant_response === 'reschedule_requested' ? '<div class="alert alert-warning" style="margin-top:8px;">Tenant has requested a reschedule.</div>' : ''}
-        ${m.tenant_response === 'accepted' ? '<div class="alert alert-success" style="margin-top:8px;">Tenant confirmed the visit time.</div>' : ''}
-      </div>
-      <div class="form-group">
-        <label>Propose visit date & time</label>
-        <input type="datetime-local" id="visit-datetime" value="${m.proposed_time ? m.proposed_time.slice(0,16) : ''}">
-      </div>`;
-    document.getElementById('maint-status').value = m.status === 'open' ? 'Open' : m.status === 'in-progress' ? 'In progress' : 'Resolved';
-    document.getElementById('maint-notes').value = m.admin_notes || '';
-    document.getElementById('maintModal').dataset.maintId = id;
-    openModal('maintModal');
-  }
-
-  function openViewingModal(id) {
-    const p = HP.prospects.find(x => x.id === id);
-    document.getElementById('viewingContent').innerHTML = `
-      <div style="background:var(--light);border-radius:10px;padding:14px;margin-bottom:16px;">
-        <strong>${p.name}</strong> — ${p.business}<br>
-        <span style="font-size:13px;color:var(--mid);">Interested in: ${p.interested.join(', ')}</span>
-      </div>`;
-    openModal('viewingModal');
-  }
-
-  function renderAll() {
-    // Dashboard rooms
-    document.getElementById('dashRooms').innerHTML = HP.offices.map(o => `
-      <div class="room-row">
-        <div class="room-status-dot ${o.status === 'vacant' ? 'dot-vacant' : 'dot-tenanted'}"></div>
-        <div class="room-row-info">
-          <strong>${o.name} — ${o.building}</strong>
-          <span>${o.status === 'tenanted' ? o.tenant + ' · since ' + o.tenantSince : 'Vacant · £' + o.price + '/mo'}</span>
-        </div>
-        ${o.status === 'vacant' ? `<div class="room-code" onclick="revealCode(this,'${o.code}')">••••</div>` : `<span class="tag tag-teal" style="font-size:11px;">Tenanted</span>`}
-      </div>`).join('');
-
-    // Dashboard prospects
-    document.getElementById('dashProspects').innerHTML = HP.prospects.map(p => `
-      <div style="padding:10px 0;border-bottom:1px solid var(--border);">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <strong style="font-size:14px;">${p.name}</strong>
-          <span class="tag ${p.status === 'new' ? 'tag-gold' : 'tag-teal'}" style="font-size:11px;">${p.status === 'new' ? 'New' : 'Viewing booked'}</span>
-        </div>
-        <p style="font-size:12px;color:var(--mid);margin:2px 0;">${p.business} · ${p.budget}/mo · ${p.moveIn}</p>
-        <div style="display:flex;gap:6px;margin-top:8px;">
-          <button class="btn btn-outline btn-sm" onclick="openViewingModal(${p.id})">Book viewing</button>
-        </div>
-      </div>`).join('');
-
-    // Dashboard bookings
-    document.getElementById('dashBookings').innerHTML = HP.bookings.map(b => `
+  function renderBookingsList() {
+    const upcoming = liveBookings.filter(b => b.date >= new Date().toISOString().split('T')[0]).sort((a,b) => a.date.localeCompare(b.date));
+    const html = upcoming.map(b => `
       <div class="booking-row">
         <div class="room-name">${b.room}</div>
-        <span style="color:var(--mid);font-size:13px;">${b.booker} · ${b.time}</span>
-        <span class="tag ${b.paid ? 'tag-green' : 'tag-gold'}" style="font-size:11px;">${b.paid ? 'Paid' : 'Awaiting payment'}</span>
-      </div>`).join('');
+        <span style="color:var(--mid);font-size:13px;">${b.booker_name}${b.booker_org ? ' · ' + b.booker_org : ''}</span>
+        <span style="color:var(--mid);font-size:13px;">${b.time_slot} · ${new Date(b.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>
+        <span class="tag ${b.paid ? 'tag-green' : 'tag-gold'}" style="font-size:11px;">${b.paid ? 'Paid' : 'Unpaid'}</span>
+      </div>`).join('') || '<p style="font-size:13px;color:var(--mid);">No upcoming bookings</p>';
+    const dash = upcoming.slice(0,3).map(b => `
+      <div class="booking-row" style="padding:8px 0;">
+        <div class="room-name" style="font-size:13px;">${b.room}</div>
+        <span style="color:var(--mid);font-size:12px;">${b.time_slot}</span>
+        <span class="tag ${b.paid ? 'tag-green' : 'tag-gold'}" style="font-size:10px;">${b.paid ? 'Paid' : 'Unpaid'}</span>
+      </div>`).join('') || '<p style="font-size:13px;color:var(--mid);">No bookings today</p>';
+    document.getElementById('bookingsList').innerHTML = html;
+    document.getElementById('dashBookings').innerHTML = dash;
+  }
 
-    // Dashboard maintenance
-    document.getElementById('dashMaintenance').innerHTML = HP.maintenance.map(m => `
-      <div class="maint-row">
-        <div class="priority-dot p-${m.priority}"></div>
-        <div class="maint-info">
-          <strong>${m.issue}</strong>
-          <p>${m.room} · ${m.tenant}</p>
+  // ── Vacant offices ────────────────────────────────────────
+  let liveOffices = [];
+
+  async function loadOffices() {
+    liveOffices = await SB.get('hp_vacant_offices', '?order=created_at.desc');
+    renderOffices();
+  }
+
+  function renderOffices() {
+    const el = document.getElementById('officeListings');
+    const countEl = document.getElementById('officeListingCount');
+    const dashEl = document.getElementById('dashOffices');
+    const vacant = liveOffices.filter(o => o.status === 'vacant');
+    if (countEl) countEl.textContent = `${vacant.length} live`;
+    document.getElementById('dashVacantCount').textContent = vacant.length;
+
+    el.innerHTML = liveOffices.map(o => `
+      <div class="office-listing-card" id="olc-${o.id}">
+        ${o.image_url ? `<img class="office-listing-img" src="${o.image_url}" alt="${o.title}" onerror="this.style.display='none'">` : ''}
+        <div class="office-listing-body">
+          <h4>${o.title} — ${o.building}</h4>
+          <div class="office-listing-meta">Room ${o.room_number} · ${o.sqm}m² ${o.description ? '· ' + o.description : ''}</div>
+          <div class="office-listing-price">£${o.price_pcm}<span style="font-size:14px;font-weight:400;color:var(--mid);font-family:'Inter',sans-serif;">/pcm</span></div>
+          <div class="office-listing-actions">
+            <span class="tag ${o.status === 'vacant' ? 'tag-green' : 'tag-teal'}">${o.status === 'vacant' ? 'Vacant' : 'Let'}</span>
+            <button class="btn btn-outline btn-sm" onclick="toggleLetStatus('${o.id}','${o.status}')">${o.status === 'vacant' ? 'Mark as let' : 'Mark vacant'}</button>
+            <button class="btn btn-sm" style="background:#FDEAEA;color:var(--danger);" onclick="removeOffice('${o.id}')">Remove</button>
+          </div>
         </div>
-        <button class="btn btn-outline btn-sm" onclick="openAdminMaintModal(`${m.id}`)">Update</button>
-      </div>`).join('');
+      </div>`).join('') || '<p style="font-size:13px;color:var(--mid);">No listings yet. Add one above.</p>';
 
-    // Full room inventory
-    document.getElementById('officeInventory').innerHTML = HP.offices.map(o => `
-      <div class="room-row">
-        <div class="room-status-dot ${o.status === 'vacant' ? 'dot-vacant' : 'dot-tenanted'}"></div>
-        <div class="room-row-info">
-          <strong>${o.name} — ${o.building} · ${o.size}m² · up to ${o.capacity}</strong>
-          <span>${o.status === 'tenanted' ? '👤 ' + o.tenant + ' since ' + o.tenantSince : 'Vacant · £' + o.price + '/mo'}</span>
-        </div>
-        ${o.status === 'vacant' ? `<div class="room-code" onclick="revealCode(this,'${o.code}')">••••</div>` : `<span class="tag tag-teal" style="font-size:11px;">Tenanted</span>`}
-      </div>`).join('');
-
-    document.getElementById('hireInventory').innerHTML = HP.rooms.map(r => `
-      <div class="room-row">
+    if (dashEl) dashEl.innerHTML = vacant.map(o => `
+      <div class="room-row" style="padding:8px 0;">
         <div class="room-status-dot dot-vacant"></div>
         <div class="room-row-info">
-          <strong>${r.name} — ${r.building} · ${r.size}m² · up to ${r.capacity}</strong>
-          <span>£${r.rate}/hr · ${r.amenities.join(', ')}</span>
+          <strong style="font-size:13px;">${o.title} — ${o.building}</strong>
+          <span>${o.sqm}m² · £${o.price_pcm}/pcm</span>
         </div>
-        <span class="tag tag-green" style="font-size:11px;">Available</span>
-      </div>`).join('');
-
-    // Full bookings
-    document.getElementById('bookingsList').innerHTML = HP.bookings.map(b => `
-      <div class="booking-row">
-        <div class="room-name">${b.room}</div>
-        <span>${b.booker}</span>
-        <span style="color:var(--mid);">${b.time}</span>
-        <span class="tag ${b.paid ? 'tag-green' : 'tag-gold'}" style="font-size:11px;">${b.paid ? 'Paid' : 'Awaiting payment'}</span>
-        <button class="btn btn-outline btn-sm" onclick="alert('Booking details: ' + '${b.room} — ${b.booker} — ${b.time}')">View</button>
-      </div>`).join('');
-
-    // Tenants list
-    document.getElementById('tenantsList').innerHTML = HP.tenants.map(t => `
-      <div class="tenant-row">
-        <div class="tenant-avatar-sm" style="background:${t.color};">${t.initials}</div>
-        <div class="tenant-row-info">
-          <strong>${t.name} — ${t.business}</strong>
-          <span>${t.room} · ${t.building} · £${t.rent}/mo · Contract ends ${new Date(t.contractEnd).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</span>
-        </div>
-        <span class="tag ${t.paymentStatus === 'up-to-date' ? 'tag-green' : 'tag-red'}" style="font-size:11px;">${t.paymentStatus === 'up-to-date' ? 'Up to date' : 'Overdue'}</span>
-        <button class="btn btn-outline btn-sm" onclick="alert('Contact: ${t.email}')">Contact</button>
-      </div>`).join('');
-
-    // Virtual tenants
-    document.getElementById('virtualList').innerHTML = HP.virtualTenants.map(v => `
-      <div class="tenant-row">
-        <div class="tenant-row-info">
-          <strong>${v.name} — ${v.business}</strong>
-          <span>${v.email} · Next payment ${v.nextPayment} · ${v.mail.filter(m=>!m.collected).length} uncollected items</span>
-        </div>
-        <span class="tag tag-green" style="font-size:11px;">Active</span>
-        <button class="btn btn-outline btn-sm" onclick="alert('Mail log: ${v.mail.length} items total, ${v.mail.filter(m=>!m.collected).length} awaiting collection.')">Mail log</button>
-      </div>`).join('');
-
-    // Room codes
-    document.getElementById('codesList').innerHTML = [...HP.offices, ...HP.rooms].map(r => `
-      <div class="room-row">
-        <div class="room-status-dot ${r.status === 'tenanted' ? 'dot-tenanted' : 'dot-vacant'}"></div>
-        <div class="room-row-info">
-          <strong>${r.name} — ${r.building || ''}</strong>
-          <span>${r.status === 'tenanted' ? r.tenant : 'Vacant hire room'}</span>
-        </div>
-        ${r.code ? `<div class="room-code" onclick="revealCode(this,'${r.code}')">••••</div>` : `<span style="font-size:12px;color:var(--mid);">No code set</span>`}
-        <button class="btn btn-outline btn-sm" onclick="const c=prompt('Enter new code for ${r.name}:');if(c){alert('Code updated.')}">Update code</button>
-      </div>`).join('');
-
-    // Prospects full
-    document.getElementById('prospectsList').innerHTML = HP.prospects.map(p => `
-      <div class="prospect-card">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
-          <div>
-            <h4 style="font-size:15px;margin-bottom:4px;">${p.name} — ${p.business}</h4>
-            <p style="font-size:13px;color:var(--mid);">${p.businessType} · ${p.headcount} people · Budget ${p.budget}/mo · Move in: ${p.moveIn}</p>
-          </div>
-          <span class="tag ${p.status === 'new' ? 'tag-gold' : 'tag-teal'}">${p.status === 'new' ? 'New' : 'Viewing booked'}</span>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
-          ${p.interested.map(r => `<span class="tag tag-teal" style="font-size:11px;">${r}</span>`).join('')}
-        </div>
-        ${p.viewingDate ? `<div class="alert alert-success" style="margin-bottom:10px;">Viewing: ${p.viewingDate}</div>` : ''}
-        <div style="display:flex;gap:8px;">
-          <button class="btn btn-outline btn-sm" onclick="alert('Call: ${p.name}')">Call prospect</button>
-          <button class="btn btn-primary btn-sm" onclick="openViewingModal(${p.id})">Book viewing</button>
-          <button class="btn btn-sm" style="background:#FDEAEA;color:var(--danger);" onclick="alert('Prospect marked as dead lead.')">Mark dead</button>
-        </div>
-      </div>`).join('');
-
-    // Maintenance — loaded from Supabase
-    loadLiveMaintenance();
-
-    // Community feed
-    document.getElementById('adminCommunityFeed').innerHTML = HP.communityPosts.map(p => `
-      <div class="community-post">
-        <div class="post-header">
-          <div class="post-avatar" style="background:${p.color}">${p.initials}</div>
-          <div class="post-meta"><h4>${p.author}</h4><span>${p.time}</span></div>
-          ${p.pinned ? '<div class="pinned-badge">Pinned</div>' : ''}
-        </div>
-        <div class="post-body">${p.body}</div>
-        <div class="post-actions">
-          <button onclick="p.pinned=!p.pinned;renderAll();">${p.pinned ? 'Unpin' : 'Pin post'}</button>
-          <button onclick="alert('Post removed.')">Remove</button>
-        </div>
-      </div>`).join('');
+      </div>`).join('') || '<p style="font-size:13px;color:var(--mid);">No vacant offices</p>';
   }
 
-  renderAll();
+  async function addOffice() {
+    const room = document.getElementById('ao-room').value.trim();
+    const title = document.getElementById('ao-title').value.trim();
+    const building = document.getElementById('ao-building').value;
+    const sqm = parseFloat(document.getElementById('ao-sqm').value);
+    const price = parseInt(document.getElementById('ao-price').value);
+    const img = document.getElementById('ao-img').value.trim();
+    const desc = document.getElementById('ao-desc').value.trim();
+    if (!room || !title || !sqm || !price) { alert('Please fill in room number, title, size and price.'); return; }
+    const res = await SB.post('hp_vacant_offices', { room_number: room, title, building, sqm, price_pcm: price, image_url: img || null, description: desc || null, status: 'vacant' });
+    if (res && res[0]) {
+      liveOffices.unshift(res[0]);
+      renderOffices();
+      clearOfficeForm();
+      document.getElementById('officeFormMsg').style.display = 'flex';
+      setTimeout(() => document.getElementById('officeFormMsg').style.display = 'none', 3000);
+    } else {
+      alert('Error saving listing. Try again.');
+    }
+  }
 
-  // ── Live maintenance ──────────────────────────────────────
+  async function toggleLetStatus(id, currentStatus) {
+    const newStatus = currentStatus === 'vacant' ? 'let' : 'vacant';
+    await SB.patch('hp_vacant_offices', id, { status: newStatus });
+    const idx = liveOffices.findIndex(o => o.id === id);
+    if (idx >= 0) liveOffices[idx].status = newStatus;
+    renderOffices();
+  }
+
+  async function removeOffice(id) {
+    if (!confirm('Remove this listing from the website?')) return;
+    await SB.del('hp_vacant_offices', id);
+    liveOffices = liveOffices.filter(o => o.id !== id);
+    renderOffices();
+  }
+
+  function clearOfficeForm() {
+    ['ao-room','ao-title','ao-sqm','ao-price','ao-img','ao-desc'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('ao-building').value = 'Hub 1';
+  }
+
+  // ── Viewing requests ──────────────────────────────────────
+  let liveViewings = [];
+
+  async function loadViewings() {
+    liveViewings = await SB.get('hp_viewing_requests', '?order=created_at.desc');
+    renderViewings();
+  }
+
+  function renderViewings() {
+    const newCount = liveViewings.filter(v => v.status === 'new').length;
+    const countEl = document.getElementById('viewingCount');
+    const dashCount = document.getElementById('dashViewingCount');
+    const dot = document.getElementById('viewingDot');
+    if (countEl) countEl.textContent = `${newCount} new`;
+    if (dashCount) dashCount.textContent = newCount;
+    if (dot) dot.style.display = newCount > 0 ? 'inline-block' : 'none';
+
+    const el = document.getElementById('viewingsList');
+    el.innerHTML = liveViewings.map(v => `
+      <div class="enquiry-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+          <div>
+            <strong style="font-size:15px;">${v.name}</strong>
+            <p style="font-size:13px;color:var(--mid);margin:3px 0;">${v.email}${v.phone ? ' · ' + v.phone : ''}</p>
+            ${v.office_title ? `<p style="font-size:13px;color:var(--teal);margin:3px 0;">Interested in: <strong>${v.office_title}</strong></p>` : ''}
+            ${v.preferred_date ? `<p style="font-size:13px;color:var(--mid);margin:3px 0;">Preferred date: ${new Date(v.preferred_date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</p>` : ''}
+            ${v.message ? `<p style="font-size:13px;color:var(--mid);margin:6px 0;font-style:italic;">"${v.message}"</p>` : ''}
+          </div>
+          <span class="tag ${v.status === 'new' ? 'tag-gold' : v.status === 'booked' ? 'tag-teal' : 'tag-green'}">${v.status.charAt(0).toUpperCase()+v.status.slice(1)}</span>
+        </div>
+        <div style="display:flex;gap:8px;">
+          ${v.status === 'new' ? `<button class="btn btn-primary btn-sm" onclick="openBookViewing('${v.id}','${v.name}','${v.office_title||''}')">Confirm viewing</button>` : ''}
+          <button class="btn btn-outline btn-sm" onclick="window.location.href='mailto:${v.email}'">Email</button>
+          ${v.phone ? `<button class="btn btn-outline btn-sm" onclick="window.location.href='tel:${v.phone}'">Call</button>` : ''}
+          <button class="btn btn-sm" style="background:#FDEAEA;color:var(--danger);" onclick="updateViewingStatus('${v.id}','cancelled')">Cancel</button>
+        </div>
+      </div>`).join('') || '<p style="font-size:13px;color:var(--mid);">No viewing requests yet</p>';
+  }
+
+  function openBookViewing(id, name, room) {
+    document.getElementById('bookViewingContent').innerHTML = `
+      <div style="background:var(--light);border-radius:10px;padding:14px;margin-bottom:16px;">
+        <strong>${name}</strong>${room ? ` — interested in ${room}` : ''}
+      </div>`;
+    document.getElementById('bookViewingModal').dataset.viewingId = id;
+    openModal('bookViewingModal');
+  }
+
+  async function confirmViewing() {
+    const id = document.getElementById('bookViewingModal').dataset.viewingId;
+    const date = document.getElementById('bv-date').value;
+    if (!date) { alert('Please select a date'); return; }
+    await SB.patch('hp_viewing_requests', id, { status: 'booked' });
+    const idx = liveViewings.findIndex(v => v.id === id);
+    if (idx >= 0) liveViewings[idx].status = 'booked';
+    renderViewings();
+    closeModal('bookViewingModal');
+    flashNotif('Viewing confirmed.');
+  }
+
+  async function updateViewingStatus(id, status) {
+    await SB.patch('hp_viewing_requests', id, { status });
+    const idx = liveViewings.findIndex(v => v.id === id);
+    if (idx >= 0) liveViewings[idx].status = status;
+    renderViewings();
+  }
+
+  // ── Enquiries (prospects) ─────────────────────────────────
+  let liveProspects = [];
+
+  async function loadProspects() {
+    if (window._prospectSub) { window._prospectSub(); window._prospectSub = null; }
+    liveProspects = await HP_PROSPECTS.fetchAll();
+    renderProspects();
+    window._prospectSub = HP_PROSPECTS.subscribe(rows => {
+      rows.forEach(r => { const i = liveProspects.findIndex(p => p.id === r.id); if (i>=0) liveProspects[i]=r; else liveProspects.unshift(r); });
+      renderProspects();
+      flashNotif('New enquiry received!');
+    });
+  }
+
+  function renderProspects() {
+    const newCount = liveProspects.filter(p => p.status === 'new').length;
+    document.getElementById('dashEnquiryCount').textContent = newCount;
+    document.getElementById('enquiryDot').style.display = newCount > 0 ? 'inline-block' : 'none';
+    const html = liveProspects.map(p => `
+      <div class="enquiry-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+          <div>
+            <strong style="font-size:15px;">${p.name}${p.business ? ' — ' + p.business : ''}</strong>
+            <p style="font-size:12px;color:var(--mid);margin:3px 0;">${p.business_type || ''} · ${p.headcount || ''} · Budget: ${p.budget || ''} · Move in: ${p.move_in || ''}</p>
+            <p style="font-size:12px;color:var(--mid);margin:3px 0;">${p.email}${p.phone ? ' · ' + p.phone : ''}</p>
+          </div>
+          <span class="tag ${p.status === 'new' ? 'tag-gold' : 'tag-teal'}">${p.status === 'new' ? 'New' : 'In progress'}</span>
+        </div>
+        ${p.interested_rooms && p.interested_rooms.length ? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">${p.interested_rooms.map(r => `<span class="tag tag-teal" style="font-size:11px;">${r}</span>`).join('')}</div>` : ''}
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-outline btn-sm" onclick="window.location.href='mailto:${p.email}'">Email</button>
+          ${p.phone ? `<button class="btn btn-outline btn-sm" onclick="window.location.href='tel:${p.phone}'">Call</button>` : ''}
+          <button class="btn btn-primary btn-sm" onclick="showSection('viewings',null)">Book viewing</button>
+        </div>
+      </div>`).join('') || '<p style="color:var(--mid);font-size:14px;padding:10px 0;">No enquiries yet</p>';
+    document.getElementById('enquiriesList').innerHTML = html;
+    document.getElementById('dashEnquiries').innerHTML = liveProspects.slice(0,2).map(p => `
+      <div style="padding:8px 0;border-bottom:1px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+          <strong style="font-size:13px;">${p.name}</strong>
+          <span class="tag ${p.status==='new'?'tag-gold':'tag-teal'}" style="font-size:10px;">${p.status==='new'?'New':'Active'}</span>
+        </div>
+        <p style="font-size:12px;color:var(--mid);margin:0;">${p.business||''} · ${p.budget||''}/mo</p>
+      </div>`).join('') || '<p style="font-size:13px;color:var(--mid);">No enquiries</p>';
+  }
+
+  // ── Maintenance ───────────────────────────────────────────
   let liveRequests = [];
+
+  function statusBadge(s) {
+    const map = { 'open': ['tag-gold','Open'], 'in-progress': ['tag-teal','In progress'], 'awaiting_confirmation': ['tag-teal','Visit proposed'], 'resolved': ['tag-green','Resolved'] };
+    const [cls, label] = map[s] || ['tag-gold', s];
+    return `<span class="tag ${cls}" style="font-size:11px;">${label}</span>`;
+  }
+
+  function formatTime(ts) {
+    if (!ts) return '';
+    const d = new Date(ts);
+    return d.toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + ' at ' + d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  }
 
   async function loadLiveMaintenance() {
     if (window._maintSub) { window._maintSub(); window._maintSub = null; }
     liveRequests = await HP_DB.fetchAll();
     renderLiveMaint();
     window._maintSub = HP_DB.subscribe(updated => {
-      updated.forEach(u => {
-        const idx = liveRequests.findIndex(r => r.id === u.id);
-        if (idx >= 0) liveRequests[idx] = u; else liveRequests.unshift(u);
-      });
+      updated.forEach(u => { const idx = liveRequests.findIndex(r => r.id === u.id); if (idx >= 0) liveRequests[idx] = u; else liveRequests.unshift(u); });
       renderLiveMaint();
       const el = document.getElementById('maintLive');
       if (el) { el.style.background = '#2ECC71'; setTimeout(() => el.style.background = '', 1000); }
@@ -592,137 +694,74 @@
 
   function renderLiveMaint() {
     const open = liveRequests.filter(r => r.status !== 'resolved');
-    const countEl = document.getElementById('maintCount');
-    if (countEl) countEl.textContent = open.length + ' open';
-    const dashEl = document.getElementById('dashMaintenance');
-    const listEl = document.getElementById('maintOpenList');
+    document.getElementById('maintCount').textContent = open.length + ' open';
+    document.getElementById('dashMaintCount').textContent = open.length;
     const html = liveRequests.map(m => `
-      <div class="maint-row" id="mrow-${m.id}">
+      <div class="maint-row">
         <div class="priority-dot p-${m.priority}"></div>
         <div class="maint-info">
           <strong>${m.issue}</strong>
-          <p>${m.room} · ${m.building} · ${m.tenant} (${m.business})</p>
-          ${m.description ? `<p style="font-size:13px;color:var(--dark);">${m.description}</p>` : ''}
+          <p>${m.room} · ${m.building} · ${m.tenant}</p>
+          ${m.description ? `<p>${m.description}</p>` : ''}
           <div style="margin-top:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
             ${statusBadge(m.status)}
             ${m.proposed_time ? `<span style="font-size:12px;color:var(--mid);">Visit: ${formatTime(m.proposed_time)}</span>` : ''}
-            ${m.tenant_response ? `<span style="font-size:12px;color:var(--teal);font-weight:600;">Tenant: ${m.tenant_response === 'accepted' ? 'Accepted visit' : 'Requested reschedule'}</span>` : ''}
-            ${m.admin_notes ? `<span style="font-size:12px;color:var(--mid);">Note: ${m.admin_notes}</span>` : ''}
           </div>
         </div>
-        <button class="btn btn-primary btn-sm" onclick="openAdminMaintModal('${m.id}')">
-          ${m.status === 'awaiting_confirmation' ? 'View response' : m.status === 'reschedule_requested' ? 'Reschedule' : 'Schedule visit'}
-        </button>
+        <button class="btn btn-primary btn-sm" onclick="openAdminMaintModal('${m.id}')">Update</button>
       </div>`).join('') || '<p style="padding:16px;color:var(--mid);font-size:14px;">No open requests</p>';
-    if (dashEl) dashEl.innerHTML = html;
-    if (listEl) listEl.innerHTML = html;
+    ['dashMaintenance','maintOpenList'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
   }
 
   async function openAdminMaintModal(id) {
     const m = liveRequests.find(r => r.id === id);
+    if (!m) return;
     document.getElementById('maintModalContent').innerHTML = `
       <div style="background:var(--light);border-radius:10px;padding:14px;margin-bottom:16px;">
-        <strong style="font-size:14px;">${m.issue}</strong>
-        <p style="font-size:13px;color:var(--mid);margin:4px 0;">${m.room} · ${m.building} · ${m.tenant}</p>
+        <strong>${m.issue}</strong>
+        <p style="font-size:13px;color:var(--mid);margin:4px 0;">${m.room} · ${m.building}</p>
         ${m.description ? `<p style="font-size:13px;color:var(--mid);">${m.description}</p>` : ''}
         <div style="margin-top:8px;">${statusBadge(m.status)}</div>
         ${m.proposed_time ? `<p style="font-size:13px;margin-top:6px;"><strong>Proposed visit:</strong> ${formatTime(m.proposed_time)}</p>` : ''}
-        ${m.tenant_response === 'reschedule_requested' ? '<div class="alert alert-warning" style="margin-top:8px;">Tenant has requested a reschedule.</div>' : ''}
-        ${m.tenant_response === 'accepted' ? '<div class="alert alert-success" style="margin-top:8px;">Tenant confirmed the visit time.</div>' : ''}
       </div>
       <div class="form-group">
-        <label>Propose visit date & time</label>
+        <label>Propose visit date &amp; time</label>
         <input type="datetime-local" id="visit-datetime" value="${m.proposed_time ? m.proposed_time.slice(0,16) : ''}">
       </div>`;
-    document.getElementById('maint-status').value =
-      m.status === 'open' ? 'Open' :
-      m.status === 'awaiting_confirmation' ? 'In progress' :
-      m.status === 'confirmed' ? 'In progress' : 'Open';
+    document.getElementById('maint-status').value = m.status === 'open' ? 'Open' : m.status === 'resolved' ? 'Resolved' : 'In progress';
     document.getElementById('maint-notes').value = m.admin_notes || '';
-    // Store id for save
     document.getElementById('maintModal').dataset.maintId = id;
     openModal('maintModal');
   }
 
   async function saveMaint() {
     const id = document.getElementById('maintModal').dataset.maintId;
-    const visitTime = document.getElementById('visit-datetime') ? document.getElementById('visit-datetime').value : null;
+    const visitTime = document.getElementById('visit-datetime').value;
     const notes = document.getElementById('maint-notes').value;
-    const update = {
-      status: visitTime ? 'awaiting_confirmation' : 'in-progress',
-      proposed_time: visitTime ? new Date(visitTime).toISOString() : null,
-      proposed_by: 'admin',
-      tenant_response: null,
-      admin_notes: notes
-    };
+    const update = { status: visitTime ? 'awaiting_confirmation' : 'in-progress', proposed_time: visitTime ? new Date(visitTime).toISOString() : null, proposed_by: 'admin', tenant_response: null, admin_notes: notes };
     await HP_DB.update(id, update);
     const idx = liveRequests.findIndex(r => r.id === id);
     if (idx >= 0) liveRequests[idx] = { ...liveRequests[idx], ...update };
     renderLiveMaint();
     closeModal('maintModal');
-    alert(visitTime ? 'Visit proposed — tenant will be notified.' : 'Maintenance updated.');
+    flashNotif(visitTime ? 'Visit proposed.' : 'Maintenance updated.');
   }
 
   // ── Live bookings ─────────────────────────────────────────
-  let liveBookings = [];
   async function loadLiveBookings() {
     if (window._bookingSub) { window._bookingSub(); window._bookingSub = null; }
     liveBookings = await HP_BOOKINGS.fetchAll();
-    renderLiveBookings();
+    renderCalendar();
+    renderBookingsList();
     window._bookingSub = HP_BOOKINGS.subscribe(rows => {
       rows.forEach(r => { const i = liveBookings.findIndex(b => b.id === r.id); if (i>=0) liveBookings[i]=r; else liveBookings.unshift(r); });
-      renderLiveBookings();
-      flashNotif('New booking received!');
+      renderCalendar();
+      renderBookingsList();
+      flashNotif('New booking!');
     });
   }
 
-  function renderLiveBookings() {
-    const html = liveBookings.map(b => `
-      <div class="booking-row">
-        <div class="room-name">${b.room}</div>
-        <span style="color:var(--mid);font-size:13px;">${b.booker_name}${b.booker_org ? ' · ' + b.booker_org : ''}</span>
-        <span style="color:var(--mid);font-size:13px;">${b.time_slot} · ${new Date(b.date+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</span>
-        <span class="tag ${b.paid ? 'tag-green' : 'tag-gold'}" style="font-size:11px;">${b.paid ? 'Paid' : 'Unpaid'}</span>
-        <button class="btn btn-outline btn-sm" onclick="alert('${b.booker_name}\\n${b.booker_email}\\n${b.time_slot}')">View</button>
-      </div>`).join('') || '<p style="padding:16px;color:var(--mid);font-size:14px;">No bookings yet</p>';
-    ['dashBookings','bookingsList'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
-  }
-
-  // ── Live prospects ────────────────────────────────────────
-  let liveProspects = [];
-  async function loadLiveProspects() {
-    if (window._prospectSub) { window._prospectSub(); window._prospectSub = null; }
-    liveProspects = await HP_PROSPECTS.fetchAll();
-    renderLiveProspects();
-    window._prospectSub = HP_PROSPECTS.subscribe(rows => {
-      rows.forEach(r => { const i = liveProspects.findIndex(p => p.id === r.id); if (i>=0) liveProspects[i]=r; else liveProspects.unshift(r); });
-      renderLiveProspects();
-      flashNotif('New prospect enquiry!');
-    });
-  }
-
-  function renderLiveProspects() {
-    const html = liveProspects.map(p => `
-      <div class="prospect-card">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
-          <div>
-            <strong style="font-size:14px;">${p.name} — ${p.business}</strong>
-            <p style="font-size:12px;color:var(--mid);margin:2px 0;">${p.business_type || ''} · ${p.headcount || ''} · Budget: ${p.budget || ''} · Move in: ${p.move_in || ''}</p>
-            ${p.phone ? `<p style="font-size:12px;color:var(--mid);">${p.phone} · ${p.email}</p>` : `<p style="font-size:12px;color:var(--mid);">${p.email}</p>`}
-          </div>
-          <span class="tag ${p.status === 'new' ? 'tag-gold' : 'tag-teal'}">${p.status === 'new' ? 'New' : 'In progress'}</span>
-        </div>
-        ${p.interested_rooms && p.interested_rooms.length ? '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">' + p.interested_rooms.map(r => `<span class="tag tag-teal" style="font-size:11px;">${r}</span>`).join('') + '</div>' : ''}
-        <div style="display:flex;gap:8px;">
-          <button class="btn btn-outline btn-sm" onclick="alert('${p.name}\\n${p.email}${p.phone ? '\\n' + p.phone : ''}')">Contact</button>
-          <button class="btn btn-primary btn-sm" onclick="openViewingModal('${p.id}')">Book viewing</button>
-          <button class="btn btn-sm" style="background:#FDEAEA;color:var(--danger);" onclick="alert('Marked as dead lead.')">Dead lead</button>
-        </div>
-      </div>`).join('') || '<p style="color:var(--mid);font-size:14px;padding:10px 0;">No prospects yet</p>';
-    ['dashProspects','prospectsList'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
-  }
-
-  // ── Flash notification ────────────────────────────────────
+  // ── Flash ─────────────────────────────────────────────────
   function flashNotif(msg) {
     let el = document.getElementById('liveFlash');
     if (!el) {
@@ -736,27 +775,25 @@
     setTimeout(() => el.style.display = 'none', 4000);
   }
 
-  // ── Staggered init ────────────────────────────────────────
+  // ── Init ──────────────────────────────────────────────────
   setTimeout(loadLiveMaintenance, 200);
-  setTimeout(loadLiveBookings, 600);
-  setTimeout(loadLiveProspects, 1000);
+  setTimeout(loadLiveBookings, 400);
+  setTimeout(loadOffices, 600);
+  setTimeout(loadViewings, 800);
+  setTimeout(loadProspects, 1000);
 
 </script>
 <script src="js/bug-report.js"></script>
-
-  <button class="sidebar-toggle" id="sidebarToggle" style="display:none;" title="Menu">☰</button>
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+<button class="sidebar-toggle" id="sidebarToggle" style="display:none;" title="Menu">☰</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 <script>
-  // Mobile sidebar
   (function(){
     var toggle = document.getElementById('sidebarToggle');
     var sidebar = document.querySelector('.sidebar');
     var overlay = document.getElementById('sidebarOverlay');
     if(!toggle || !sidebar) return;
     if(window.innerWidth <= 900) toggle.style.display = 'flex';
-    window.addEventListener('resize', function(){
-      toggle.style.display = window.innerWidth <= 900 ? 'flex' : 'none';
-    });
+    window.addEventListener('resize', function(){ toggle.style.display = window.innerWidth <= 900 ? 'flex' : 'none'; });
     toggle.addEventListener('click', function(){
       sidebar.classList.toggle('open');
       overlay.classList.toggle('open');
@@ -766,25 +803,6 @@
       sidebar.classList.remove('open');
       overlay.classList.remove('open');
       toggle.textContent = '☰';
-    });
-  })();
-</script>
-<script>
-  // Hamburger nav
-  (function(){
-    var btn = document.getElementById("navHamburger");
-    var links = document.querySelector(".nav-links");
-    if(!btn || !links) return;
-    btn.addEventListener("click", function(e){
-      e.stopPropagation();
-      links.classList.toggle("open");
-      btn.classList.toggle("open");
-    });
-    document.addEventListener("click", function(e){
-      if(!btn.contains(e.target) && !links.contains(e.target)){
-        links.classList.remove("open");
-        btn.classList.remove("open");
-      }
     });
   })();
 </script>
