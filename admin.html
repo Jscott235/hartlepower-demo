@@ -10,7 +10,7 @@
     body { background: #F0FAF9; }
 
     /* Stat cards */
-    .stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 24px; }
     .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px; }
     .stat-card .label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--mid); margin-bottom: 8px; }
     .stat-card .value { font-family: 'Syne', sans-serif; font-size: 34px; font-weight: 800; color: var(--dark); line-height: 1; margin-bottom: 4px; }
@@ -117,8 +117,6 @@
     <a href="#" onclick="event.preventDefault();showSection('offices',this)">Vacant Listings</a>
     <a href="#" onclick="event.preventDefault();showSection('viewings',this)">Viewing Requests <span class="notif-dot" id="viewingDot" style="display:none;"></span></a>
     <a href="#" onclick="event.preventDefault();showSection('enquiries',this)">Enquiries <span class="notif-dot" id="enquiryDot" style="display:none;"></span></a>
-    <div class="sidebar-section-label">Operations</div>
-    <a href="#" onclick="event.preventDefault();showSection('maintenance',this)">Maintenance <span class="notif-dot"></span></a>
     <div class="sidebar-section-label"></div>
     <a href="index.html">← View website</a>
   </div>
@@ -150,11 +148,7 @@
           <div class="value teal" id="dashViewingCount">—</div>
           <div class="sub">To be booked</div>
         </div>
-        <div class="stat-card">
-          <div class="label">Open maintenance</div>
-          <div class="value red" id="dashMaintCount">—</div>
-          <div class="sub">Awaiting action</div>
-        </div>
+
       </div>
       <div class="grid-dash-3" style="margin-bottom:20px;">
         <div class="portal-card">
@@ -171,10 +165,7 @@
           <div class="portal-card-header"><h4>Vacant offices</h4><a href="#" onclick="showSection('offices',null)" style="font-size:13px;color:var(--teal);text-decoration:none;">Manage listings</a></div>
           <div id="dashOffices"><p style="font-size:13px;color:var(--mid);padding:8px 0;">Loading…</p></div>
         </div>
-        <div class="portal-card">
-          <div class="portal-card-header"><h4>Open maintenance</h4><a href="#" onclick="showSection('maintenance',null)" style="font-size:13px;color:var(--teal);text-decoration:none;">All requests</a></div>
-          <div id="dashMaintenance"><p style="font-size:13px;color:var(--mid);padding:8px 0;">Loading…</p></div>
-        </div>
+
       </div>
     </div>
 
@@ -255,17 +246,7 @@
       <div id="enquiriesList"></div>
     </div>
 
-    <!-- MAINTENANCE -->
-    <div class="portal-section" id="sec-maintenance">
-      <div class="page-header">
-        <div><h1>Maintenance</h1><p>Live — updates in real time</p></div>
-        <span class="tag tag-teal" id="maintLive">● Live</span>
-      </div>
-      <div class="portal-card">
-        <div class="portal-card-header"><h4>Open requests</h4><span id="maintCount" class="tag tag-gold">Loading…</span></div>
-        <div id="maintOpenList"><p style="padding:20px;text-align:center;color:var(--mid);font-size:14px;">Loading…</p></div>
-      </div>
-    </div>
+
 
   </div><!-- /main-content -->
 </div><!-- /app-layout -->
@@ -304,24 +285,7 @@
   </div>
 </div>
 
-<!-- Update maintenance modal -->
-<div class="modal-overlay" id="maintModal">
-  <div class="modal">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <h3>Update request</h3>
-      <button onclick="closeModal('maintModal')" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--mid);">✕</button>
-    </div>
-    <div id="maintModalContent"></div>
-    <div class="form-group"><label>Status</label>
-      <select id="maint-status"><option>Open</option><option>In progress</option><option>Resolved</option></select>
-    </div>
-    <div class="form-group"><label>Notes</label><textarea placeholder="Add an update…" id="maint-notes"></textarea></div>
-    <div style="display:flex;gap:10px;">
-      <button class="btn btn-outline" onclick="closeModal('maintModal')">Cancel</button>
-      <button class="btn btn-primary" style="flex:1;" onclick="saveMaint()">Save update</button>
-    </div>
-  </div>
-</div>
+
 
 <!-- Confirm viewing modal -->
 <div class="modal-overlay" id="bookViewingModal">
@@ -665,87 +629,7 @@
       </div>`).join('') || '<p style="font-size:13px;color:var(--mid);">No enquiries</p>';
   }
 
-  // ── Maintenance ───────────────────────────────────────────
-  let liveRequests = [];
 
-  function statusBadge(s) {
-    const map = { 'open': ['tag-gold','Open'], 'in-progress': ['tag-teal','In progress'], 'awaiting_confirmation': ['tag-teal','Visit proposed'], 'resolved': ['tag-green','Resolved'] };
-    const [cls, label] = map[s] || ['tag-gold', s];
-    return `<span class="tag ${cls}" style="font-size:11px;">${label}</span>`;
-  }
-
-  function formatTime(ts) {
-    if (!ts) return '';
-    const d = new Date(ts);
-    return d.toLocaleDateString('en-GB',{day:'numeric',month:'short'}) + ' at ' + d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-  }
-
-  async function loadLiveMaintenance() {
-    if (window._maintSub) { window._maintSub(); window._maintSub = null; }
-    liveRequests = await HP_DB.fetchAll();
-    renderLiveMaint();
-    window._maintSub = HP_DB.subscribe(updated => {
-      updated.forEach(u => { const idx = liveRequests.findIndex(r => r.id === u.id); if (idx >= 0) liveRequests[idx] = u; else liveRequests.unshift(u); });
-      renderLiveMaint();
-      const el = document.getElementById('maintLive');
-      if (el) { el.style.background = '#2ECC71'; setTimeout(() => el.style.background = '', 1000); }
-    });
-  }
-
-  function renderLiveMaint() {
-    const open = liveRequests.filter(r => r.status !== 'resolved');
-    document.getElementById('maintCount').textContent = open.length + ' open';
-    document.getElementById('dashMaintCount').textContent = open.length;
-    const html = liveRequests.map(m => `
-      <div class="maint-row">
-        <div class="priority-dot p-${m.priority}"></div>
-        <div class="maint-info">
-          <strong>${m.issue}</strong>
-          <p>${m.room} · ${m.building} · ${m.tenant}</p>
-          ${m.description ? `<p>${m.description}</p>` : ''}
-          <div style="margin-top:6px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-            ${statusBadge(m.status)}
-            ${m.proposed_time ? `<span style="font-size:12px;color:var(--mid);">Visit: ${formatTime(m.proposed_time)}</span>` : ''}
-          </div>
-        </div>
-        <button class="btn btn-primary btn-sm" onclick="openAdminMaintModal('${m.id}')">Update</button>
-      </div>`).join('') || '<p style="padding:16px;color:var(--mid);font-size:14px;">No open requests</p>';
-    ['dashMaintenance','maintOpenList'].forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = html; });
-  }
-
-  async function openAdminMaintModal(id) {
-    const m = liveRequests.find(r => r.id === id);
-    if (!m) return;
-    document.getElementById('maintModalContent').innerHTML = `
-      <div style="background:var(--light);border-radius:10px;padding:14px;margin-bottom:16px;">
-        <strong>${m.issue}</strong>
-        <p style="font-size:13px;color:var(--mid);margin:4px 0;">${m.room} · ${m.building}</p>
-        ${m.description ? `<p style="font-size:13px;color:var(--mid);">${m.description}</p>` : ''}
-        <div style="margin-top:8px;">${statusBadge(m.status)}</div>
-        ${m.proposed_time ? `<p style="font-size:13px;margin-top:6px;"><strong>Proposed visit:</strong> ${formatTime(m.proposed_time)}</p>` : ''}
-      </div>
-      <div class="form-group">
-        <label>Propose visit date &amp; time</label>
-        <input type="datetime-local" id="visit-datetime" value="${m.proposed_time ? m.proposed_time.slice(0,16) : ''}">
-      </div>`;
-    document.getElementById('maint-status').value = m.status === 'open' ? 'Open' : m.status === 'resolved' ? 'Resolved' : 'In progress';
-    document.getElementById('maint-notes').value = m.admin_notes || '';
-    document.getElementById('maintModal').dataset.maintId = id;
-    openModal('maintModal');
-  }
-
-  async function saveMaint() {
-    const id = document.getElementById('maintModal').dataset.maintId;
-    const visitTime = document.getElementById('visit-datetime').value;
-    const notes = document.getElementById('maint-notes').value;
-    const update = { status: visitTime ? 'awaiting_confirmation' : 'in-progress', proposed_time: visitTime ? new Date(visitTime).toISOString() : null, proposed_by: 'admin', tenant_response: null, admin_notes: notes };
-    await HP_DB.update(id, update);
-    const idx = liveRequests.findIndex(r => r.id === id);
-    if (idx >= 0) liveRequests[idx] = { ...liveRequests[idx], ...update };
-    renderLiveMaint();
-    closeModal('maintModal');
-    flashNotif(visitTime ? 'Visit proposed.' : 'Maintenance updated.');
-  }
 
   // ── Live bookings ─────────────────────────────────────────
   async function loadLiveBookings() {
@@ -776,8 +660,7 @@
   }
 
   // ── Init ──────────────────────────────────────────────────
-  setTimeout(loadLiveMaintenance, 200);
-  setTimeout(loadLiveBookings, 400);
+  setTimeout(loadLiveBookings, 200);
   setTimeout(loadOffices, 600);
   setTimeout(loadViewings, 800);
   setTimeout(loadProspects, 1000);
