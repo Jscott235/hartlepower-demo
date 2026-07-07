@@ -20,7 +20,7 @@
       inset: 0;
       background-image: url('https://static.wixstatic.com/media/c7834b_b537a9cc573847acae73a54dbadb5a41~mv2.png/v1/fill/w_1366,h_768,fp_0.50_0.50,q_85,enc_auto/c7834b_b537a9cc573847acae73a54dbadb5a41~mv2.png');
       background-size: cover;
-      background-position: center top;
+      background-position: center 30%;
       filter: brightness(0.45);
     }
 
@@ -266,6 +266,10 @@
     .login-dropdown-menu a:last-child { border-bottom: none; }
     .login-dropdown-menu a:hover { background: var(--teal-light); color: var(--teal-dark); }
     .login-dropdown-menu .admin-link { color: var(--mid); font-size: 13px; }
+    .admin-bar { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--dark); border-top: 2px solid var(--teal); padding: 10px 20px; z-index: 999; display: flex; justify-content: space-between; align-items: center; }
+    .admin-bar span { color: rgba(255,255,255,0.5); font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .admin-bar a { background: var(--teal); color: white; padding: 7px 16px; border-radius: 8px; font-size: 12px; font-weight: 700; text-decoration: none; }
+    @media (min-width: 769px) { .admin-bar { display: none !important; } }
 
   
     /* ── BASE: prevent horizontal scroll on all screen sizes ── */
@@ -289,13 +293,14 @@
       /* ── Hero ── */
       .hero {
         height: auto !important;
-        min-height: 100svh !important;
+        min-height: 85vh !important;
         padding: 80px 20px 32px !important;
         display: flex !important;
         flex-direction: column !important;
         justify-content: center !important;
         overflow: hidden !important;
       }
+      .hero-bg { background-position: center center !important; }
       .hero-content {
         position: relative !important;
         padding: 0 !important;
@@ -776,6 +781,7 @@
   });
 </script>
 
+<div class="admin-bar"><span>DEMO</span><a href="admin.html">Staff Dashboard →</a></div>
 <script src="js/bug-report.js"></script>
 <script>
   // Hamburger nav
